@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 export function Header() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
@@ -27,14 +27,37 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-6 text-sm font-bold text-asphalt lg:flex">
-          {links.map(([label, href]) => (
-            <Link key={href} to={href} className="transition hover:text-gltBlue">
-              {label}
-            </Link>
-          ))}
+          <Link to="/" className="transition hover:text-gltBlue">{t("nav.home")}</Link>
+          
+          <div className="group relative py-2">
+             <span className="cursor-pointer transition group-hover:text-gltBlue">Services</span>
+             <div className="absolute left-0 top-full hidden w-56 flex-col gap-1 rounded-xl border border-line bg-white p-2 shadow-soft group-hover:flex">
+               <Link to="/field-missions" className="rounded-lg px-3 py-2 hover:bg-[#f2f4f7]">{t("nav.fieldMissions")}</Link>
+               <Link to="/delegations" className="rounded-lg px-3 py-2 hover:bg-[#f2f4f7]">{t("nav.delegations")}</Link>
+               <Link to="/transfers" className="rounded-lg px-3 py-2 hover:bg-[#f2f4f7]">{t("nav.transfers")}</Link>
+             </div>
+          </div>
+          
+          <Link to="/fleet" className="transition hover:text-gltBlue">{t("nav.fleet")}</Link>
+          
+          <div className="group relative py-2">
+             <span className="cursor-pointer transition group-hover:text-gltBlue">Company</span>
+             <div className="absolute left-0 top-full hidden w-56 flex-col gap-1 rounded-xl border border-line bg-white p-2 shadow-soft group-hover:flex">
+               <Link to="/projects" className="rounded-lg px-3 py-2 hover:bg-[#f2f4f7]">{t("nav.projects")}</Link>
+               <Link to="/industry-solutions" className="rounded-lg px-3 py-2 hover:bg-[#f2f4f7]">{t("nav.industry")}</Link>
+               <Link to="/about" className="rounded-lg px-3 py-2 hover:bg-[#f2f4f7]">{t("nav.about")}</Link>
+             </div>
+          </div>
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-5 lg:flex">
+          <div className="flex items-center gap-2 text-sm font-bold text-asphalt">
+             <button onClick={() => i18n.changeLanguage('ru')} className={`hover:text-gltBlue transition ${i18n.language === 'ru' ? 'text-gltBlue' : ''}`}>RU</button>
+             <span className="text-line">|</span>
+             <button onClick={() => i18n.changeLanguage('uz')} className={`hover:text-gltBlue transition ${i18n.language === 'uz' ? 'text-gltBlue' : ''}`}>UZ</button>
+             <span className="text-line">|</span>
+             <button onClick={() => i18n.changeLanguage('en')} className={`hover:text-gltBlue transition ${i18n.language === 'en' ? 'text-gltBlue' : ''}`}>EN</button>
+          </div>
           <Link
             to="/contact"
             className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-gltBlue"
@@ -59,7 +82,7 @@ export function Header() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute inset-x-0 top-full h-screen border-t border-line bg-white/98 px-5 py-6 backdrop-blur-2xl lg:hidden shadow-soft overflow-y-auto"
+          className="absolute inset-x-0 top-full h-[calc(100vh-5rem)] border-t border-line bg-white/95 px-5 py-6 backdrop-blur-2xl lg:hidden shadow-soft overflow-y-auto"
         >
           <div className="flex flex-col gap-6 pb-32">
             {links.map(([label, href]) => (
@@ -67,6 +90,13 @@ export function Header() {
                 {label}
               </Link>
             ))}
+            
+            <div className="mt-4 flex justify-center gap-4 text-lg font-bold text-asphalt border-t border-line pt-6">
+               <button onClick={() => i18n.changeLanguage('ru')} className={i18n.language === 'ru' ? 'text-gltBlue' : ''}>RU</button>
+               <button onClick={() => i18n.changeLanguage('uz')} className={i18n.language === 'uz' ? 'text-gltBlue' : ''}>UZ</button>
+               <button onClick={() => i18n.changeLanguage('en')} className={i18n.language === 'en' ? 'text-gltBlue' : ''}>EN</button>
+            </div>
+
             <Link
               to="/contact"
               onClick={() => setMenuOpen(false)}
