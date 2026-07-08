@@ -25,6 +25,32 @@ const resources = {
         secondary: "View Fleet",
         stats: ["Field Missions", "Official Delegations", "Airport & Railway Transfers"]
       },
+      homeSections: {
+        fieldMissions: {
+          kicker: "Core Expertise",
+          title: "Field Missions & Projects",
+          text: "We provide specialized transportation for remote project sites, mining operations, and solar farms. Our 4WD vehicles and experienced drivers ensure safe passage through rugged terrains.",
+          cta: "Explore Field Missions"
+        },
+        delegations: {
+          kicker: "VIP Services",
+          title: "Official Delegations & Events",
+          text: "High-level transportation for government delegations, VIP visitors, and international conferences. We offer seamless coordination, airport meet & greet, and multi-vehicle convoys.",
+          cta: "Learn More"
+        },
+        projects: {
+          kicker: "Track Record",
+          title: "Proven Operational Experience",
+          text: "Trusted by international organizations. We have successfully supported major infrastructure, environmental, and geological projects across all regions of Uzbekistan.",
+          cta: "View Our Projects"
+        },
+        about: {
+          kicker: "About Us",
+          title: "Your Reliable Logistics Partner",
+          text: "With 24/7 coordination, stringent vehicle standards, and a nationwide network, GoLuxTrip is the definitive choice for corporate transportation in Uzbekistan.",
+          cta: "Read More About Us"
+        }
+      },
       fleet: {
         kicker: "Fleet",
         title: "Specialized vehicles for regional and project transportation.",
@@ -93,32 +119,60 @@ const resources = {
           }
         ]
       },
-      process: {
-        kicker: "About Us",
-        title: "Your trusted logistics partner.",
-        text: "We provide 24/7 coordination, driver quality assurance, and high vehicle standards for IFIs, UN Agencies, and corporate clients.",
-        steps: [
-          ["Nationwide Coverage", "Transportation throughout Uzbekistan including remote villages, industrial facilities, and desert sites."],
-          ["24/7 Operations", "Dedicated support team ensuring seamless coordination round-the-clock."],
-          ["Quality Assurance", "Rigorous driver selection and vehicle maintenance protocols."]
-        ]
-      },
-      routes: {
-        kicker: "Services",
-        title: "Comprehensive Field Logistics.",
-        text: "We are not a taxi company. We support complex missions, long-term operations, and high-level delegations.",
-        cta: "See our Projects",
-        routeIdea: "Core Services:",
-        items: ["Field Missions", "Official Delegations", "Airport Transfers", "Regional Transportation", "Travel Industry Solutions", "Conferences & Events"]
-      },
-      trust: {
-        kicker: "Why GoLuxTrip",
-        title: "Operational capability you can trust.",
-        items: [
-          ["Expertise", "Proven track record supporting Solar Farms, Mining Operations, and Geological Surveys."],
-          ["Reliability", "Multi-day missions with experienced drivers trained for rugged terrains."],
-          ["Professionalism", "Meet & Greet services for VIPs, Embassies, and International Organizations."]
-        ]
+      pages: {
+        fieldMissions: {
+          title: "Field Missions",
+          subtitle: "Trusted transportation for remote and complex projects.",
+          features: [
+            { title: "Development Projects", desc: "Logistics for IFIs and international development initiatives." },
+            { title: "Energy & Infrastructure", desc: "Access to Solar & Wind Farms, Water Management facilities." },
+            { title: "Technical Missions", desc: "Geological surveys, Mining operations, and Engineering inspections." },
+            { title: "Rural & Agriculture", desc: "Navigation through remote agricultural areas and government inspections." }
+          ],
+          highlights: ["SUVs & 4WD Vehicles", "Experienced Drivers", "Regional Expertise", "Multi-day Missions", "24/7 Operational Support"]
+        },
+        delegations: {
+          title: "Official Delegations & Events",
+          subtitle: "Premium transportation for high-level meetings and VIP guests.",
+          features: [
+            { title: "Government Delegations", desc: "Secure and protocol-compliant transportation." },
+            { title: "Conferences & Forums", desc: "Multi-vehicle coordination for large-scale events." },
+            { title: "Corporate Meetings", desc: "Business-class sedans and minivans for executives." }
+          ],
+          services: ["Airport Meet & Greet", "Hotel Transfers", "Shuttle Services", "Multi-Vehicle Coordination"]
+        },
+        transfers: {
+          title: "Airport & Railway Transfers",
+          subtitle: "Professional meet and greet services across Uzbekistan.",
+          text: "We provide punctual and reliable transfers to and from all major airports and railway stations, including Tashkent, Samarkand, Bukhara, and Urgench. Our drivers meet you with a nameboard, assist with luggage, and ensure a comfortable ride to your hotel or office."
+        },
+        projects: {
+          title: "Completed Projects",
+          subtitle: "Real operational experience across various sectors.",
+          items: [
+            { name: "Solar Power Development Project", region: "Navoi & Surkhandarya", duration: "14 Days", vehicles: "Heavy Duty 4WDs" },
+            { name: "Water Resources Assessment", region: "Karakalpakstan", duration: "7 Days", vehicles: "SUVs & Minivans" },
+            { name: "International Conference", region: "Tashkent & Samarkand", duration: "5 Days", vehicles: "Premium Minivans & Buses" },
+            { name: "Geological Survey", region: "Navoi", duration: "21 Days", vehicles: "Off-road 4WDs" }
+          ]
+        },
+        industry: {
+          title: "Travel Industry Solutions",
+          subtitle: "Your trusted local transportation partner.",
+          text: "We collaborate with International Travel Agencies, Tour Operators, Destination Management Companies (DMCs), and Hotels to provide seamless travel experiences for their clients.",
+          partners: ["International & Local Travel Agencies", "Tour Operators", "DMCs", "Hotels & Concierge Companies", "Corporate Travel Managers"]
+        },
+        about: {
+          title: "About GoLuxTrip",
+          subtitle: "The digital headquarters for field logistics in Uzbekistan.",
+          text: "GoLuxTrip is not a taxi company. We are a specialized logistics provider ensuring reliable transportation for the most demanding assignments.",
+          pillars: [
+            { title: "Driver Quality Assurance", desc: "Rigorous vetting, regular training, and strict adherence to safety protocols." },
+            { title: "Vehicle Quality Standards", desc: "Modern, meticulously maintained fleet equipped for both city and off-road travel." },
+            { title: "24/7 Coordination", desc: "Our dispatch and support team monitors all missions round-the-clock." },
+            { title: "Nationwide Network", desc: "Operating in all 14 regions of Uzbekistan, from Tashkent to Nukus." }
+          ]
+        }
       },
       application: {
         kicker: "Contact",
@@ -131,7 +185,7 @@ const resources = {
           phone: "Phone / WhatsApp",
           dates: "Travel Dates",
           route: "Regions / Cities",
-          message: "Additional Information",
+          message: "Additional Information (Optional)",
           organization: "Organization",
           service: "Service Required",
           passengers: "Number of Passengers"

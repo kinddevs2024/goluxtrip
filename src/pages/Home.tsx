@@ -2,16 +2,24 @@ import { motion } from "framer-motion";
 import { ChevronRight, Compass, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { SectionHeading } from "../components/Shared";
+// Import all sub-pages so they appear on the home page as sections
+import FieldMissions from "./FieldMissions";
+import Delegations from "./Delegations";
+import Transfers from "./Transfers";
+import Fleet from "./Fleet";
+import Projects from "./Projects";
+import IndustrySolutions from "./IndustrySolutions";
+import About from "./About";
+import Contact from "./Contact";
 
 export default function Home() {
   const { t } = useTranslation();
 
   return (
     <>
-      <section className="relative overflow-hidden pt-28">
+      <section className="relative overflow-hidden pt-28 pb-12">
         <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(40,119,178,0.12),transparent_42%),linear-gradient(225deg,rgba(228,81,24,0.12),transparent_36%)]" />
-        <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-12 px-5 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
+        <div className="relative mx-auto grid min-h-[calc(100vh-8rem)] max-w-7xl items-center gap-12 px-5 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
@@ -64,17 +72,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8">
-        <SectionHeading kicker={t("routes.kicker")} title={t("routes.title")} text={t("routes.text")} />
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {(t("routes.items", { returnObjects: true }) as string[]).map((item) => (
-            <div key={item} className="flex items-center justify-between rounded-[1.5rem] border border-line bg-white p-5 shadow-sm transition hover:border-gltBlue">
-              <span className="text-lg font-black">{item}</span>
-              <ShieldCheck className="text-gltOrange" size={20} />
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Stack all pages on the Home page to create a long landing experience */}
+      <FieldMissions />
+      <Delegations />
+      <Transfers />
+      <Fleet />
+      <Projects />
+      <IndustrySolutions />
+      <About />
+      <Contact />
     </>
   );
 }

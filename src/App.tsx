@@ -7,18 +7,12 @@ import { Header, Footer } from "./components/Layout";
 import Home from "./pages/Home";
 import Fleet from "./pages/Fleet";
 import Contact from "./pages/Contact";
-
-// Placeholder pages for others
-function Placeholder({ title }: { title: string }) {
-  return (
-    <section className="mx-auto max-w-7xl px-5 py-32 lg:px-8 text-center min-h-[60vh] grid place-items-center">
-      <div>
-        <h1 className="text-4xl font-black text-ink mb-4">{title}</h1>
-        <p className="text-lg text-asphalt">More details about our {title.toLowerCase()} services will be added soon.</p>
-      </div>
-    </section>
-  );
-}
+import FieldMissions from "./pages/FieldMissions";
+import Delegations from "./pages/Delegations";
+import Transfers from "./pages/Transfers";
+import Projects from "./pages/Projects";
+import IndustrySolutions from "./pages/IndustrySolutions";
+import About from "./pages/About";
 
 function App() {
   useEffect(() => {
@@ -35,12 +29,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/fleet" element={<Fleet />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/field-missions" element={<Placeholder title="Field Missions" />} />
-          <Route path="/delegations" element={<Placeholder title="Official Delegations & Events" />} />
-          <Route path="/transfers" element={<Placeholder title="Airport & Railway Station Transfers" />} />
-          <Route path="/projects" element={<Placeholder title="Projects" />} />
-          <Route path="/industry-solutions" element={<Placeholder title="Travel Industry Solutions" />} />
-          <Route path="/about" element={<Placeholder title="About Us" />} />
+          <Route path="/field-missions" element={<FieldMissions />} />
+          <Route path="/delegations" element={<Delegations />} />
+          <Route path="/transfers" element={<Transfers />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/industry-solutions" element={<IndustrySolutions />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
 
