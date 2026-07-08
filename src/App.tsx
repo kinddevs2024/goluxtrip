@@ -24,7 +24,7 @@ function App() {
       <Toaster position="top-center" toastOptions={{ duration: 4200 }} />
       <Header />
       
-      <main className="flex-1 mt-20">
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/fleet" element={<Fleet />} />

@@ -1,11 +1,25 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 export function Header() {
   const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const handleLogoClick = () => {
+    setMenuOpen(false);
+    if (window.location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const links = [
     [t("nav.home"), "/"],
@@ -19,9 +33,9 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/60 bg-white/82 backdrop-blur-xl">
+    <header className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${scrolled ? "border-b border-line bg-white/95 backdrop-blur-xl shadow-sm" : "bg-transparent"}`}>
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-        <Link to="/" className="flex items-center gap-3" aria-label="GoLuxTrip home" onClick={() => setMenuOpen(false)}>
+        <Link to="/" className="flex items-center gap-3" aria-label="GoLuxTrip home" onClick={handleLogoClick}>
           <img src="/glt-mark.png" alt="" className="h-11 w-auto xl:hidden" />
           <img src="/glt-wide.png" alt="GoLuxTrip" className="hidden h-8 w-auto xl:block" />
         </Link>
