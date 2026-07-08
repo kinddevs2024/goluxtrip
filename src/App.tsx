@@ -444,7 +444,7 @@ function Application() {
   }, [cars, setValue]);
 
   async function onSubmit(values: ApplicationForm) {
-    const response = await fetch("/api/apply", {
+    const response = await fetch("https://goluxtrip-backend.vercel.app/api/apply", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values)
