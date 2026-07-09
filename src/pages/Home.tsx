@@ -4,9 +4,78 @@ import {
   ArrowRight, ShieldCheck, Map, Truck, Globe, Clock, 
   Users, Briefcase, ChevronDown, CheckCircle
 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import toast from "react-hot-toast";
+import { useMemo } from "react";
+
+type ApplicationForm = {
+  name: string;
+  email: string;
+  service: string;
+  dates: string;
+  route: string;
+  passengers: string;
+  organization: string;
+  message?: string;
+};
 
 export default function Home() {
   const { t } = useTranslation();
+
+  const schema = useMemo(
+    () =>
+      z.object({
+        name: z.string().min(2, t("application.errors.name", { defaultValue: "Name is required" })),
+        email: z.string().email(t("application.errors.email", { defaultValue: "Valid email is required" })),
+        service: z.string().min(2, t("application.errors.service", { defaultValue: "Service is required" })),
+        dates: z.string().min(2, t("application.errors.dates", { defaultValue: "Dates are required" })),
+        route: z.string().min(2, t("application.errors.route", { defaultValue: "Route is required" })),
+        passengers: z.string().min(1, t("application.errors.passengers", { defaultValue: "Passengers required" })),
+        organization: z.string().min(2, t("application.errors.organization", { defaultValue: "Organization is required" })),
+        message: z.string().max(1000).optional()
+      }),
+    [t]
+  );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+    reset
+  } = useForm<ApplicationForm>({
+    resolver: zodResolver(schema)
+  });
+
+  async function onSubmit(values: ApplicationForm) {
+    const payload = {
+      name: values.name,
+      email: values.email,
+      phone: "N/A", // Not in mockup form, just use placeholder
+      car: values.service,
+      dates: values.dates,
+      route: `${values.organization} | Pax: ${values.passengers} | ${values.route}`,
+      message: values.message
+    };
+
+    try {
+      const response = await fetch("https://goluxtrip-backend.vercel.app/api/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error("Could not send the request.");
+      }
+
+      toast.success(t("application.success"));
+      reset();
+    } catch (err) {
+      toast.error("Failed to send request. Please try again.");
+    }
+  }
 
   const solutions = t("whatWeDo.solutions", { returnObjects: true }) as {id: string, title: string, desc: string, img: string}[];
   const cars = t("fleet.cars", { returnObjects: true }) as {id: string, name: string, seats: string, bags: string, drive: string, image: string}[];
@@ -227,27 +296,27 @@ export default function Home() {
             </div>
 
             <div className="lg:w-2/3 p-8 lg:p-20 bg-[#051b2e]">
-               <form className="grid sm:grid-cols-2 gap-6" onSubmit={(e) => e.preventDefault()}>
+               <form className="grid sm:grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit, () => toast.error(t("application.invalid")))}>
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.organization")}</label>
-                     <input type="text" className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <input type="text" {...register("organization")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
                   </div>
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.route")}</label>
-                     <input type="text" className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <input type="text" {...register("route")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
                   </div>
                   
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.name")}</label>
-                     <input type="text" className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <input type="text" {...register("name")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
                   </div>
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.passengers")}</label>
                      <div className="relative">
-                        <select className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none w-full appearance-none">
-                           <option>1-4</option>
-                           <option>5-10</option>
-                           <option>10+</option>
+                        <select {...register("passengers")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none w-full appearance-none">
+                           <option value="1-4">1-4</option>
+                           <option value="5-10">5-10</option>
+                           <option value="10+">10+</option>
                         </select>
                         <ChevronDown size={16} className="absolute right-3 top-3.5 text-gray-400" />
                      </div>
@@ -255,7 +324,7 @@ export default function Home() {
 
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.email")}</label>
-                     <input type="email" className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <input type="email" {...register("email")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
                   </div>
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.upload")}</label>
@@ -265,27 +334,27 @@ export default function Home() {
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.service")}</label>
                      <div className="relative">
-                        <select className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none w-full appearance-none">
-                           <option>Field Mission</option>
-                           <option>Delegation</option>
-                           <option>Transfer</option>
+                        <select {...register("service")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none w-full appearance-none">
+                           <option value="Field Mission">Field Mission</option>
+                           <option value="Delegation">Delegation</option>
+                           <option value="Transfer">Transfer</option>
                         </select>
                         <ChevronDown size={16} className="absolute right-3 top-3.5 text-gray-400" />
                      </div>
                   </div>
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.message")}</label>
-                     <input type="text" className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <input type="text" {...register("message")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
                   </div>
                   
                   <div className="flex flex-col gap-2">
                      <label className="text-white text-xs">{t("application.fields.dates")}</label>
-                     <input type="text" className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <input type="text" {...register("dates")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
                   </div>
 
                   <div className="flex items-end mt-4 sm:mt-0">
-                     <button type="submit" className="bg-gltOrange text-white font-bold text-sm tracking-wide uppercase rounded p-3 w-full hover:bg-[#c84211] transition">
-                        {t("application.submit")}
+                     <button type="submit" disabled={isSubmitting} className="bg-gltOrange text-white font-bold text-sm tracking-wide uppercase rounded p-3 w-full hover:bg-[#c84211] transition disabled:opacity-50">
+                        {isSubmitting ? t("application.sending") : t("application.submit")}
                      </button>
                   </div>
                </form>
