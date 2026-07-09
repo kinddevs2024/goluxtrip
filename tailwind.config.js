@@ -5,8 +5,10 @@ export default {
     extend: {
       colors: {
         ink: "#101820",
+        navy: "#02213D",
         asphalt: "#26323f",
         line: "#e5e7eb",
+        lightbg: "#f8f9fa",
         gltBlue: "#2877b2",
         gltOrange: "#e45118"
       },

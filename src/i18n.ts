@@ -8,190 +8,194 @@ const resources = {
         home: "Home",
         fieldMissions: "Field Missions",
         delegations: "Delegations & Events",
-        transfers: "Transfers",
+        transfers: "Airport & Railway Transfers",
         fleet: "Fleet",
         projects: "Projects",
-        industry: "Travel Industry",
+        industry: "Travel Industry Solutions",
         about: "About Us",
         contact: "Contact",
-        apply: "Request Transportation",
+        apply: "REQUEST TRANSPORTATION",
         toggle: "Toggle navigation"
       },
       hero: {
-        badge: "Transportation & Field Logistics Partner",
-        title: "Where the Road Ends, We Continue.",
-        text: "Reliable Transportation & Field Logistics for International Organizations, Development Projects, Official Delegations and Corporate Clients across Uzbekistan.",
-        cta: "Request Transportation",
-        secondary: "View Fleet",
-        stats: ["Field Missions", "Official Delegations", "Airport & Railway Transfers"]
+        title: "WHERE THE\nROAD ENDS,\nWE CONTINUE.",
+        text: "Reliable Transportation & Field Logistics\nfor International Organizations, Development Projects,\nOfficial Delegations and Corporate Clients\nacross Uzbekistan.",
+        cta: "REQUEST TRANSPORTATION",
+        secondary: "OUR SERVICES"
+      },
+      featuresBanner: {
+        suvs: "SUVs & 4WD FLEET",
+        suvsDesc: "Built for any terrain",
+        remote: "REMOTE AREA EXPERTS",
+        remoteDesc: "We go further",
+        drivers: "EXPERIENCED DRIVERS",
+        driversDesc: "Professional & reliable",
+        ops: "24/7 OPERATIONS",
+        opsDesc: "Always supportive",
+        coverage: "NATIONWIDE COVERAGE",
+        coverageDesc: "All regions of Uzbekistan"
+      },
+      whatWeDo: {
+        kicker: "WHAT WE DO",
+        title: "Transportation & Field Logistics Solutions",
+        solutions: [
+          {
+            id: "field-missions",
+            title: "FIELD MISSIONS",
+            desc: "Transportation for projects in remote and challenging areas across Uzbekistan.",
+            img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "delegations",
+            title: "DELEGATIONS & EVENTS",
+            desc: "Professional transportation for official delegations, VIPs, conferences and events.",
+            img: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "transfers",
+            title: "AIRPORT & RAILWAY TRANSFERS",
+            desc: "Reliable transfers to/from airports and railway stations, hotels and any destination.",
+            img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "regional",
+            title: "REGIONAL & INTERCITY TRANSPORTATION",
+            desc: "Intercity travel, day trips and multi-day missions with experienced drivers.",
+            img: "https://images.unsplash.com/photo-1627552245715-77d79bbf6fe2?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "day-trips",
+            title: "DAY TRIPS",
+            desc: "One-day trips, site visits, technical inspections and regional travel.",
+            img: "https://images.unsplash.com/photo-1559825481-12a05cc00344?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "industry",
+            title: "TRAVEL INDUSTRY SOLUTIONS",
+            desc: "Trusted transportation partner for travel agencies, tour operators, DMCs and hotels.",
+            img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=600"
+          }
+        ]
       },
       fleet: {
-        kicker: "Fleet",
-        title: "Specialized vehicles for regional and project transportation.",
-        text: "Our fleet consists of Comfort, Premium, and Business class sedans, SUVs, 4WDs, Minivans, and Buses.",
-        request: "Request this vehicle",
+        kicker: "OUR FLEET",
+        title: "Built for the Road.\nReady for the Mission.",
+        text: "A wide range of SUVs, 4WDs,\nMinivans and Buses for any mission\nand group size.",
+        viewAll: "VIEW FULL FLEET",
         cars: [
           {
-            id: "cobalt",
-            name: "Chevrolet Cobalt",
-            category: "Comfort Sedan",
-            price: "Contact for pricing",
-            seats: "3-4 passengers",
-            transmission: "Automatic",
-            range: "City trips and regional transportation",
-            image: "https://chevrolet.uz/assets/images/cobalt/colours/1.png"
+            id: "lc200",
+            name: "Toyota Land Cruiser 200",
+            seats: "5",
+            bags: "4",
+            drive: "4WD",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQtfC1YAPQ5kcKFQ6ABBoLEAsWXxhCpqcx0LiWSiHFGFj_A6nC8n8pBXD2&s=10"
           },
           {
-            id: "tracker",
-            name: "Chevrolet Tracker",
-            category: "Compact SUV",
-            price: "Contact for pricing",
-            seats: "3-4 passengers",
-            transmission: "Automatic",
-            range: "Urban and light off-road",
-            image: "https://chevrolet.uz/assets/images/tracker/colors/07.png"
-          },
-          {
-            id: "k5",
-            name: "Kia K5",
-            category: "Premium Sedan",
-            price: "Contact for pricing",
-            seats: "3-4 passengers",
-            transmission: "Automatic",
-            range: "VIP & Corporate intercity travel",
-            image: "https://cdn.motor1.com/images/mgl/bgBOz6/s1/2025-kia-k5.jpg"
+            id: "prado",
+            name: "Toyota Land Cruiser Prado",
+            seats: "5",
+            bags: "4",
+            drive: "4WD",
+            image: "https://chevrolet.uz/assets/images/tracker/colors/07.png" // Placeholder
           },
           {
             id: "staria",
             name: "Hyundai Staria",
-            category: "Premium Minivan",
-            price: "Contact for pricing",
-            seats: "7-9 passengers",
-            transmission: "Automatic",
-            range: "Delegations, Groups, Airport transfers",
+            seats: "7",
+            bags: "7",
+            drive: "A/C",
             image: "https://cdn.motor1.com/images/mgl/POJEW/s3/2021-hyundai-staria.jpg"
           },
           {
-            id: "lc250",
-            name: "Toyota Land Cruiser",
-            category: "Heavy Duty 4WD",
-            price: "Contact for pricing",
-            seats: "4 passengers",
-            transmission: "Automatic",
-            range: "Field missions, remote project sites",
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQtfC1YAPQ5kcKFQ6ABBoLEAsWXxhCpqcx0LiWSiHFGFj_A6nC8n8pBXD2&s=10"
+            id: "sprinter",
+            name: "Black Mercedes Sprinter",
+            seats: "16",
+            bags: "16",
+            drive: "A/C",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPV4fuqp4oj5NGDEL0o0VArGsXtXGddOyQbdzO_vcEzwo1G-Lmog25vWpU&s=10"
           },
           {
-            id: "coaster",
-            name: "Minibus",
-            category: "Group Transportation",
-            price: "Contact for pricing",
-            seats: "15-20 passengers",
-            transmission: "Automatic/Manual",
-            range: "Conference transportation",
+            id: "bus",
+            name: "King Long Bus",
+            seats: "30",
+            bags: "20",
+            drive: "A/C",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPV4fuqp4oj5NGDEL0o0VArGsXtXGddOyQbdzO_vcEzwo1G-Lmog25vWpU&s=10"
           }
         ]
       },
-      pages: {
-        fieldMissions: {
-          title: "Field Missions",
-          subtitle: "Trusted transportation for remote and complex projects.",
-          features: [
-            { title: "Development Projects", desc: "Logistics for IFIs and international development initiatives." },
-            { title: "Energy & Infrastructure", desc: "Access to Solar & Wind Farms, Water Management facilities." },
-            { title: "Technical Missions", desc: "Geological surveys, Mining operations, and Engineering inspections." },
-            { title: "Rural & Agriculture", desc: "Navigation through remote agricultural areas and government inspections." }
-          ],
-          highlights: ["SUVs & 4WD Vehicles", "Experienced Drivers", "Regional Expertise", "Multi-day Missions", "24/7 Operational Support"]
-        },
-        delegations: {
-          title: "Official Delegations & Events",
-          subtitle: "Premium transportation for high-level meetings and VIP guests.",
-          features: [
-            { title: "Government Delegations", desc: "Secure and protocol-compliant transportation." },
-            { title: "Conferences & Forums", desc: "Multi-vehicle coordination for large-scale events." },
-            { title: "Corporate Meetings", desc: "Business-class sedans and minivans for executives." }
-          ],
-          services: ["Airport Meet & Greet", "Hotel Transfers", "Shuttle Services", "Multi-Vehicle Coordination"]
-        },
-        transfers: {
-          title: "Airport & Railway Transfers",
-          subtitle: "Professional meet and greet services across Uzbekistan.",
-          text: "We provide punctual and reliable transfers to and from all major airports and railway stations, including Tashkent, Samarkand, Bukhara, and Urgench. Our drivers meet you with a nameboard, assist with luggage, and ensure a comfortable ride to your hotel or office."
-        },
-        projects: {
-          title: "Completed Projects",
-          subtitle: "Real operational experience across various sectors.",
-          items: [
-            { name: "Solar Power Development Project", region: "Navoi & Surkhandarya", duration: "14 Days", vehicles: "Heavy Duty 4WDs" },
-            { name: "Water Resources Assessment", region: "Karakalpakstan", duration: "7 Days", vehicles: "SUVs & Minivans" },
-            { name: "International Conference", region: "Tashkent & Samarkand", duration: "5 Days", vehicles: "Premium Minivans & Buses" },
-            { name: "Geological Survey", region: "Navoi", duration: "21 Days", vehicles: "Off-road 4WDs" }
-          ]
-        },
-        industry: {
-          title: "Travel Industry Solutions",
-          subtitle: "Your trusted local transportation partner.",
-          text: "We collaborate with International Travel Agencies, Tour Operators, Destination Management Companies (DMCs), and Hotels to provide seamless travel experiences for their clients.",
-          partners: ["International & Local Travel Agencies", "Tour Operators", "DMCs", "Hotels & Concierge Companies", "Corporate Travel Managers"]
-        },
-        about: {
-          title: "About GoLuxTrip",
-          subtitle: "The digital headquarters for field logistics in Uzbekistan.",
-          text: "GoLuxTrip is not a taxi company. We are a specialized logistics provider ensuring reliable transportation for the most demanding assignments.",
-          pillars: [
-            { title: "Driver Quality Assurance", desc: "Rigorous vetting, regular training, and strict adherence to safety protocols." },
-            { title: "Vehicle Quality Standards", desc: "Modern, meticulously maintained fleet equipped for both city and off-road travel." },
-            { title: "24/7 Coordination", desc: "Our dispatch and support team monitors all missions round-the-clock." },
-            { title: "Nationwide Network", desc: "Operating in all 14 regions of Uzbekistan, from Tashkent to Nukus." }
-          ]
-        }
+      projects: {
+        kicker: "RECENT PROJECTS",
+        title: "Real Missions. Real Results.",
+        viewAll: "VIEW ALL PROJECTS",
+        items: [
+          { 
+            name: "Solar Power Development Project", 
+            region: "Navoi Region", 
+            duration: "18 Days", 
+            vehicles: "8 Vehicles", 
+            distance: "4,250 km",
+            img: "https://images.unsplash.com/photo-1509391366360-1282c0b435ff?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Water Resources Assessment", 
+            region: "Karakalpakstan", 
+            duration: "14 Days", 
+            vehicles: "4 Vehicles", 
+            distance: "3,120 km",
+            img: "https://images.unsplash.com/photo-1437482078695-73f5d5b78044?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Highway Reconstruction Project", 
+            region: "Samarkand – Bukhara", 
+            duration: "21 Days", 
+            vehicles: "6 Vehicles", 
+            distance: "5,680 km",
+            img: "https://images.unsplash.com/photo-1517036618791-32520cb2a4ee?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Environmental Monitoring Mission", 
+            region: "Surkhandarya Region", 
+            duration: "12 Days", 
+            vehicles: "5 Vehicles", 
+            distance: "2,780 km",
+            img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=600"
+          }
+        ]
+      },
+      partners: {
+        title: "TRUSTED TRANSPORTATION PARTNER FOR",
+        list: [
+          "International Organizations", "Development Partners", "Consulting Firms",
+          "Engineering Companies", "Government Agencies", "Travel Agencies & DMCs", "Hotels & Event Organizers"
+        ]
       },
       application: {
-        kicker: "Contact",
-        title: "Request Transportation Services",
-        text: "Submit your inquiry. Our coordination team will provide a tailored logistics proposal.",
-        rows: ["Corporate inquiries", "Long-term support", "Multi-vehicle coordination"],
+        kicker: "LET'S WORK TOGETHER",
+        title: "Need Transportation\nSupport in Uzbekistan?",
+        text: "Send us your request and our team\nwill come back to you shortly with the\nbest transportation solution.",
         fields: {
+          organization: "Organization",
           name: "Contact Person",
           email: "Email",
-          phone: "Phone / WhatsApp",
+          service: "Service Required",
           dates: "Travel Dates",
           route: "Regions / Cities",
-          message: "Additional Information (Optional)",
-          organization: "Organization",
-          service: "Service Required",
-          passengers: "Number of Passengers"
+          passengers: "Number of Passengers",
+          upload: "Upload Itinerary (Optional)",
+          message: "Additional Information"
         },
-        placeholders: {
-          name: "Your Name",
-          email: "name@organization.org",
-          phone: "+998 ...",
-          dates: "May 12-20, 2026",
-          route: "Tashkent - Navoi - Bukhara",
-          message: "Itinerary details, special requirements, terrain conditions, etc.",
-          organization: "World Bank, UN, etc.",
-          service: "Field Mission, Delegation, Transfer...",
-          passengers: "Number of people"
-        },
-        submit: "Send Inquiry",
-        sending: "Sending...",
+        submit: "SUBMIT REQUEST",
+        sending: "SENDING...",
         success: "Inquiry sent. Our team will contact you shortly.",
-        invalid: "Please complete all required fields.",
-        errors: {
-          name: "Enter contact person name",
-          email: "Enter a valid email",
-          phone: "Enter a phone number",
-          car: "Choose a vehicle category",
-          dates: "Add travel dates",
-          route: "Tell us the regions",
-          organization: "Enter your organization",
-          service: "Specify required service",
-          passengers: "Specify number of passengers"
-        }
+        invalid: "Please complete all required fields."
       },
-      footer: "GoLuxTrip - Official Transportation & Field Logistics Partner in Uzbekistan."
+      footer: {
+        copyright: "© 2026 GoLuxTrip. All rights reserved.",
+        privacy: "Privacy Policy",
+        terms: "Terms & Conditions"
+      }
     }
   },
   ru: {
@@ -200,382 +204,390 @@ const resources = {
         home: "Главная",
         fieldMissions: "Полевые миссии",
         delegations: "Делегации и Мероприятия",
-        transfers: "Трансферы",
+        transfers: "Трансферы в Аэропорт",
         fleet: "Автопарк",
         projects: "Проекты",
-        industry: "Для турбизнеса",
+        industry: "Турбизнес",
         about: "О нас",
         contact: "Контакты",
-        apply: "Заказать транспорт",
-        toggle: "Переключить меню"
+        apply: "ЗАКАЗАТЬ ТРАНСПОРТ",
+        toggle: "Переключить навигацию"
       },
       hero: {
-        badge: "Ваш партнер по транспорту и логистике",
-        title: "Там, где заканчивается дорога, мы продолжаем путь.",
-        text: "Надежные транспортные и логистические услуги для международных организаций, проектов развития, официальных делегаций и корпоративных клиентов по всему Узбекистану.",
-        cta: "Запросить транспорт",
-        secondary: "Смотреть автопарк",
-        stats: ["Полевые миссии", "Официальные делегации", "Трансферы в аэропорт и на вокзал"]
+        title: "ТАМ, ГДЕ ЗАКАНЧИВАЕТСЯ\nДОРОГА,\nМЫ ПРОДОЛЖАЕМ ПУТЬ.",
+        text: "Надежные транспортные и логистические услуги\nдля международных организаций, проектов развития,\nофициальных делегаций и корпоративных клиентов\nпо всему Узбекистану.",
+        cta: "ЗАКАЗАТЬ ТРАНСПОРТ",
+        secondary: "НАШИ УСЛУГИ"
+      },
+      featuresBanner: {
+        suvs: "ВНЕДОРОЖНИКИ 4WD",
+        suvsDesc: "Для любой местности",
+        remote: "ЭКСПЕРТЫ В РЕГИОНАХ",
+        remoteDesc: "Мы едем дальше",
+        drivers: "ОПЫТНЫЕ ВОДИТЕЛИ",
+        driversDesc: "Профессионалы",
+        ops: "КРУГЛОСУТОЧНО 24/7",
+        opsDesc: "Всегда на связи",
+        coverage: "ПОКРЫТИЕ ПО ВСЕЙ СТРАНЕ",
+        coverageDesc: "Все регионы Узбекистана"
+      },
+      whatWeDo: {
+        kicker: "ЧТО МЫ ДЕЛАЕМ",
+        title: "Транспорт и полевая логистика",
+        solutions: [
+          {
+            id: "field-missions",
+            title: "ПОЛЕВЫЕ МИССИИ",
+            desc: "Транспорт для проектов в отдаленных и труднодоступных районах Узбекистана.",
+            img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "delegations",
+            title: "ДЕЛЕГАЦИИ И МЕРОПРИЯТИЯ",
+            desc: "Профессиональный транспорт для официальных делегаций, VIP, конференций и событий.",
+            img: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "transfers",
+            title: "ТРАНСФЕРЫ (АЭРОПОРТ И ВОКЗАЛ)",
+            desc: "Надежные трансферы из/в аэропорты, ж/д вокзалы, гостиницы и по любому адресу.",
+            img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "regional",
+            title: "РЕГИОНАЛЬНЫЕ ПОЕЗДКИ",
+            desc: "Междугородние поездки, однодневные туры и многодневные командировки с опытными водителями.",
+            img: "https://images.unsplash.com/photo-1627552245715-77d79bbf6fe2?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "day-trips",
+            title: "ОДНОДНЕВНЫЕ ТУРЫ",
+            desc: "Однодневные поездки, посещение объектов, технические инспекции и региональные выезды.",
+            img: "https://images.unsplash.com/photo-1559825481-12a05cc00344?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "industry",
+            title: "РЕШЕНИЯ ДЛЯ ТУРБИЗНЕСА",
+            desc: "Надежный транспортный партнер для турагентств, туроператоров, DMC и гостиниц.",
+            img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=600"
+          }
+        ]
       },
       fleet: {
-        kicker: "Автопарк",
-        title: "Специализированные автомобили для региональных и проектных поездок.",
-        text: "Наш автопарк состоит из седанов Комфорт, Премиум и Бизнес класса, внедорожников, минивэнов и автобусов.",
-        request: "Заказать этот автомобиль",
+        kicker: "НАШ АВТОПАРК",
+        title: "Созданы для дорог.\nГотовы к миссиям.",
+        text: "Широкий выбор внедорожников 4WD,\nминивэнов и автобусов для любых\nзадач и групп.",
+        viewAll: "СМОТРЕТЬ ВЕСЬ ПАРК",
         cars: [
           {
-            id: "cobalt",
-            name: "Chevrolet Cobalt",
-            category: "Седан Комфорт",
-            price: "Цена по запросу",
-            seats: "3-4 пассажира",
-            transmission: "Автомат",
-            range: "Городские и региональные поездки",
-            image: "https://chevrolet.uz/assets/images/cobalt/colours/1.png"
+            id: "lc200",
+            name: "Toyota Land Cruiser 200",
+            seats: "5",
+            bags: "4",
+            drive: "4WD",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQtfC1YAPQ5kcKFQ6ABBoLEAsWXxhCpqcx0LiWSiHFGFj_A6nC8n8pBXD2&s=10"
           },
           {
-            id: "tracker",
-            name: "Chevrolet Tracker",
-            category: "Компактный кроссовер",
-            price: "Цена по запросу",
-            seats: "3-4 пассажира",
-            transmission: "Автомат",
-            range: "Город и легкое бездорожье",
-            image: "https://chevrolet.uz/assets/images/tracker/colors/07.png"
-          },
-          {
-            id: "k5",
-            name: "Kia K5",
-            category: "Премиум Седан",
-            price: "Цена по запросу",
-            seats: "3-4 пассажира",
-            transmission: "Автомат",
-            range: "VIP и Корпоративные междугородние поездки",
-            image: "https://cdn.motor1.com/images/mgl/bgBOz6/s1/2025-kia-k5.jpg"
+            id: "prado",
+            name: "Toyota Land Cruiser Prado",
+            seats: "5",
+            bags: "4",
+            drive: "4WD",
+            image: "https://chevrolet.uz/assets/images/tracker/colors/07.png" // Placeholder
           },
           {
             id: "staria",
             name: "Hyundai Staria",
-            category: "Премиум Минивэн",
-            price: "Цена по запросу",
-            seats: "7-9 пассажиров",
-            transmission: "Автомат",
-            range: "Делегации, Группы, Трансферы",
+            seats: "7",
+            bags: "7",
+            drive: "A/C",
             image: "https://cdn.motor1.com/images/mgl/POJEW/s3/2021-hyundai-staria.jpg"
           },
           {
-            id: "lc250",
-            name: "Toyota Land Cruiser",
-            category: "Тяжелый внедорожник 4WD",
-            price: "Цена по запросу",
-            seats: "4 пассажира",
-            transmission: "Автомат",
-            range: "Полевые миссии, удаленные объекты",
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQtfC1YAPQ5kcKFQ6ABBoLEAsWXxhCpqcx0LiWSiHFGFj_A6nC8n8pBXD2&s=10"
+            id: "sprinter",
+            name: "Black Mercedes Sprinter",
+            seats: "16",
+            bags: "16",
+            drive: "A/C",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPV4fuqp4oj5NGDEL0o0VArGsXtXGddOyQbdzO_vcEzwo1G-Lmog25vWpU&s=10"
           },
           {
-            id: "coaster",
-            name: "Микроавтобус",
-            category: "Групповые перевозки",
-            price: "Цена по запросу",
-            seats: "15-20 пассажиров",
-            transmission: "Автомат / Механика",
-            range: "Конференции и мероприятия",
+            id: "bus",
+            name: "King Long Bus",
+            seats: "30",
+            bags: "20",
+            drive: "A/C",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPV4fuqp4oj5NGDEL0o0VArGsXtXGddOyQbdzO_vcEzwo1G-Lmog25vWpU&s=10"
           }
         ]
       },
-      pages: {
-        fieldMissions: {
-          title: "Полевые миссии",
-          subtitle: "Надежный транспорт для удаленных и сложных проектов.",
-          features: [
-            { title: "Проекты развития", desc: "Логистика для международных финансовых институтов и проектов." },
-            { title: "Энергетика и Инфраструктура", desc: "Доступ к солнечным и ветровым электростанциям, объектам водопользования." },
-            { title: "Технические миссии", desc: "Геологоразведка, горнодобывающие работы и инженерные инспекции." },
-            { title: "Сельское хозяйство", desc: "Навигация по отдаленным сельскохозяйственным районам." }
-          ],
-          highlights: ["Внедорожники и 4WD", "Опытные водители", "Региональная экспертиза", "Многодневные миссии", "Круглосуточная поддержка"]
-        },
-        delegations: {
-          title: "Официальные Делегации",
-          subtitle: "Премиум-транспорт для встреч на высшем уровне и VIP-гостей.",
-          features: [
-            { title: "Правительственные делегации", desc: "Безопасный транспорт, соответствующий протоколу." },
-            { title: "Конференции и Форумы", desc: "Координация нескольких автомобилей для масштабных мероприятий." },
-            { title: "Корпоративные встречи", desc: "Седаны и минивэны бизнес-класса для руководителей." }
-          ],
-          services: ["Встреча в аэропорту", "Трансферы в отель", "Шаттл-сервис", "Организация кортежей"]
-        },
-        transfers: {
-          title: "Трансферы",
-          subtitle: "Профессиональная встреча и проводы по всему Узбекистану.",
-          text: "Мы предоставляем пунктуальные и надежные трансферы из всех основных аэропортов и железнодорожных вокзалов, включая Ташкент, Самарканд, Бухару и Ургенч. Наши водители встретят вас с табличкой, помогут с багажом и обеспечат комфортную поездку."
-        },
-        projects: {
-          title: "Реализованные проекты",
-          subtitle: "Реальный операционный опыт в различных секторах.",
-          items: [
-            { name: "Проект развития солнечной энергетики", region: "Навои и Сурхандарья", duration: "14 дней", vehicles: "Тяжелые внедорожники" },
-            { name: "Оценка водных ресурсов", region: "Каракалпакстан", duration: "7 дней", vehicles: "Кроссоверы и минивэны" },
-            { name: "Международная конференция", region: "Ташкент и Самарканд", duration: "5 дней", vehicles: "Премиум минивэны и автобусы" },
-            { name: "Геологоразведка", region: "Навои", duration: "21 день", vehicles: "Внедорожники 4WD" }
-          ]
-        },
-        industry: {
-          title: "Решения для турбизнеса",
-          subtitle: "Ваш надежный местный транспортный партнер.",
-          text: "Мы сотрудничаем с международными туристическими агентствами, туроператорами, DMC и отелями для обеспечения бесперебойной логистики для их клиентов.",
-          partners: ["Туристические агентства", "Туроператоры", "DMC компании", "Отели и консьерж-сервисы", "Менеджеры по корпоративным поездкам"]
-        },
-        about: {
-          title: "О GoLuxTrip",
-          subtitle: "Цифровой штаб полевой логистики в Узбекистане.",
-          text: "GoLuxTrip — это не такси. Мы специализированный поставщик логистических услуг, обеспечивающий надежную транспортировку для самых сложных задач.",
-          pillars: [
-            { title: "Контроль качества водителей", desc: "Тщательный отбор, регулярное обучение и строгое соблюдение протоколов безопасности." },
-            { title: "Стандарты качества авто", desc: "Современный автопарк, подготовленный как для города, так и для бездорожья." },
-            { title: "Круглосуточная координация", desc: "Наша команда диспетчеров контролирует все поездки 24/7." },
-            { title: "Региональная сеть", desc: "Работаем во всех 14 регионах Узбекистана, от Ташкента до Нукуса." }
-          ]
-        }
+      projects: {
+        kicker: "ПОСЛЕДНИЕ ПРОЕКТЫ",
+        title: "Реальные миссии. Реальные результаты.",
+        viewAll: "СМОТРЕТЬ ВСЕ ПРОЕКТЫ",
+        items: [
+          { 
+            name: "Проект солнечной энергетики", 
+            region: "Навоийская область", 
+            duration: "18 Дней", 
+            vehicles: "8 Авто", 
+            distance: "4,250 км",
+            img: "https://images.unsplash.com/photo-1509391366360-1282c0b435ff?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Оценка водных ресурсов", 
+            region: "Каракалпакстан", 
+            duration: "14 Дней", 
+            vehicles: "4 Авто", 
+            distance: "3,120 км",
+            img: "https://images.unsplash.com/photo-1437482078695-73f5d5b78044?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Реконструкция автомагистрали", 
+            region: "Самарканд – Бухара", 
+            duration: "21 День", 
+            vehicles: "6 Авто", 
+            distance: "5,680 км",
+            img: "https://images.unsplash.com/photo-1517036618791-32520cb2a4ee?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Экологический мониторинг", 
+            region: "Сурхандарья", 
+            duration: "12 Дней", 
+            vehicles: "5 Авто", 
+            distance: "2,780 км",
+            img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=600"
+          }
+        ]
+      },
+      partners: {
+        title: "НАМ ДОВЕРЯЮТ",
+        list: [
+          "Международные организации", "Партнеры по развитию", "Консалтинговые фирмы",
+          "Инжиниринговые компании", "Государственные учреждения", "Турагентства и DMC", "Организаторы мероприятий"
+        ]
       },
       application: {
-        kicker: "Контакты",
-        title: "Заказать транспортные услуги",
-        text: "Оставьте заявку. Наша команда координаторов подготовит для вас индивидуальное предложение.",
-        rows: ["Корпоративные запросы", "Долгосрочное обслуживание", "Координация нескольких авто"],
+        kicker: "ДЛЯ СОТРУДНИЧЕСТВА",
+        title: "Нужна транспортная\nподдержка в Узбекистане?",
+        text: "Отправьте запрос, и наша команда\nвскоре свяжется с вами, предложив\nлучшее логистическое решение.",
         fields: {
+          organization: "Организация",
           name: "Контактное лицо",
           email: "Электронная почта",
-          phone: "Телефон / WhatsApp",
+          service: "Требуемая услуга",
           dates: "Даты поездки",
           route: "Регионы / Города",
-          message: "Дополнительная информация (Необязательно)",
-          organization: "Организация",
-          service: "Требуемая услуга",
-          passengers: "Количество пассажиров"
+          passengers: "Количество пассажиров",
+          upload: "Прикрепить маршрут (необязательно)",
+          message: "Дополнительная информация"
         },
-        placeholders: {
-          name: "Ваше имя",
-          email: "name@organization.org",
-          phone: "+998 ...",
-          dates: "12-20 мая, 2026",
-          route: "Ташкент - Навои - Бухара",
-          message: "Детали маршрута, особые требования, условия и т.д.",
-          organization: "World Bank, UN и т.д.",
-          service: "Полевая миссия, Делегация...",
-          passengers: "Кол-во человек"
-        },
-        submit: "Отправить заявку",
-        sending: "Отправка...",
-        success: "Заявка отправлена. Наша команда свяжется с вами в ближайшее время.",
-        invalid: "Пожалуйста, заполните все обязательные поля.",
-        errors: {
-          name: "Введите имя",
-          email: "Введите корректный email",
-          phone: "Введите номер телефона",
-          car: "Выберите категорию автомобиля",
-          dates: "Укажите даты поездки",
-          route: "Укажите маршрут",
-          organization: "Укажите организацию",
-          service: "Укажите услугу",
-          passengers: "Укажите количество пассажиров"
-        }
+        submit: "ОТПРАВИТЬ ЗАПРОС",
+        sending: "ОТПРАВКА...",
+        success: "Заявка отправлена. Мы свяжемся с вами в ближайшее время.",
+        invalid: "Пожалуйста, заполните обязательные поля."
       },
-      footer: "GoLuxTrip - Официальный партнер по транспорту и полевой логистике в Узбекистане."
+      footer: {
+        copyright: "© 2026 GoLuxTrip. Все права защищены.",
+        privacy: "Политика конфиденциальности",
+        terms: "Правила и условия"
+      }
     }
   },
   uz: {
     translation: {
       nav: {
-        home: "Bosh sahifa",
+        home: "Asosiy",
         fieldMissions: "Dala missiyalari",
-        delegations: "Delegatsiyalar va tadbirlar",
-        transfers: "Transferlar",
+        delegations: "Delegatsiyalar va Tadbirlar",
+        transfers: "Aeroport Transferlari",
         fleet: "Avtopark",
         projects: "Loyihalar",
-        industry: "Turizm uchun",
+        industry: "Turizm uchun yechimlar",
         about: "Biz haqimizda",
         contact: "Aloqa",
-        apply: "Transport buyurtma qilish",
+        apply: "TRANSPORT BUYURTMA QILISH",
         toggle: "Menyuni ochish"
       },
       hero: {
-        badge: "Transport va logistika hamkoringiz",
-        title: "Yo'l tugagan joyda biz davom etamiz.",
-        text: "O'zbekiston bo'ylab xalqaro tashkilotlar, rivojlanish loyihalari, rasmiy delegatsiyalar va korporativ mijozlar uchun ishonchli transport va dala logistikasi.",
-        cta: "Transport so'rash",
-        secondary: "Avtoparkni ko'rish",
-        stats: ["Dala missiyalari", "Rasmiy delegatsiyalar", "Aeroport va vokzal transferlari"]
+        title: "YO'L TUGAGAN\nJOYDA,\nBIZ DAVOM ETAMIZ.",
+        text: "Xalqaro tashkilotlar, rivojlanish loyihalari,\nrasmiy delegatsiyalar va korporativ mijozlar uchun\nO'zbekiston bo'ylab ishonchli transport va dala logistikasi.",
+        cta: "TRANSPORT SO'RASH",
+        secondary: "XIZMATLARIMIZ"
+      },
+      featuresBanner: {
+        suvs: "4WD YO'LTANLAMASLAR",
+        suvsDesc: "Har qanday yo'l uchun",
+        remote: "HUDUDIY EKSPERTLAR",
+        remoteDesc: "Biz uzoqroqqa boramiz",
+        drivers: "TAJRIBALI HAYDOVCHILAR",
+        driversDesc: "Professional va ishonchli",
+        ops: "24/7 QO'LLAB-QUVVATLASH",
+        opsDesc: "Har doim aloqada",
+        coverage: "BUTUN RESPUBLIKA BO'YLAB",
+        coverageDesc: "O'zbekistonning barcha hududlari"
+      },
+      whatWeDo: {
+        kicker: "BIZ NIMA QILAMIZ",
+        title: "Transport va Dala Logistikasi Yechimlari",
+        solutions: [
+          {
+            id: "field-missions",
+            title: "DALA MISSIYALARI",
+            desc: "O'zbekistonning chekka va borish qiyin bo'lgan hududlaridagi loyihalar uchun transport.",
+            img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "delegations",
+            title: "DELEGATSIYALAR VA TADBIRLAR",
+            desc: "Rasmiy delegatsiyalar, VIP mehmonlar, konferensiyalar va tadbirlar uchun professional transport.",
+            img: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "transfers",
+            title: "AEROPORT VA VOKZAL TRANSFERLARI",
+            desc: "Aeroportlar, poezd vokzallari, mehmonxonalar va istalgan manzilga ishonchli transferlar.",
+            img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "regional",
+            title: "HUDUDIY VA SHAHARLARARO SAFARLAR",
+            desc: "Tajribali haydovchilar bilan shaharlararo safarlar, bir kunlik va ko'p kunlik missiyalar.",
+            img: "https://images.unsplash.com/photo-1627552245715-77d79bbf6fe2?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "day-trips",
+            title: "BIR KUNLIK SAFARLAR",
+            desc: "Bir kunlik sayohatlar, obyektlarni ko'rish, texnik tekshiruvlar va hududiy safarlar.",
+            img: "https://images.unsplash.com/photo-1559825481-12a05cc00344?auto=format&fit=crop&q=80&w=600"
+          },
+          {
+            id: "industry",
+            title: "TURIZM UCHUN YECHIMLAR",
+            desc: "Turistik agentliklar, turoperatorlar, DMC va mehmonxonalar uchun ishonchli transport hamkori.",
+            img: "https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&q=80&w=600"
+          }
+        ]
       },
       fleet: {
-        kicker: "Avtopark",
-        title: "Hududiy va loyiha safarlari uchun maxsus avtomobillar.",
-        text: "Bizning avtoparkimiz Komfort, Premium va Biznes toifasidagi sedanlar, SUVlar, 4WDlar, minivenlar va avtobuslardan iborat.",
-        request: "Ushbu avtomobilga buyurtma",
+        kicker: "BIZNING AVTOPARK",
+        title: "Yo'l uchun yaratilgan.\nMissiyaga tayyor.",
+        text: "Har qanday vazifa va guruh uchun\nkeng turdagi 4WD yo'ltanlamaslar,\nminivenlar va avtobuslar.",
+        viewAll: "BARCHA AVTOPARKNI KO'RISH",
         cars: [
           {
-            id: "cobalt",
-            name: "Chevrolet Cobalt",
-            category: "Komfort Sedan",
-            price: "Narxi so'rov bo'yicha",
-            seats: "3-4 yo'lovchi",
-            transmission: "Avtomat",
-            range: "Shahar va hududlararo safarlar",
-            image: "https://chevrolet.uz/assets/images/cobalt/colours/1.png"
+            id: "lc200",
+            name: "Toyota Land Cruiser 200",
+            seats: "5",
+            bags: "4",
+            drive: "4WD",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQtfC1YAPQ5kcKFQ6ABBoLEAsWXxhCpqcx0LiWSiHFGFj_A6nC8n8pBXD2&s=10"
           },
           {
-            id: "tracker",
-            name: "Chevrolet Tracker",
-            category: "Kompakt Krossover",
-            price: "Narxi so'rov bo'yicha",
-            seats: "3-4 yo'lovchi",
-            transmission: "Avtomat",
-            range: "Shahar va yengil yo'ltanlamas",
-            image: "https://chevrolet.uz/assets/images/tracker/colors/07.png"
-          },
-          {
-            id: "k5",
-            name: "Kia K5",
-            category: "Premium Sedan",
-            price: "Narxi so'rov bo'yicha",
-            seats: "3-4 yo'lovchi",
-            transmission: "Avtomat",
-            range: "VIP va Korporativ shaharlararo safarlar",
-            image: "https://cdn.motor1.com/images/mgl/bgBOz6/s1/2025-kia-k5.jpg"
+            id: "prado",
+            name: "Toyota Land Cruiser Prado",
+            seats: "5",
+            bags: "4",
+            drive: "4WD",
+            image: "https://chevrolet.uz/assets/images/tracker/colors/07.png" // Placeholder
           },
           {
             id: "staria",
             name: "Hyundai Staria",
-            category: "Premium Miniven",
-            price: "Narxi so'rov bo'yicha",
-            seats: "7-9 yo'lovchi",
-            transmission: "Avtomat",
-            range: "Delegatsiyalar, guruhlar, transferlar",
+            seats: "7",
+            bags: "7",
+            drive: "A/C",
             image: "https://cdn.motor1.com/images/mgl/POJEW/s3/2021-hyundai-staria.jpg"
           },
           {
-            id: "lc250",
-            name: "Toyota Land Cruiser",
-            category: "Og'ir 4WD yo'ltanlamas",
-            price: "Narxi so'rov bo'yicha",
-            seats: "4 yo'lovchi",
-            transmission: "Avtomat",
-            range: "Dala missiyalari, uzoq obyektlar",
-            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQtfC1YAPQ5kcKFQ6ABBoLEAsWXxhCpqcx0LiWSiHFGFj_A6nC8n8pBXD2&s=10"
+            id: "sprinter",
+            name: "Black Mercedes Sprinter",
+            seats: "16",
+            bags: "16",
+            drive: "A/C",
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPV4fuqp4oj5NGDEL0o0VArGsXtXGddOyQbdzO_vcEzwo1G-Lmog25vWpU&s=10"
           },
           {
-            id: "coaster",
-            name: "Mikroavtobus",
-            category: "Guruh tashish",
-            price: "Narxi so'rov bo'yicha",
-            seats: "15-20 yo'lovchi",
-            transmission: "Avtomat / Mexanika",
-            range: "Konferensiyalar va tadbirlar",
+            id: "bus",
+            name: "King Long Bus",
+            seats: "30",
+            bags: "20",
+            drive: "A/C",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPV4fuqp4oj5NGDEL0o0VArGsXtXGddOyQbdzO_vcEzwo1G-Lmog25vWpU&s=10"
           }
         ]
       },
-      pages: {
-        fieldMissions: {
-          title: "Dala missiyalari",
-          subtitle: "Uzoq va murakkab loyihalar uchun ishonchli transport.",
-          features: [
-            { title: "Rivojlanish loyihalari", desc: "Xalqaro moliya institutlari va loyihalar uchun logistika." },
-            { title: "Energetika va Infratuzilma", desc: "Quyosh va shamol elektr stansiyalariga xavfsiz borish." },
-            { title: "Texnik missiyalar", desc: "Geologiya-qidiruv ishlari va muhandislik tekshiruvlari." },
-            { title: "Qishloq xo'jaligi", desc: "Olis hududlar bo'ylab navigatsiya." }
-          ],
-          highlights: ["Yo'ltanlamaslar va 4WD", "Tajribali haydovchilar", "Hududiy tajriba", "Ko'p kunlik missiyalar", "24/7 qo'llab-quvvatlash"]
-        },
-        delegations: {
-          title: "Rasmiy Delegatsiyalar",
-          subtitle: "Oliy darajadagi uchrashuvlar va VIP mehmonlar uchun premium transport.",
-          features: [
-            { title: "Hukumat delegatsiyalari", desc: "Protokolga muvofiq xavfsiz transport." },
-            { title: "Konferensiya va Forumlar", desc: "Katta tadbirlar uchun transportlarni muvofiqlashtirish." },
-            { title: "Korporativ uchrashuvlar", desc: "Rahbarlar uchun biznes toifasidagi sedan va minivenlar." }
-          ],
-          services: ["Aeroportda kutib olish", "Mehmonxonaga transferlar", "Shattl-servis", "Kortejlarni tashkil qilish"]
-        },
-        transfers: {
-          title: "Transferlar",
-          subtitle: "O'zbekiston bo'ylab professional kutib olish va kuzatish.",
-          text: "Biz Toshkent, Samarqand, Buxoro va Urganch kabi barcha asosiy aeroport va poyezd vokzallaridan o'z vaqtida va ishonchli transferlarni taqdim etamiz. Haydovchilarimiz sizni belgi bilan kutib oladi, yuklaringizga yordam beradi va mehmonxonangizgacha qulay borishni ta'minlaydi."
-        },
-        projects: {
-          title: "Amalga oshirilgan loyihalar",
-          subtitle: "Turli sohalardagi haqiqiy operatsion tajriba.",
-          items: [
-            { name: "Quyosh energetikasini rivojlantirish", region: "Navoiy va Surxondaryo", duration: "14 kun", vehicles: "Og'ir yo'ltanlamaslar" },
-            { name: "Suv resurslarini baholash", region: "Qoraqalpog'iston", duration: "7 kun", vehicles: "Krossover va minivenlar" },
-            { name: "Xalqaro konferensiya", region: "Toshkent va Samarqand", duration: "5 kun", vehicles: "Premium miniven va avtobuslar" },
-            { name: "Geologiya-qidiruv ishlari", region: "Navoiy", duration: "21 kun", vehicles: "4WD yo'ltanlamaslar" }
-          ]
-        },
-        industry: {
-          title: "Turizm biznesi uchun yechimlar",
-          subtitle: "Sizning ishonchli mahalliy transport hamkoringiz.",
-          text: "Biz xalqaro sayyohlik agentliklari, turoperatorlar, DMClar va mehmonxonalar bilan hamkorlik qilib, ularning mijozlari uchun uzluksiz logistikani ta'minlaymiz.",
-          partners: ["Sayyohlik agentliklari", "Turoperatorlar", "DMC kompaniyalar", "Mehmonxona va konsyerj xizmatlari", "Korporativ sayohat menejerlari"]
-        },
-        about: {
-          title: "GoLuxTrip haqida",
-          subtitle: "O'zbekistonda dala logistikasi bo'yicha raqamli shtab.",
-          text: "GoLuxTrip taksi emas. Biz eng murakkab vazifalar uchun ishonchli transportni ta'minlaydigan ixtisoslashgan logistika provayderimiz.",
-          pillars: [
-            { title: "Haydovchilar sifati", desc: "Jiddiy tanlov, muntazam treninglar va xavfsizlik protokollariga qat'iy rioya qilish." },
-            { title: "Avtomobillar sifati", desc: "Shahar va yo'ltanlamas hududlar uchun tayyorlangan zamonaviy avtopark." },
-            { title: "24/7 Muvofiqlashtirish", desc: "Dispetcherlar jamoamiz barcha safarlarni tunu kun nazorat qiladi." },
-            { title: "Hududiy tarmoq", desc: "Toshkentdan Nukusgacha bo'lgan barcha 14 ta hududda ishlaymiz." }
-          ]
-        }
+      projects: {
+        kicker: "SO'NGGI LOYIHALAR",
+        title: "Haqiqiy missiyalar. Haqiqiy natijalar.",
+        viewAll: "BARCHA LOYIHALARNI KO'RISH",
+        items: [
+          { 
+            name: "Quyosh energetikasi loyihasi", 
+            region: "Navoiy viloyati", 
+            duration: "18 Kun", 
+            vehicles: "8 Ta avto", 
+            distance: "4,250 km",
+            img: "https://images.unsplash.com/photo-1509391366360-1282c0b435ff?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Suv resurslarini baholash", 
+            region: "Qoraqalpog'iston", 
+            duration: "14 Kun", 
+            vehicles: "4 Ta avto", 
+            distance: "3,120 km",
+            img: "https://images.unsplash.com/photo-1437482078695-73f5d5b78044?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Avtomagistral rekonstruksiyasi", 
+            region: "Samarqand – Buxoro", 
+            duration: "21 Kun", 
+            vehicles: "6 Ta avto", 
+            distance: "5,680 km",
+            img: "https://images.unsplash.com/photo-1517036618791-32520cb2a4ee?auto=format&fit=crop&q=80&w=600"
+          },
+          { 
+            name: "Ekologik monitoring", 
+            region: "Surxondaryo", 
+            duration: "12 Kun", 
+            vehicles: "5 Ta avto", 
+            distance: "2,780 km",
+            img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=600"
+          }
+        ]
+      },
+      partners: {
+        title: "ISHONCHLI TRANSPORT HAMKORI",
+        list: [
+          "Xalqaro Tashkilotlar", "Rivojlanish Hamkorlari", "Konsalting Firmalari",
+          "Muhandislik Kompaniyalari", "Davlat Tashkilotlari", "Turistik Agentliklar va DMC", "Tadbir Tashkilotchilari"
+        ]
       },
       application: {
-        kicker: "Aloqa",
-        title: "Transport xizmatlariga buyurtma",
-        text: "So'rovingizni qoldiring. Bizning jamoamiz siz uchun individual taklif tayyorlaydi.",
-        rows: ["Korporativ so'rovlar", "Uzoq muddatli xizmat", "Bir nechta avtomobillarni muvofiqlashtirish"],
+        kicker: "HAMKORLIK UCHUN",
+        title: "O'zbekistonda transport\nyordami kerakmi?",
+        text: "So'rovingizni yuboring va jamoamiz\ntez orada eng yaxshi logistika\nyechimi bilan sizga aloqaga chiqadi.",
         fields: {
+          organization: "Tashkilot",
           name: "Aloqa qiluvchi shaxs",
           email: "Elektron pochta",
-          phone: "Telefon / WhatsApp",
+          service: "Kerakli xizmat",
           dates: "Safar sanalari",
           route: "Hududlar / Shaharlar",
-          message: "Qo'shimcha ma'lumot (Majburiy emas)",
-          organization: "Tashkilot",
-          service: "Kerakli xizmat",
-          passengers: "Yo'lovchilar soni"
+          passengers: "Yo'lovchilar soni",
+          upload: "Marshrutni yuklash (majburiy emas)",
+          message: "Qo'shimcha ma'lumot"
         },
-        placeholders: {
-          name: "Ismingiz",
-          email: "name@organization.org",
-          phone: "+998 ...",
-          dates: "12-20 May, 2026",
-          route: "Toshkent - Navoiy - Buxoro",
-          message: "Marshrut tafsilotlari, maxsus talablar va h.k.",
-          organization: "World Bank, UN va h.k.",
-          service: "Dala missiyasi, Delegatsiya...",
-          passengers: "Odamlar soni"
-        },
-        submit: "So'rov yuborish",
-        sending: "Yuborilmoqda...",
-        success: "So'rov yuborildi. Tez orada siz bilan bog'lanamiz.",
-        invalid: "Iltimos, barcha majburiy maydonlarni to'ldiring.",
-        errors: {
-          name: "Ismingizni kiriting",
-          email: "To'g'ri email kiriting",
-          phone: "Telefon raqamini kiriting",
-          car: "Avtomobil toifasini tanlang",
-          dates: "Safar sanalarini kiriting",
-          route: "Marshrutni kiriting",
-          organization: "Tashkilotni kiriting",
-          service: "Xizmatni kiriting",
-          passengers: "Yo'lovchilar sonini kiriting"
-        }
+        submit: "SO'ROV YUBORISH",
+        sending: "YUBORILMOQDA...",
+        success: "So'rov yuborildi. Biz siz bilan tez orada bog'lanamiz.",
+        invalid: "Iltimos, barcha majburiy maydonlarni to'ldiring."
       },
-      footer: "GoLuxTrip - O'zbekistonda transport va dala logistikasi bo'yicha rasmiy hamkor."
+      footer: {
+        copyright: "© 2026 GoLuxTrip. Barcha huquqlar himoyalangan.",
+        privacy: "Maxfiylik siyosati",
+        terms: "Foydalanish shartlari"
+      }
     }
   }
 };
