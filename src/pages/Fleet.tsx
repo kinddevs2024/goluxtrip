@@ -19,7 +19,7 @@ export default function Fleet() {
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/cars")
       .then(res => res.json())
-      .then(data => setCars(data))
+      .then(data => setCars(Array.isArray(data) ? data : []))
       .catch(() => toast.error("Failed to load fleet data"))
       .finally(() => setLoading(false));
   }, []);

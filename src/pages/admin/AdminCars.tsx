@@ -21,7 +21,7 @@ export default function AdminCars() {
     try {
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/cars");
       const data = await res.json();
-      setCars(data);
+      setCars(Array.isArray(data) ? data : []);
     } catch (err) {
       toast.error("Failed to load cars");
     } finally {

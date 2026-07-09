@@ -78,7 +78,7 @@ export default function Home() {
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/stats")
       .then(res => res.json())
-      .then(data => setStats(data))
+      .then(data => setStats(Array.isArray(data) ? data : []))
       .catch(err => console.error(err));
   }, []);
 

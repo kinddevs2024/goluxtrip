@@ -22,7 +22,7 @@ export default function About() {
 
     fetch("https://goluxtrip-backend.vercel.app/api/stats")
       .then(res => res.json())
-      .then(data => setStats(data))
+      .then(data => setStats(Array.isArray(data) ? data : []))
       .catch(() => console.error("Failed to load stats"));
   }, []);
 

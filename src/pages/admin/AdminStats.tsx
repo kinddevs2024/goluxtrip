@@ -19,7 +19,7 @@ export default function AdminStats() {
     try {
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/stats");
       const data = await res.json();
-      setStats(data);
+      setStats(Array.isArray(data) ? data : []);
     } catch (err) {
       toast.error("Failed to load stats");
     } finally {

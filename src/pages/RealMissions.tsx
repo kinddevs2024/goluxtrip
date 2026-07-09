@@ -18,7 +18,7 @@ export default function RealMissions() {
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/real-missions")
       .then(res => res.json())
-      .then(data => setMissions(data))
+      .then(data => setMissions(Array.isArray(data) ? data : []))
       .catch(() => toast.error("Failed to load real missions"))
       .finally(() => setLoading(false));
   }, []);

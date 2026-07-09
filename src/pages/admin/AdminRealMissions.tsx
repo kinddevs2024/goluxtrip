@@ -21,7 +21,7 @@ export default function AdminRealMissions() {
     try {
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/real-missions");
       const data = await res.json();
-      setMissions(data);
+      setMissions(Array.isArray(data) ? data : []);
     } catch (err) {
       toast.error("Failed to load real missions");
     } finally {
