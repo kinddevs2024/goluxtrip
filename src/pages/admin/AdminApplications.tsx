@@ -27,7 +27,7 @@ export default function AdminApplications() {
         }
       });
       const data = await res.json();
-      setApps(data);
+      setApps(Array.isArray(data) ? data : []);
     } catch (err) {
       toast.error("Failed to load applications");
     } finally {
