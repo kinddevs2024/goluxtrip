@@ -87,7 +87,27 @@ export default function AdminCars() {
           <input type="text" placeholder="Seats (e.g. 4)" className="border rounded p-3" onChange={e => setFormData({...formData, seats: e.target.value})} required />
           <input type="text" placeholder="Bags (e.g. 2)" className="border rounded p-3" onChange={e => setFormData({...formData, bags: e.target.value})} required />
           <input type="text" placeholder="Drive (e.g. FWD)" className="border rounded p-3" onChange={e => setFormData({...formData, drive: e.target.value})} required />
-          <input type="text" placeholder="Image URL (Unsplash or any link)" className="border rounded p-3 md:col-span-2" onChange={e => setFormData({...formData, image: e.target.value})} required />
+          
+          <div className="md:col-span-2">
+            <label className="block text-sm font-semibold text-gray-500 mb-2">Upload Car Image</label>
+            <input 
+              type="file" 
+              accept="image/*"
+              className="border rounded p-3 w-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gltOrange/10 file:text-gltOrange hover:file:bg-gltOrange/20"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    setFormData({...formData, image: reader.result as string});
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }} 
+              required 
+            />
+          </div>
+
           <button type="submit" className="bg-navy text-white py-3 rounded-lg font-bold md:col-span-2 hover:bg-[#051b2e] transition-colors">Save Car</button>
         </form>
       )}

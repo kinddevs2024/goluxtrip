@@ -8,7 +8,8 @@ export default function AdminContent() {
   const [content, setContent] = useState({
     text_en: "",
     text_ru: "",
-    text_uz: ""
+    text_uz: "",
+    image: ""
   });
 
   useEffect(() => {
@@ -21,7 +22,8 @@ export default function AdminContent() {
           setContent({
             text_en: aboutData.text_en || "",
             text_ru: aboutData.text_ru || "",
-            text_uz: aboutData.text_uz || ""
+            text_uz: aboutData.text_uz || "",
+            image: aboutData.image || ""
           });
         }
       } catch (err) {
@@ -91,6 +93,26 @@ export default function AdminContent() {
               className="w-full border border-line rounded-lg p-4 bg-gray-50 focus:bg-white focus:border-gltOrange outline-none transition-all"
               value={content.text_uz}
               onChange={e => setContent({...content, text_uz: e.target.value})}
+            />
+          </div>
+          
+          <div>
+            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">About Us Image (Optional)</label>
+            {content.image && <img src={content.image} alt="Preview" className="h-32 mb-4 rounded-lg object-cover" />}
+            <input 
+              type="file" 
+              accept="image/*"
+              className="w-full border border-line rounded-lg p-3 bg-gray-50 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gltOrange/10 file:text-gltOrange hover:file:bg-gltOrange/20 transition-all"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    setContent({...content, image: reader.result as string});
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }}
             />
           </div>
 

@@ -18,6 +18,10 @@ import Transfers from "./pages/Transfers";
 import Projects from "./pages/Projects";
 import IndustrySolutions from "./pages/IndustrySolutions";
 import About from "./pages/About";
+import RealMissions from "./pages/RealMissions";
+
+import AdminStats from "./pages/admin/AdminStats";
+import AdminRealMissions from "./pages/admin/AdminRealMissions";
 
 function App() {
   useEffect(() => {
@@ -33,7 +37,10 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminApplications />} />
           <Route path="cars" element={<AdminCars />} />
+          <Route path="applications" element={<AdminApplications />} />
           <Route path="content" element={<AdminContent />} />
+          <Route path="stats" element={<AdminStats />} />
+          <Route path="real-missions" element={<AdminRealMissions />} />
         </Route>
 
         <Route path="*" element={
@@ -50,6 +57,7 @@ function App() {
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/industry-solutions" element={<IndustrySolutions />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/real-missions" element={<RealMissions />} />
               </Routes>
             </main>
             <Footer />

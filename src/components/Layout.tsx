@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Menu, X, Clock, Mail, Instagram, Facebook, Linkedin, Send } from "lucide-react";
+import { Menu, X, Clock, Mail, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -8,16 +8,14 @@ export function Header() {
   const { t, i18n } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const links = [
-    [t("nav.home"), "/"],
+  const servicesLinks = [
     [t("nav.fieldMissions"), "/field-missions"],
     [t("nav.delegations"), "/delegations"],
     [t("nav.transfers"), "/transfers"],
-    [t("nav.fleet"), "/fleet"],
     [t("nav.projects"), "/projects"],
     [t("nav.industry"), "/industry-solutions"],
-    [t("nav.about"), "/about"],
   ];
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
     <>
@@ -50,13 +48,38 @@ export function Header() {
             <img src="/glt-wide.png" alt="GoLuxTrip" className="hidden h-12 w-auto xl:block" />
           </Link>
 
-          {/* Desktop Nav - We try to fit all of them, or use smaller text */}
-          <nav className="hidden items-center gap-4 text-[11px] uppercase tracking-wider font-bold text-ink xl:flex">
-            {links.map(([label, href]) => (
-              <Link key={href} to={href} className="transition hover:text-gltOrange">
-                {label}
-              </Link>
-            ))}
+          {/* Desktop Nav */}
+          <nav className="hidden items-center gap-6 text-xs uppercase tracking-widest font-bold text-navy xl:flex relative">
+            <Link to="/" className="transition hover:text-gltOrange">{t("nav.home")}</Link>
+            
+            <div 
+              className="relative group"
+              onMouseEnter={() => setDropdownOpen(true)}
+              onMouseLeave={() => setDropdownOpen(false)}
+            >
+              <button className="flex items-center gap-1 transition hover:text-gltOrange uppercase outline-none">
+                Services <ChevronDown size={14} className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {dropdownOpen && (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-gray-100 shadow-xl rounded-2xl overflow-hidden py-2">
+                  {servicesLinks.map(([label, href]) => (
+                    <Link 
+                      key={href} 
+                      to={href} 
+                      className="block px-5 py-3 hover:bg-gray-50 hover:text-gltOrange transition-colors"
+                      onClick={() => setDropdownOpen(false)}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link to="/fleet" className="transition hover:text-gltOrange">{t("nav.fleet")}</Link>
+            <Link to="/about" className="transition hover:text-gltOrange">{t("nav.about")}</Link>
+            <Link to="/real-missions" className="transition hover:text-gltOrange">Real Missions</Link>
           </nav>
 
           <div className="hidden items-center gap-5 xl:flex">
@@ -88,11 +111,22 @@ export function Header() {
             className="absolute inset-x-0 top-full h-[calc(100vh-5rem)] border-t border-line bg-white px-5 py-6 xl:hidden overflow-y-auto"
           >
             <div className="flex flex-col gap-5 pb-32">
-              {links.map(([label, href]) => (
-                <Link key={href} to={href} onClick={() => setMenuOpen(false)} className="text-base font-bold text-ink hover:text-gltOrange transition uppercase tracking-wide border-b border-line pb-3">
-                  {label}
-                </Link>
-              ))}
+              <Link to="/" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.home")}</Link>
+              
+              <div className="border-b border-gray-100 pb-3">
+                <div className="text-base font-bold text-navy uppercase tracking-wide mb-3">Services</div>
+                <div className="flex flex-col gap-3 pl-4 border-l-2 border-gltOrange/30">
+                  {servicesLinks.map(([label, href]) => (
+                    <Link key={href} to={href} onClick={() => setMenuOpen(false)} className="text-sm font-semibold text-gray-600 hover:text-gltOrange transition uppercase">
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              <Link to="/fleet" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.fleet")}</Link>
+              <Link to="/about" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.about")}</Link>
+              <Link to="/real-missions" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">Real Missions</Link>
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}

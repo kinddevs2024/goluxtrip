@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { Variants } from "framer-motion";
 import CountUp from "react-countup";
@@ -73,6 +73,14 @@ export default function Home() {
   const { register, handleSubmit, formState: { isSubmitting }, reset } = useForm<ApplicationForm>({
     resolver: zodResolver(schema)
   });
+
+  const [stats, setStats] = useState<any[]>([]);
+  useEffect(() => {
+    fetch("https://goluxtrip-backend.vercel.app/api/stats")
+      .then(res => res.json())
+      .then(data => setStats(data))
+      .catch(err => console.error(err));
+  }, []);
 
   async function onSubmit(values: ApplicationForm) {
     const payload = { ...values, phone: "N/A", car: values.service, route: `${values.organization} | Pax: ${values.passengers} | ${values.route}` };
@@ -293,13 +301,26 @@ export default function Home() {
           
           {/* Stats Bar */}
           <div ref={refStats} className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24 py-10 border-y border-line">
-             {[
+             {stats.length > 0 ? stats.map((stat, i) => {
+               // Extract numeric part for CountUp if possible
+               const numMatch = stat.value.match(/(\d+)/);
+               const num = numMatch ? parseInt(numMatch[1]) : 0;
+               const suffix = stat.value.replace(numMatch ? numMatch[1] : "", "");
+               return (
+                 <div key={i} className="text-center">
+                    <div className="text-4xl md:text-5xl font-black text-gltOrange mb-2">
+                      {inViewStats ? <CountUp end={num} duration={2.5} suffix={suffix} /> : "0"}
+                    </div>
+                    <div className="text-sm font-bold uppercase tracking-widest text-asphalt">{stat.label}</div>
+                 </div>
+               );
+             }) : [
                { num: 150, suffix: "+", label: "Missions Completed" },
                { num: 45, suffix: "", label: "Vehicles in Fleet" },
                { num: 14, suffix: "", label: "Regions Covered" },
                { num: 24, suffix: "/7", label: "Operations Support" }
              ].map((stat, i) => (
-                <div key={i} className="text-center">
+                <div key={i} className="text-center opacity-50">
                    <div className="text-4xl md:text-5xl font-black text-gltOrange mb-2">
                      {inViewStats ? <CountUp end={stat.num} duration={2.5} suffix={stat.suffix} /> : "0"}
                    </div>
@@ -379,7 +400,7 @@ export default function Home() {
                  whileInView={{ scale: 1 }}
                  transition={{ duration: 10, ease: "linear" }}
                />
-               <div className="absolute inset-0 bg-navy/85 backdrop-blur-sm" />
+               <div className="absolute inset-0 bg-navy/90" />
                <motion.div 
                  initial={{ opacity: 0, x: -50 }}
                  whileInView={{ opacity: 1, x: 0 }}
