@@ -9,6 +9,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
 import { useMemo } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import type { Variants } from "framer-motion";
+import CountUp from "react-countup";
+import { useInView } from "react-intersection-observer";
+import Marquee from "react-fast-marquee";
+import Tilt from "react-parallax-tilt";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 type ApplicationForm = {
   name: string;
@@ -21,8 +33,27 @@ type ApplicationForm = {
   message?: string;
 };
 
+// Reusable animation variants
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 }
+  }
+};
+
 export default function Home() {
   const { t } = useTranslation();
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 1000], [0, 300]);
+  
+  const [refStats, inViewStats] = useInView({ triggerOnce: true, threshold: 0.5 });
+  const [refProjects, inViewProjects] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const schema = useMemo(
     () =>
@@ -39,37 +70,19 @@ export default function Home() {
     [t]
   );
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-    reset
-  } = useForm<ApplicationForm>({
+  const { register, handleSubmit, formState: { isSubmitting }, reset } = useForm<ApplicationForm>({
     resolver: zodResolver(schema)
   });
 
   async function onSubmit(values: ApplicationForm) {
-    const payload = {
-      name: values.name,
-      email: values.email,
-      phone: "N/A", // Not in mockup form, just use placeholder
-      car: values.service,
-      dates: values.dates,
-      route: `${values.organization} | Pax: ${values.passengers} | ${values.route}`,
-      message: values.message
-    };
-
+    const payload = { ...values, phone: "N/A", car: values.service, route: `${values.organization} | Pax: ${values.passengers} | ${values.route}` };
     try {
       const response = await fetch("https://goluxtrip-backend.vercel.app/api/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-
-      if (!response.ok) {
-        throw new Error("Could not send the request.");
-      }
-
+      if (!response.ok) throw new Error("Could not send the request.");
       toast.success(t("application.success"));
       reset();
     } catch (err) {
@@ -83,285 +96,381 @@ export default function Home() {
   const partners = t("partners.list", { returnObjects: true }) as string[];
 
   return (
-    <>
-      {/* 1. HERO SECTION */}
-      <section className="relative h-[80vh] min-h-[600px] w-full bg-navy overflow-hidden">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 mix-blend-luminosity" 
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1920')" }}
-        />
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/80 to-transparent" />
+    <div className="overflow-hidden bg-white">
+      {/* 1. HERO SECTION (Parallax) */}
+      <section className="relative h-[85vh] min-h-[600px] w-full bg-navy overflow-hidden">
+        <motion.div 
+          style={{ y: y1 }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 mix-blend-luminosity scale-110" 
+          initial={{ scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        >
+          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1920" alt="Hero" className="w-full h-full object-cover" />
+        </motion.div>
+        
+        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent" />
         
         <div className="relative mx-auto max-w-[1400px] h-full flex flex-col justify-center px-5 lg:px-8">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-[1.05] tracking-tight whitespace-pre-line">
+          <motion.div 
+            initial="hidden" 
+            animate="visible" 
+            variants={staggerContainer}
+            className="max-w-3xl"
+          >
+            <motion.h1 variants={fadeUp} className="text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-black text-white leading-[1.05] tracking-tight whitespace-pre-line">
               {t("hero.title")}
-            </h1>
-            <p className="mt-6 text-lg sm:text-xl text-gray-300 font-medium whitespace-pre-line leading-relaxed">
+            </motion.h1>
+            <motion.p variants={fadeUp} className="mt-8 text-lg sm:text-xl text-gray-300 font-medium whitespace-pre-line leading-relaxed max-w-2xl">
               {t("hero.text")}
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <Link 
-                to="/contact" 
-                className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-wide uppercase flex items-center justify-center gap-2 hover:bg-[#c84211] transition"
-              >
+            </motion.p>
+            <motion.div variants={fadeUp} className="mt-12 flex flex-col sm:flex-row gap-5">
+              <Link to="/#contact" className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
                 {t("hero.cta")} <ArrowRight size={18} />
               </Link>
-              <Link 
-                to="/fleet" 
-                className="border border-white text-white px-8 py-4 rounded font-bold text-sm tracking-wide uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy transition"
-              >
-                {t("hero.secondary")} <ArrowRight size={18} />
+              <Link to="/fleet" className="border border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy hover:scale-105 transition-all duration-300">
+                {t("hero.secondary")}
               </Link>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* 2. FEATURES BANNER */}
-      <section className="bg-[#051b2e] py-6 border-b-4 border-gltOrange">
-        <div className="mx-auto max-w-[1400px] px-5 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 text-white text-sm">
-            <div className="flex items-center gap-3">
-              <Truck size={32} className="text-gray-400" />
-              <div>
-                <div className="font-bold uppercase">{t("featuresBanner.suvs")}</div>
-                <div className="text-gray-400 text-xs">{t("featuresBanner.suvsDesc")}</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Map size={32} className="text-gray-400" />
-              <div>
-                <div className="font-bold uppercase">{t("featuresBanner.remote")}</div>
-                <div className="text-gray-400 text-xs">{t("featuresBanner.remoteDesc")}</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Users size={32} className="text-gray-400" />
-              <div>
-                <div className="font-bold uppercase">{t("featuresBanner.drivers")}</div>
-                <div className="text-gray-400 text-xs">{t("featuresBanner.driversDesc")}</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Clock size={32} className="text-gray-400" />
-              <div>
-                <div className="font-bold uppercase">{t("featuresBanner.ops")}</div>
-                <div className="text-gray-400 text-xs">{t("featuresBanner.opsDesc")}</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Globe size={32} className="text-gray-400" />
-              <div>
-                <div className="font-bold uppercase">{t("featuresBanner.coverage")}</div>
-                <div className="text-gray-400 text-xs">{t("featuresBanner.coverageDesc")}</div>
-              </div>
-            </div>
-          </div>
+      <section className="bg-navy border-b border-white/10 relative z-10 -mt-1 shadow-2xl">
+        <div className="mx-auto max-w-[1400px] px-5 lg:px-8 py-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-4 text-white text-sm"
+          >
+            {[
+              { icon: Truck, title: t("featuresBanner.suvs"), desc: t("featuresBanner.suvsDesc") },
+              { icon: Map, title: t("featuresBanner.remote"), desc: t("featuresBanner.remoteDesc") },
+              { icon: Users, title: t("featuresBanner.drivers"), desc: t("featuresBanner.driversDesc") },
+              { icon: Clock, title: t("featuresBanner.ops"), desc: t("featuresBanner.opsDesc") },
+              { icon: Globe, title: t("featuresBanner.coverage"), desc: t("featuresBanner.coverageDesc") }
+            ].map((feature, idx) => (
+              <motion.div key={idx} whileHover={{ y: -5 }} className="flex items-center gap-4 group cursor-default">
+                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gltOrange transition-colors duration-300">
+                  <feature.icon size={24} className="text-gltOrange group-hover:text-white transition-colors duration-300" />
+                </div>
+                <div>
+                  <div className="font-bold uppercase tracking-wide">{feature.title}</div>
+                  <div className="text-gray-400 text-xs mt-1">{feature.desc}</div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* 3. WHAT WE DO (SOLUTIONS GRID) */}
-      <section className="py-20 bg-white">
-        <div className="mx-auto max-w-[1400px] px-5 lg:px-8">
-          <div className="text-center mb-12">
-            <h4 className="text-gltOrange font-bold text-sm tracking-widest uppercase mb-2">{t("whatWeDo.kicker")}</h4>
-            <h2 className="text-3xl md:text-4xl font-black text-navy">{t("whatWeDo.title")}</h2>
-          </div>
+      {/* 3. WHAT WE DO (SOLUTIONS GRID - 3D TILT) */}
+      <section className="py-24 bg-lightbg relative">
+        <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent" />
+        <div className="mx-auto max-w-[1400px] px-5 lg:px-8 relative z-10">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUp}
+            className="text-center mb-16"
+          >
+            <h4 className="text-gltOrange font-bold text-sm tracking-[0.2em] uppercase mb-3 flex items-center justify-center gap-2">
+              <span className="w-8 h-px bg-gltOrange"></span>
+              {t("whatWeDo.kicker")}
+              <span className="w-8 h-px bg-gltOrange"></span>
+            </h4>
+            <h2 className="text-4xl md:text-5xl font-black text-navy">{t("whatWeDo.title")}</h2>
+          </motion.div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {solutions.map((sol) => (
-              <Link to={`/${sol.id === 'day-trips' ? 'regional' : sol.id === 'regional' ? 'regional' : sol.id}`} key={sol.id} className="group flex flex-col bg-lightbg border border-line hover:border-gltOrange transition duration-300">
-                <div className="h-56 relative overflow-hidden">
-                   <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded shadow-sm">
-                      <Briefcase size={24} className="text-navy" />
-                   </div>
-                   <img src={sol.img} alt={sol.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="font-bold text-navy text-lg uppercase tracking-wide mb-3">{sol.title}</h3>
-                  <p className="text-sm text-asphalt mb-4 leading-relaxed flex-1">{sol.desc}</p>
-                </div>
-              </Link>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {solutions.map((sol, idx) => (
+              <motion.div
+                key={sol.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+              >
+                <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2500} className="h-full">
+                  <div className="group flex flex-col h-full bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-line">
+                    <div className="h-64 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-navy/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                      <div className="absolute top-5 left-5 z-20 bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg">
+                        <Briefcase size={24} className="text-gltOrange" />
+                      </div>
+                      <img src={sol.img} alt={sol.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out" />
+                    </div>
+                    <div className="p-8 flex-1 flex flex-col bg-white z-20 relative">
+                      <h3 className="font-bold text-navy text-xl uppercase tracking-wide mb-4 group-hover:text-gltOrange transition-colors">{sol.title}</h3>
+                      <p className="text-sm text-asphalt mb-6 leading-relaxed flex-1">{sol.desc}</p>
+                      <Link to={`/${sol.id}`} className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-navy group-hover:text-gltOrange transition-colors">
+                        Learn More <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
+                      </Link>
+                    </div>
+                  </div>
+                </Tilt>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. OUR FLEET */}
-      <section className="py-20 bg-navy relative overflow-hidden">
-         <div className="mx-auto max-w-[1400px] px-5 lg:px-8 flex flex-col xl:flex-row gap-12">
+      {/* 4. OUR FLEET (3D SWIPER CAROUSEL) */}
+      <section className="py-24 bg-navy relative overflow-hidden">
+         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-navy to-navy" />
+         
+         <div className="mx-auto max-w-[1400px] px-5 lg:px-8 flex flex-col xl:flex-row gap-16 relative z-10 items-center">
             
-            <div className="xl:w-[350px] shrink-0 text-white flex flex-col justify-center">
-               <h4 className="text-gltOrange font-bold text-sm tracking-widest uppercase mb-2">{t("fleet.kicker")}</h4>
-               <h2 className="text-3xl md:text-4xl font-black mb-6 whitespace-pre-line leading-tight">{t("fleet.title")}</h2>
-               <p className="text-gray-400 mb-8 whitespace-pre-line text-sm leading-relaxed">{t("fleet.text")}</p>
-               <Link to="/fleet" className="bg-gltOrange text-white px-6 py-3 rounded font-bold text-sm tracking-wide uppercase self-start flex items-center gap-2 hover:bg-[#c84211] transition">
-                  {t("fleet.viewAll")} <ArrowRight size={16} />
+            <motion.div 
+               initial={{ opacity: 0, x: -50 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.8 }}
+               className="xl:w-[400px] shrink-0 text-white flex flex-col justify-center text-center xl:text-left"
+            >
+               <h4 className="text-gltOrange font-bold text-sm tracking-[0.2em] uppercase mb-4">{t("fleet.kicker")}</h4>
+               <h2 className="text-4xl md:text-5xl font-black mb-6 whitespace-pre-line leading-tight">{t("fleet.title")}</h2>
+               <p className="text-gray-400 mb-10 whitespace-pre-line text-base leading-relaxed max-w-lg mx-auto xl:mx-0">{t("fleet.text")}</p>
+               <Link to="/fleet" className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase inline-flex items-center justify-center gap-2 hover:bg-[#c84211] transition-all hover:scale-105 shadow-lg shadow-gltOrange/20 w-fit mx-auto xl:mx-0">
+                  {t("fleet.viewAll")} <ArrowRight size={18} />
                </Link>
-            </div>
+            </motion.div>
 
-            <div className="flex-1 overflow-x-auto pb-6 hide-scrollbar flex gap-4">
-               {cars.map((car, i) => (
-                 <div key={i} className="bg-white rounded w-[280px] shrink-0 flex flex-col">
-                    <div className="h-40 p-4 flex items-center justify-center bg-gray-50 border-b border-line">
-                       <img src={car.image} alt={car.name} className="max-h-full object-contain mix-blend-multiply" />
-                    </div>
-                    <div className="p-5 flex flex-col items-center">
-                       <h3 className="font-bold text-navy text-center h-10 mb-4">{car.name}</h3>
-                       <div className="flex items-center gap-4 text-xs text-gray-500 font-bold w-full justify-center border-t border-line pt-4">
-                          <span className="flex items-center gap-1"><Users size={14} /> {car.seats}</span>
-                          <span className="flex items-center gap-1"><Briefcase size={14} /> {car.bags}</span>
-                          <span className="flex items-center gap-1"><CheckCircle size={14} /> {car.drive}</span>
-                       </div>
-                    </div>
-                 </div>
-               ))}
-            </div>
+            <motion.div 
+               initial={{ opacity: 0, scale: 0.9 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.8 }}
+               className="flex-1 w-full max-w-[100vw] xl:max-w-none"
+            >
+               <Swiper
+                 effect={"coverflow"}
+                 grabCursor={true}
+                 centeredSlides={true}
+                 slidesPerView={"auto"}
+                 coverflowEffect={{
+                   rotate: 0,
+                   stretch: 0,
+                   depth: 100,
+                   modifier: 2.5,
+                   slideShadows: false,
+                 }}
+                 autoplay={{ delay: 3000, disableOnInteraction: false }}
+                 loop={true}
+                 modules={[EffectCoverflow, Autoplay, Pagination]}
+                 className="w-full py-10"
+               >
+                 {cars.map((car, i) => (
+                   <SwiperSlide key={i} className="w-[320px] sm:w-[380px]">
+                     <div className="bg-white rounded-2xl flex flex-col shadow-2xl overflow-hidden group">
+                        <div className="h-56 p-6 flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 relative">
+                           <img src={car.image} alt={car.name} className="max-h-full object-contain mix-blend-multiply drop-shadow-xl group-hover:scale-110 transition-transform duration-500" />
+                        </div>
+                        <div className="p-6 flex flex-col items-center bg-white relative z-10">
+                           <h3 className="font-black text-navy text-lg text-center h-12 mb-4 uppercase tracking-wide">{car.name}</h3>
+                           <div className="flex items-center gap-5 text-xs text-asphalt font-bold w-full justify-center border-t border-line pt-5">
+                              <span className="flex items-center gap-1.5 bg-lightbg px-3 py-1.5 rounded-full"><Users size={14} className="text-gltOrange" /> {car.seats}</span>
+                              <span className="flex items-center gap-1.5 bg-lightbg px-3 py-1.5 rounded-full"><Briefcase size={14} className="text-gltOrange" /> {car.bags}</span>
+                              <span className="flex items-center gap-1.5 bg-lightbg px-3 py-1.5 rounded-full"><CheckCircle size={14} className="text-gltOrange" /> {car.drive}</span>
+                           </div>
+                        </div>
+                     </div>
+                   </SwiperSlide>
+                 ))}
+               </Swiper>
+            </motion.div>
 
          </div>
       </section>
 
-      {/* 5. RECENT PROJECTS */}
-      <section className="py-20 bg-lightbg">
+      {/* 5. RECENT PROJECTS (Number Counters + Grid) */}
+      <section className="py-24 bg-white" ref={refProjects}>
         <div className="mx-auto max-w-[1400px] px-5 lg:px-8">
-          <div className="text-center mb-12">
-            <h4 className="text-gltOrange font-bold text-sm tracking-widest uppercase mb-2">{t("projects.kicker")}</h4>
-            <h2 className="text-3xl md:text-4xl font-black text-navy">{t("projects.title")}</h2>
-          </div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-             {projects.map((proj, i) => (
-                <div key={i} className="bg-white border border-line group">
-                   <div className="h-40 overflow-hidden">
-                     <img src={proj.img} alt={proj.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+          {/* Stats Bar */}
+          <div ref={refStats} className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24 py-10 border-y border-line">
+             {[
+               { num: 150, suffix: "+", label: "Missions Completed" },
+               { num: 45, suffix: "", label: "Vehicles in Fleet" },
+               { num: 14, suffix: "", label: "Regions Covered" },
+               { num: 24, suffix: "/7", label: "Operations Support" }
+             ].map((stat, i) => (
+                <div key={i} className="text-center">
+                   <div className="text-4xl md:text-5xl font-black text-gltOrange mb-2">
+                     {inViewStats ? <CountUp end={stat.num} duration={2.5} suffix={stat.suffix} /> : "0"}
                    </div>
-                   <div className="p-5">
-                      <h3 className="font-bold text-navy mb-2 h-12">{proj.name}</h3>
-                      <p className="text-xs text-asphalt mb-4">{proj.region}</p>
-                      
-                      <div className="flex justify-between items-center text-xs text-gray-500 border-t border-line pt-3 mb-4">
-                         <span className="flex items-center gap-1"><Clock size={12} /> {proj.duration}</span>
-                         <span className="flex items-center gap-1"><Truck size={12} /> {proj.vehicles}</span>
-                         <span className="flex items-center gap-1"><Map size={12} /> {proj.distance}</span>
-                      </div>
-                      
-                      <Link to="/projects" className="text-xs font-bold text-navy flex items-center gap-1 uppercase hover:text-gltOrange transition">
-                         View Project <ArrowRight size={14} />
-                      </Link>
-                   </div>
+                   <div className="text-sm font-bold uppercase tracking-widest text-asphalt">{stat.label}</div>
                 </div>
              ))}
           </div>
 
-          <div className="mt-12 text-center">
-             <Link to="/projects" className="border border-line bg-white text-navy px-8 py-3 rounded font-bold text-sm tracking-wide uppercase inline-flex items-center justify-center hover:border-navy transition">
-                {t("projects.viewAll")}
-             </Link>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={inViewProjects ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h4 className="text-gltOrange font-bold text-sm tracking-[0.2em] uppercase mb-3">{t("projects.kicker")}</h4>
+            <h2 className="text-4xl md:text-5xl font-black text-navy">{t("projects.title")}</h2>
+          </motion.div>
+          
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+             {projects.map((proj, i) => (
+                <motion.div 
+                   key={i}
+                   initial={{ opacity: 0, scale: 0.95 }}
+                   animate={inViewProjects ? { opacity: 1, scale: 1 } : {}}
+                   transition={{ duration: 0.5, delay: i * 0.1 }}
+                   className="bg-lightbg rounded-xl overflow-hidden group shadow-md hover:shadow-xl transition-all duration-300 border border-line"
+                >
+                   <div className="h-48 overflow-hidden relative">
+                     <div className="absolute inset-0 bg-navy/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                     <img src={proj.img} alt={proj.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
+                   </div>
+                   <div className="p-6">
+                      <h3 className="font-bold text-navy text-lg mb-2 h-14 line-clamp-2 leading-tight">{proj.name}</h3>
+                      <p className="text-xs text-gltOrange font-bold uppercase tracking-wider mb-5">{proj.region}</p>
+                      
+                      <div className="flex flex-col gap-3 text-xs text-asphalt font-semibold border-t border-line pt-4 mb-5">
+                         <div className="flex justify-between items-center"><span className="flex items-center gap-2 text-gray-500"><Clock size={14}/> Duration</span> <span>{proj.duration}</span></div>
+                         <div className="flex justify-between items-center"><span className="flex items-center gap-2 text-gray-500"><Truck size={14}/> Fleet</span> <span>{proj.vehicles}</span></div>
+                         <div className="flex justify-between items-center"><span className="flex items-center gap-2 text-gray-500"><Map size={14}/> Distance</span> <span>{proj.distance}</span></div>
+                      </div>
+                      
+                      <button className="w-full py-3 rounded bg-navy/5 text-xs font-bold text-navy uppercase tracking-wider hover:bg-navy hover:text-white transition-colors flex items-center justify-center gap-2">
+                         View Details <ArrowRight size={14} />
+                      </button>
+                   </div>
+                </motion.div>
+             ))}
           </div>
         </div>
       </section>
 
-      {/* 6. PARTNERS BANNER */}
-      <section className="bg-white border-y border-line py-10">
-         <div className="mx-auto max-w-[1400px] px-5 lg:px-8 flex flex-col xl:flex-row items-center gap-8">
-            <h3 className="text-navy font-bold text-sm tracking-widest uppercase shrink-0 xl:w-48 xl:border-r border-line pr-8 text-center xl:text-left">
+      {/* 6. PARTNERS BANNER (Infinite Marquee) */}
+      <section className="bg-lightbg border-y border-line py-16 overflow-hidden">
+         <div className="mx-auto max-w-[1400px] px-5 lg:px-8 mb-8 text-center">
+            <h3 className="text-navy font-bold text-sm tracking-[0.2em] uppercase">
                {t("partners.title")}
             </h3>
-            <div className="flex flex-wrap justify-center xl:justify-between items-center w-full gap-6 text-gray-400 text-xs font-bold text-center">
-               {partners.map((p, i) => (
-                  <div key={i} className="flex flex-col items-center gap-2 max-w-[120px]">
-                     <ShieldCheck size={28} />
-                     <span>{p}</span>
-                  </div>
-               ))}
-            </div>
          </div>
+         <Marquee gradient={true} gradientColor="var(--lightbg)" speed={40} className="py-4">
+            {partners.map((p, i) => (
+               <div key={i} className="flex items-center gap-3 mx-12 text-gray-400 hover:text-navy transition-colors duration-300">
+                  <ShieldCheck size={32} />
+                  <span className="font-bold uppercase tracking-wider text-sm">{p}</span>
+               </div>
+            ))}
+         </Marquee>
       </section>
 
       {/* 7. CONTACT / APPLICATION */}
       <section className="bg-navy relative overflow-hidden" id="contact">
          <div className="mx-auto max-w-[1400px] flex flex-col lg:flex-row">
             
-            <div className="lg:w-1/3 p-12 lg:p-20 text-white relative flex flex-col justify-center">
-               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20 mix-blend-luminosity" />
-               <div className="absolute inset-0 bg-navy/80" />
-               <div className="relative z-10">
-                  <h4 className="text-gltOrange font-bold text-sm tracking-widest uppercase mb-4">{t("application.kicker")}</h4>
-                  <h2 className="text-3xl md:text-4xl font-black mb-6 whitespace-pre-line leading-tight">{t("application.title")}</h2>
-                  <p className="text-gray-300 text-sm whitespace-pre-line leading-relaxed">{t("application.text")}</p>
-               </div>
+            <div className="lg:w-5/12 p-12 lg:p-24 text-white relative flex flex-col justify-center overflow-hidden">
+               <motion.div 
+                 className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-luminosity" 
+                 initial={{ scale: 1.2 }}
+                 whileInView={{ scale: 1 }}
+                 transition={{ duration: 10, ease: "linear" }}
+               />
+               <div className="absolute inset-0 bg-navy/85 backdrop-blur-sm" />
+               <motion.div 
+                 initial={{ opacity: 0, x: -50 }}
+                 whileInView={{ opacity: 1, x: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ duration: 0.8 }}
+                 className="relative z-10"
+               >
+                  <h4 className="text-gltOrange font-bold text-sm tracking-[0.2em] uppercase mb-6 flex items-center gap-4">
+                    <span className="w-12 h-px bg-gltOrange"></span>
+                    {t("application.kicker")}
+                  </h4>
+                  <h2 className="text-4xl md:text-5xl font-black mb-8 whitespace-pre-line leading-tight">{t("application.title")}</h2>
+                  <p className="text-gray-300 text-base whitespace-pre-line leading-relaxed max-w-sm">{t("application.text")}</p>
+               </motion.div>
             </div>
 
-            <div className="lg:w-2/3 p-8 lg:p-20 bg-[#051b2e]">
-               <form className="grid sm:grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit, () => toast.error(t("application.invalid")))}>
+            <motion.div 
+               initial={{ opacity: 0, x: 50 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.8 }}
+               className="lg:w-7/12 p-8 lg:p-24 bg-[#051b2e] shadow-2xl relative z-20"
+            >
+               <form className="grid sm:grid-cols-2 gap-x-8 gap-y-6" onSubmit={handleSubmit(onSubmit, () => toast.error(t("application.invalid")))}>
+                  
+                  {/* Inputs mapped to look identical but fully functional */}
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.organization")}</label>
-                     <input type="text" {...register("organization")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.organization")}</label>
+                     <input type="text" {...register("organization")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
                   </div>
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.route")}</label>
-                     <input type="text" {...register("route")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.route")}</label>
+                     <input type="text" {...register("route")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
                   </div>
                   
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.name")}</label>
-                     <input type="text" {...register("name")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.name")}</label>
+                     <input type="text" {...register("name")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
                   </div>
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.passengers")}</label>
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.passengers")}</label>
                      <div className="relative">
-                        <select {...register("passengers")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none w-full appearance-none">
-                           <option value="1-4">1-4</option>
-                           <option value="5-10">5-10</option>
-                           <option value="10+">10+</option>
+                        <select {...register("passengers")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none w-full appearance-none transition-all">
+                           <option value="1-4" className="bg-navy">1-4</option>
+                           <option value="5-10" className="bg-navy">5-10</option>
+                           <option value="10+" className="bg-navy">10+</option>
                         </select>
-                        <ChevronDown size={16} className="absolute right-3 top-3.5 text-gray-400" />
+                        <ChevronDown size={18} className="absolute right-4 top-4 text-gray-400 pointer-events-none" />
                      </div>
                   </div>
 
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.email")}</label>
-                     <input type="email" {...register("email")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.email")}</label>
+                     <input type="email" {...register("email")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
                   </div>
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.upload")}</label>
-                     <input type="file" className="bg-navy border border-gray-700 text-gray-400 text-sm rounded p-2 focus:border-gltOrange outline-none file:bg-gray-700 file:border-0 file:text-white file:px-4 file:py-1 file:rounded file:mr-3" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.upload")}</label>
+                     <input type="file" className="bg-white/5 border border-white/10 text-gray-400 text-sm rounded-lg p-3 focus:border-gltOrange focus:bg-white/10 outline-none file:bg-white/10 file:border-0 file:text-white file:px-4 file:py-1.5 file:rounded-md file:mr-4 file:font-semibold file:text-xs file:uppercase file:tracking-wider file:cursor-pointer transition-all" />
                   </div>
 
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.service")}</label>
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.service")}</label>
                      <div className="relative">
-                        <select {...register("service")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none w-full appearance-none">
-                           <option value="Field Mission">Field Mission</option>
-                           <option value="Delegation">Delegation</option>
-                           <option value="Transfer">Transfer</option>
+                        <select {...register("service")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none w-full appearance-none transition-all">
+                           <option value="Field Mission" className="bg-navy">Field Mission</option>
+                           <option value="Delegation" className="bg-navy">Delegation</option>
+                           <option value="Transfer" className="bg-navy">Transfer</option>
                         </select>
-                        <ChevronDown size={16} className="absolute right-3 top-3.5 text-gray-400" />
+                        <ChevronDown size={18} className="absolute right-4 top-4 text-gray-400 pointer-events-none" />
                      </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.message")}</label>
-                     <input type="text" {...register("message")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.message")}</label>
+                     <input type="text" {...register("message")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
                   </div>
                   
                   <div className="flex flex-col gap-2">
-                     <label className="text-white text-xs">{t("application.fields.dates")}</label>
-                     <input type="text" {...register("dates")} className="bg-navy border border-gray-700 text-white text-sm rounded p-3 focus:border-gltOrange outline-none" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.dates")}</label>
+                     <input type="text" {...register("dates")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
                   </div>
 
                   <div className="flex items-end mt-4 sm:mt-0">
-                     <button type="submit" disabled={isSubmitting} className="bg-gltOrange text-white font-bold text-sm tracking-wide uppercase rounded p-3 w-full hover:bg-[#c84211] transition disabled:opacity-50">
+                     <button type="submit" disabled={isSubmitting} className="bg-gltOrange text-white font-bold text-sm tracking-widest uppercase rounded-lg p-4 w-full hover:bg-[#c84211] transition-all duration-300 disabled:opacity-50 shadow-lg shadow-gltOrange/20 hover:shadow-gltOrange/40 hover:-translate-y-1">
                         {isSubmitting ? t("application.sending") : t("application.submit")}
                      </button>
                   </div>
                </form>
-            </div>
+            </motion.div>
 
          </div>
       </section>
-    </>
+    </div>
   );
 }

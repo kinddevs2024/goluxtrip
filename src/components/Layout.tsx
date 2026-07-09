@@ -10,13 +10,9 @@ export function Header() {
 
   const links = [
     [t("nav.home"), "/"],
-    [t("nav.fieldMissions"), "/field-missions"],
-    [t("nav.delegations"), "/delegations"],
-    [t("nav.transfers"), "/transfers"],
-    [t("nav.fleet"), "/fleet"],
-    [t("nav.projects"), "/projects"],
-    [t("nav.industry"), "/industry-solutions"],
-    [t("nav.about"), "/about"],
+    [t("nav.fleet"), "/#fleet"],
+    [t("nav.projects"), "/#projects"],
+    [t("nav.about"), "/#contact"],
   ];
 
   return (
