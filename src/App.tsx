@@ -11,6 +11,14 @@ import AdminCars from "./pages/admin/AdminCars";
 import AdminApplications from "./pages/admin/AdminApplications";
 import AdminContent from "./pages/admin/AdminContent";
 
+import Fleet from "./pages/Fleet";
+import FieldMissions from "./pages/FieldMissions";
+import Delegations from "./pages/Delegations";
+import Transfers from "./pages/Transfers";
+import Projects from "./pages/Projects";
+import IndustrySolutions from "./pages/IndustrySolutions";
+import About from "./pages/About";
+
 function App() {
   useEffect(() => {
     AOS.init({ duration: 850, easing: "ease-out-cubic", once: true, offset: 60 });
@@ -35,6 +43,13 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/contact" element={<Contact />} />
+                <Route path="/fleet" element={<Fleet />} />
+                <Route path="/field-missions" element={<FieldMissions />} />
+                <Route path="/delegations" element={<Delegations />} />
+                <Route path="/transfers" element={<Transfers />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/industry-solutions" element={<IndustrySolutions />} />
+                <Route path="/about" element={<About />} />
               </Routes>
             </main>
             <Footer />
