@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Menu, X, Clock, Mail, ChevronDown } from "lucide-react";
+import { Menu, X, Clock, Mail, ChevronDown, Instagram, Facebook, Linkedin, Send } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
