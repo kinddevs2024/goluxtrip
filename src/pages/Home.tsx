@@ -1,4 +1,4 @@
-﻿import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { 
   ArrowRight, ShieldCheck, Map, Truck, Globe, Clock, 
@@ -144,9 +144,9 @@ export default function Home() {
               {t("hero.text")}
             </motion.p>
             <motion.div variants={fadeUp} className="mt-12 flex flex-col sm:flex-row gap-5">
-              <a href="#contact" className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
+              <Link to="/contact" className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
                 {t("hero.cta")} <ArrowRight size={18} />
-              </a>
+              </Link>
               <Link to="/fleet" className="border border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy hover:scale-105 transition-all duration-300">
                 {t("hero.secondary")}
               </Link>
