@@ -396,7 +396,7 @@ export default function Home() {
             {partnersData.length > 0 ? (
                partnersData.map((p) => (
                   <div key={p._id} className="flex items-center gap-3 mx-12">
-                     <img src={p.image} alt={p.name} className="h-16 max-w-[200px] object-contain mix-blend-multiply opacity-60 hover:opacity-100 transition-opacity duration-300" />
+                     <img src={p.image} alt="Partner Logo" className="h-16 max-w-[200px] object-contain mix-blend-multiply opacity-60 hover:opacity-100 transition-opacity duration-300" />
                   </div>
                ))
             ) : (

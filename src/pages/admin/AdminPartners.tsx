@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
-import { Plus, Trash2 } from "lucide-react";
+import { Trash2, UploadCloud } from "lucide-react";
 
 type Partner = {
   _id: string;
-  name: string;
   image: string;
 };
 
 export default function AdminPartners() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAdding, setIsAdding] = useState(false);
-  const [formData, setFormData] = useState<Partial<Partner>>({});
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchPartners = async () => {
     try {
@@ -30,28 +29,58 @@ export default function AdminPartners() {
     fetchPartners();
   }, []);
 
-  const handleSave = async (e: React.FormEvent) => {
+  const processFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64String = reader.result as string;
+      const loadToast = toast.loading("Uploading partner logo...");
+      try {
+        const res = await fetch("https://goluxtrip-backend.vercel.app/api/partners", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("adminToken")}`
+          },
+          body: JSON.stringify({ image: base64String })
+        });
+        if (!res.ok) throw new Error("Upload failed");
+        toast.success("Partner uploaded", { id: loadToast });
+        fetchPartners();
+      } catch (err) {
+        toast.error("Failed to upload partner", { id: loadToast });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    try {
-      await fetch("https://goluxtrip-backend.vercel.app/api/partners", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`
-        },
-        body: JSON.stringify(formData)
-      });
-      toast.success("Partner added");
-      setIsAdding(false);
-      setFormData({});
-      fetchPartners();
-    } catch (err) {
-      toast.error("Failed to save partner");
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processFile(file);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this partner?")) return;
+    if (!confirm("Delete this partner logo?")) return;
     try {
       await fetch(`https://goluxtrip-backend.vercel.app/api/partners?id=${id}`, {
         method: "DELETE",
@@ -72,71 +101,44 @@ export default function AdminPartners() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Partners</h1>
-        <button
-          onClick={() => setIsAdding(!isAdding)}
-          className="bg-navy text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-opacity-90"
-        >
-          <Plus size={20} /> Add Partner
-        </button>
       </div>
 
-      {isAdding && (
-        <form onSubmit={handleSave} className="bg-white p-6 rounded-xl border border-line shadow-sm space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Company Name</label>
-              <input
-                type="text"
-                required
-                className="w-full border border-line rounded-lg px-4 py-2 focus:border-navy outline-none"
-                value={formData.name || ""}
-                onChange={e => setFormData({ ...formData, name: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Logo Image URL (PNG/SVG transparent)</label>
-              <input
-                type="url"
-                required
-                className="w-full border border-line rounded-lg px-4 py-2 focus:border-navy outline-none"
-                value={formData.image || ""}
-                onChange={e => setFormData({ ...formData, image: e.target.value })}
-              />
-            </div>
-          </div>
-          <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => setIsAdding(false)}
-              className="px-4 py-2 border border-line rounded-lg hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="bg-gltOrange text-white px-4 py-2 rounded-lg hover:bg-opacity-90"
-            >
-              Save Partner
-            </button>
-          </div>
-        </form>
-      )}
+      {/* Drag & Drop Zone */}
+      <div 
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        onClick={() => fileInputRef.current?.click()}
+        className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-300 ${isDragging ? "border-gltOrange bg-gltOrange/5" : "border-gray-300 hover:border-navy hover:bg-gray-50"}`}
+      >
+        <UploadCloud className={`mx-auto mb-4 ${isDragging ? "text-gltOrange" : "text-gray-400"}`} size={48} />
+        <h3 className="text-lg font-bold mb-2">Drop your partner logo here</h3>
+        <p className="text-gray-500 mb-4">Or click to browse from your computer</p>
+        <p className="text-xs text-gray-400">Supports PNG, SVG, JPG. Transparent background recommended.</p>
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          onChange={handleFileChange} 
+          accept="image/*" 
+          className="hidden" 
+        />
+      </div>
 
-      <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-6 mt-8">
         {partners.map(partner => (
-          <div key={partner._id} className="bg-white rounded-xl border border-line overflow-hidden flex flex-col justify-between">
-            <div className="p-4 bg-gray-50 h-32 flex items-center justify-center">
-              <img src={partner.image} alt={partner.name} className="max-h-full max-w-full object-contain mix-blend-multiply" />
+          <div key={partner._id} className="bg-white rounded-xl border border-line overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow relative group">
+            <div className="p-6 bg-gray-50 h-32 flex items-center justify-center">
+              <img src={partner.image} alt="Partner Logo" className="max-h-full max-w-full object-contain mix-blend-multiply" />
             </div>
-            <div className="p-4 flex justify-between items-center">
-              <div>
-                <h3 className="font-bold">{partner.name}</h3>
-              </div>
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <button
-                onClick={() => handleDelete(partner._id)}
-                className="text-red-500 hover:text-red-700 p-2"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDelete(partner._id);
+                }}
+                className="bg-white text-red-500 hover:text-white hover:bg-red-500 p-2 rounded-lg shadow-sm border border-line transition-colors"
               >
-                <Trash2 size={20} />
+                <Trash2 size={16} />
               </button>
             </div>
           </div>
