@@ -1,6 +1,6 @@
-﻿import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, CalendarDays, Mail, Phone } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -24,6 +24,8 @@ export default function Contact() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const carParam = searchParams.get("car");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const schema = useMemo(
     () =>
@@ -56,6 +58,12 @@ export default function Contact() {
       setValue("message", `Interested in vehicle: ${carParam}`);
     }
   }, [carParam, setValue]);
+
+  useEffect(() => {
+    if (startDate || endDate) {
+      setValue("dates", `${startDate} - ${endDate}`, { shouldValidate: true });
+    }
+  }, [startDate, endDate, setValue]);
 
   async function onSubmit(values: ApplicationForm) {
     const payload = {
@@ -119,7 +127,22 @@ export default function Contact() {
               <input {...register("passengers")} type="number" min="1" className="input" placeholder={t("application.placeholders.passengers")} />
             </Field>
             <Field label={t("application.fields.dates")} error={errors.dates?.message}>
-              <input {...register("dates")} className="input" placeholder={t("application.placeholders.dates")} />
+              <div className="flex gap-2">
+                <input 
+                  type="date" 
+                  className="input flex-1 px-2" 
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+                <span className="self-center text-gray-400">-</span>
+                <input 
+                  type="date" 
+                  className="input flex-1 px-2" 
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+                <input type="hidden" {...register("dates")} />
+              </div>
             </Field>
             <Field label={t("application.fields.route")} error={errors.route?.message}>
               <input {...register("route")} className="input" placeholder={t("application.placeholders.route")} />

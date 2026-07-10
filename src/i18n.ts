@@ -202,6 +202,16 @@ const resources = {
         sending: "SENDING...",
         success: "Inquiry sent. Our team will contact you shortly.",
         invalid: "Please complete all required fields.",
+        errors: {
+          name: "Please enter your name",
+          email: "Please enter a valid email",
+          phone: "Please enter your phone number",
+          organization: "Please enter your organization",
+          service: "Please select a service",
+          dates: "Please enter travel dates",
+          route: "Please enter route",
+          passengers: "Please enter number of passengers"
+        },
         rows: [
           "info@goluxtrip.com",
           "+998 90 123 45 67 (24/7 Operations)",
@@ -415,6 +425,16 @@ const resources = {
         sending: "ОТПРАВКА...",
         success: "Запрос отправлен. Наша команда свяжется с вами в ближайшее время.",
         invalid: "Пожалуйста, заполните все обязательные поля.",
+        errors: {
+          name: "Пожалуйста, введите ваше имя",
+          email: "Пожалуйста, введите действительный email",
+          phone: "Пожалуйста, введите номер телефона",
+          organization: "Пожалуйста, введите вашу организацию",
+          service: "Пожалуйста, выберите услугу",
+          dates: "Пожалуйста, выберите даты поездки",
+          route: "Пожалуйста, введите маршрут",
+          passengers: "Пожалуйста, укажите количество пассажиров"
+        },
         rows: [
           "info@goluxtrip.com",
           "+998 90 123 45 67 (Служба диспетчеров 24/7)",
@@ -626,8 +646,18 @@ const resources = {
         },
         submit: "SO'ROV YUBORISH",
         sending: "YUBORILMOQDA...",
-        success: "So'rov yuborildi. Tez orada bizning jamoamiz siz bilan bog'lanadi.",
+        success: "So'rov yuborildi. Bizning jamoamiz tez orada siz bilan bog'lanadi.",
         invalid: "Iltimos, barcha majburiy maydonlarni to'ldiring.",
+        errors: {
+          name: "Iltimos, ismingizni kiriting",
+          email: "Iltimos, yaroqli email kiriting",
+          phone: "Iltimos, telefon raqamingizni kiriting",
+          organization: "Iltimos, tashkilotingizni kiriting",
+          service: "Iltimos, xizmatni tanlang",
+          dates: "Iltimos, sayohat sanalarini tanlang",
+          route: "Iltimos, yo'nalishni kiriting",
+          passengers: "Iltimos, yo'lovchilar sonini kiriting"
+        },
         rows: [
           "info@goluxtrip.com",
           "+998 90 123 45 67 (24/7 Navbatchi xizmat)",
