@@ -37,6 +37,11 @@ export default function AdminApplications() {
 
   useEffect(() => {
     fetchApps();
+    const interval = setInterval(() => {
+      fetchApps();
+    }, 5000); // Poll every 5 seconds for "live" updates
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleDelete = async (id: string) => {

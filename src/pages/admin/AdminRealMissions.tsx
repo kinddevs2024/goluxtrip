@@ -8,6 +8,8 @@ type RealMission = {
   description: string;
   date: string;
   image: string;
+  longDescription?: string;
+  photos?: string[];
   createdAt: string;
 };
 
@@ -85,7 +87,8 @@ export default function AdminRealMissions() {
         <form onSubmit={handleSave} className="bg-white p-8 rounded-xl shadow-lg border border-line mb-8 grid md:grid-cols-2 gap-6">
           <input type="text" placeholder="Title (e.g. UN Delegation in Nukus)" className="border rounded p-3" onChange={e => setFormData({...formData, title: e.target.value})} required />
           <input type="text" placeholder="Date (e.g. June 2026)" className="border rounded p-3" onChange={e => setFormData({...formData, date: e.target.value})} />
-          <textarea placeholder="Description" className="border rounded p-3 md:col-span-2 h-32" onChange={e => setFormData({...formData, description: e.target.value})} required></textarea>
+          <textarea placeholder="Short Description" className="border rounded p-3 md:col-span-2 h-20" onChange={e => setFormData({...formData, description: e.target.value})} required></textarea>
+          <textarea placeholder="Long Description (For Details Page)" className="border rounded p-3 md:col-span-2 h-32" onChange={e => setFormData({...formData, longDescription: e.target.value})}></textarea>
           
           <div className="md:col-span-2">
             <label className="block text-sm font-semibold text-gray-500 mb-2">Upload Mission Photo</label>

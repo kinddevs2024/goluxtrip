@@ -75,10 +75,22 @@ export default function Home() {
   });
 
   const [stats, setStats] = useState<any[]>([]);
+  const [cars, setCars] = useState<any[]>([]);
+  const [missions, setMissions] = useState<any[]>([]);
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/stats")
       .then(res => res.json())
       .then(data => setStats(Array.isArray(data) ? data : []))
+      .catch(err => console.error(err));
+      
+    fetch("https://goluxtrip-backend.vercel.app/api/cars")
+      .then(res => res.json())
+      .then(data => setCars(Array.isArray(data) ? data : []))
+      .catch(err => console.error(err));
+
+    fetch("https://goluxtrip-backend.vercel.app/api/real-missions")
+      .then(res => res.json())
+      .then(data => setMissions(Array.isArray(data) ? data : []))
       .catch(err => console.error(err));
   }, []);
 
@@ -99,7 +111,7 @@ export default function Home() {
   }
 
   const solutions = t("whatWeDo.solutions", { returnObjects: true }) as {id: string, title: string, desc: string, img: string}[];
-  const cars = t("fleet.cars", { returnObjects: true }) as {id: string, name: string, seats: string, bags: string, drive: string, image: string}[];
+  const tCars = t("fleet.cars", { returnObjects: true }) as {id: string, name: string, seats: string, bags: string, drive: string, image: string}[];
   const projects = t("projects.items", { returnObjects: true }) as {name: string, region: string, duration: string, vehicles: string, distance: string, img: string}[];
   const partners = t("partners.list", { returnObjects: true }) as string[];
 
@@ -126,16 +138,16 @@ export default function Home() {
             variants={staggerContainer}
             className="max-w-3xl"
           >
-            <motion.h1 variants={fadeUp} className="text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] font-black text-white leading-[1.05] tracking-tight whitespace-pre-line">
+            <motion.h1 variants={fadeUp} className={`font-black text-white leading-[1.05] tracking-tight whitespace-pre-line ${i18n.language === "ru" ? "text-4xl sm:text-5xl md:text-6xl lg:text-7xl" : "text-5xl sm:text-6xl md:text-7xl lg:text-[5rem]"}`}>
               {t("hero.title")}
             </motion.h1>
             <motion.p variants={fadeUp} className="mt-8 text-lg sm:text-xl text-gray-300 font-medium whitespace-pre-line leading-relaxed max-w-2xl">
               {t("hero.text")}
             </motion.p>
             <motion.div variants={fadeUp} className="mt-12 flex flex-col sm:flex-row gap-5">
-              <Link to="/#contact" className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
+              <a href="#contact" className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
                 {t("hero.cta")} <ArrowRight size={18} />
-              </Link>
+              </a>
               <Link to="/fleet" className="border border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy hover:scale-105 transition-all duration-300">
                 {t("hero.secondary")}
               </Link>
@@ -272,7 +284,7 @@ export default function Home() {
                  modules={[EffectCoverflow, Autoplay, Pagination]}
                  className="w-full py-10"
                >
-                 {cars.map((car, i) => (
+                 {(cars.length > 0 ? cars : tCars).map((car, i) => (
                    <SwiperSlide key={i} className="w-[320px] sm:w-[380px]">
                      <div className="bg-white rounded-2xl flex flex-col shadow-2xl overflow-hidden group">
                         <div className="h-56 p-6 flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 relative">
@@ -340,31 +352,27 @@ export default function Home() {
           </motion.div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-             {projects.map((proj, i) => (
+             {missions.slice(0, 4).map((mission, i) => (
                 <motion.div 
                    key={i}
                    initial={{ opacity: 0, scale: 0.95 }}
                    animate={inViewProjects ? { opacity: 1, scale: 1 } : {}}
                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                   className="bg-lightbg rounded-xl overflow-hidden group shadow-md hover:shadow-xl transition-all duration-300 border border-line"
+                   className="bg-lightbg rounded-xl overflow-hidden group shadow-md hover:shadow-xl transition-all duration-300 border border-line flex flex-col"
                 >
                    <div className="h-48 overflow-hidden relative">
                      <div className="absolute inset-0 bg-navy/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                     <img src={proj.img} alt={proj.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
+                     <img src={mission.image} alt={mission.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
                    </div>
-                   <div className="p-6">
-                      <h3 className="font-bold text-navy text-lg mb-2 h-14 line-clamp-2 leading-tight">{proj.name}</h3>
-                      <p className="text-xs text-gltOrange font-bold uppercase tracking-wider mb-5">{proj.region}</p>
+                   <div className="p-6 flex flex-col flex-grow">
+                      <h3 className="font-bold text-navy text-lg mb-2 h-14 line-clamp-2 leading-tight">{mission.title}</h3>
+                      <p className="text-xs text-gltOrange font-bold uppercase tracking-wider mb-3">{mission.date}</p>
                       
-                      <div className="flex flex-col gap-3 text-xs text-asphalt font-semibold border-t border-line pt-4 mb-5">
-                         <div className="flex justify-between items-center"><span className="flex items-center gap-2 text-gray-500"><Clock size={14}/> Duration</span> <span>{proj.duration}</span></div>
-                         <div className="flex justify-between items-center"><span className="flex items-center gap-2 text-gray-500"><Truck size={14}/> Fleet</span> <span>{proj.vehicles}</span></div>
-                         <div className="flex justify-between items-center"><span className="flex items-center gap-2 text-gray-500"><Map size={14}/> Distance</span> <span>{proj.distance}</span></div>
-                      </div>
+                      <p className="text-sm text-gray-500 line-clamp-3 mb-5 flex-grow">{mission.description}</p>
                       
-                      <button className="w-full py-3 rounded bg-navy/5 text-xs font-bold text-navy uppercase tracking-wider hover:bg-navy hover:text-white transition-colors flex items-center justify-center gap-2">
-                         View Details <ArrowRight size={14} />
-                      </button>
+                      <Link to={`/real-missions/${mission._id}`} className="mt-auto block w-full text-center bg-white border-2 border-navy text-navy hover:bg-navy hover:text-white transition-colors py-2.5 rounded font-bold uppercase tracking-widest text-xs">
+                        View Details
+                      </Link>
                    </div>
                 </motion.div>
              ))}
@@ -398,14 +406,14 @@ export default function Home() {
                  className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-luminosity" 
                  initial={{ scale: 1.2 }}
                  whileInView={{ scale: 1 }}
-                 transition={{ duration: 10, ease: "linear" }}
+                 transition={{ duration: 5, ease: "linear" }}
                />
                <div className="absolute inset-0 bg-navy/90" />
                <motion.div 
                  initial={{ opacity: 0, x: -50 }}
                  whileInView={{ opacity: 1, x: 0 }}
                  viewport={{ once: true }}
-                 transition={{ duration: 0.8 }}
+                 transition={{ duration: 0.4 }}
                  className="relative z-10"
                >
                   <h4 className="text-gltOrange font-bold text-sm tracking-[0.2em] uppercase mb-6 flex items-center gap-4">
@@ -421,7 +429,7 @@ export default function Home() {
                initial={{ opacity: 0, x: 50 }}
                whileInView={{ opacity: 1, x: 0 }}
                viewport={{ once: true }}
-               transition={{ duration: 0.8 }}
+               transition={{ duration: 0.4 }}
                className="lg:w-7/12 p-8 lg:p-24 bg-[#051b2e] shadow-2xl relative z-20"
             >
                <form className="grid sm:grid-cols-2 gap-x-8 gap-y-6" onSubmit={handleSubmit(onSubmit, () => toast.error(t("application.invalid")))}>

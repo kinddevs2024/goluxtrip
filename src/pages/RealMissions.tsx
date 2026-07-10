@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -64,9 +65,12 @@ export default function RealMissions() {
                     <Calendar size={16} /> {mission.date}
                   </div>
                   <h3 className="font-black text-2xl text-navy leading-tight mb-4">{mission.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-gray-600 leading-relaxed mb-6 flex-grow">
                     {mission.description}
                   </p>
+                  <Link to={`/real-missions/${mission._id}`} className="mt-auto inline-block border-2 border-navy text-navy font-bold uppercase tracking-widest text-xs px-5 py-2.5 rounded-lg text-center hover:bg-navy hover:text-white transition-colors">
+                    View Details
+                  </Link>
                 </div>
               </motion.div>
             ))}

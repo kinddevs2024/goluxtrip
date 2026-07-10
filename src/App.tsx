@@ -19,9 +19,11 @@ import Projects from "./pages/Projects";
 import IndustrySolutions from "./pages/IndustrySolutions";
 import About from "./pages/About";
 import RealMissions from "./pages/RealMissions";
+import MissionDetails from "./pages/MissionDetails";
 
 import AdminStats from "./pages/admin/AdminStats";
 import AdminRealMissions from "./pages/admin/AdminRealMissions";
+import AdminFleet from "./pages/admin/AdminFleet";
 
 function App() {
   useEffect(() => {
@@ -37,6 +39,7 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminApplications />} />
           <Route path="cars" element={<AdminCars />} />
+          <Route path="fleet" element={<AdminFleet />} />
           <Route path="applications" element={<AdminApplications />} />
           <Route path="content" element={<AdminContent />} />
           <Route path="stats" element={<AdminStats />} />
@@ -58,6 +61,7 @@ function App() {
                 <Route path="/industry-solutions" element={<IndustrySolutions />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/real-missions" element={<RealMissions />} />
+                <Route path="/real-missions/:id" element={<MissionDetails />} />
               </Routes>
             </main>
             <Footer />

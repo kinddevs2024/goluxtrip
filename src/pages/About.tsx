@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
 export default function About() {
-  const [text, setText] = useState("");
+  const { i18n } = useTranslation();
+  const [textData, setTextData] = useState<any>(null);
   const [image, setImage] = useState("");
   const [stats, setStats] = useState<any[]>([]);
 
@@ -13,8 +15,7 @@ export default function About() {
       .then(data => {
         const aboutData = data.find((c: any) => c.key === "about_us");
         if (aboutData) {
-          // Assuming english for now, would typically use i18n.language to pick text_en, text_ru, text_uz
-          setText(aboutData.text_en || "We are GoLuxTrip, providing reliable transportation solutions across Uzbekistan.");
+          setTextData(aboutData);
           if (aboutData.image) setImage(aboutData.image);
         }
       })
@@ -34,7 +35,7 @@ export default function About() {
         </div>
         <div className="relative z-10 text-center px-5">
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest mb-6">
-            About GoLuxTrip
+            {i18n.language === 'ru' ? "О Компании" : i18n.language === 'uz' ? "Kompaniya haqida" : "About GoLuxTrip"}
           </motion.h1>
         </div>
       </div>
@@ -42,8 +43,8 @@ export default function About() {
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
           <h2 className="text-3xl font-black text-navy uppercase mb-8 text-center">Our Mission</h2>
           <div className="prose prose-lg mx-auto text-gray-600 leading-relaxed text-justify mb-16">
-            {text ? (
-              text.split('\n').map((paragraph, i) => (
+            {textData ? (
+              (i18n.language === 'ru' ? textData.text_ru : i18n.language === 'uz' ? textData.text_uz : textData.text_en)?.split('\n').map((paragraph: string, i: number) => (
                 <p key={i}>{paragraph}</p>
               ))
             ) : (

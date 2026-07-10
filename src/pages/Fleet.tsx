@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Users, Briefcase, Car as CarIcon } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -15,12 +16,21 @@ type Car = {
 export default function Fleet() {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
+  const { i18n, t } = useTranslation();
+  const [textContent, setTextContent] = useState<any>(null);
 
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/cars")
       .then(res => res.json())
       .then(data => setCars(Array.isArray(data) ? data : []))
-      .catch(() => toast.error("Failed to load fleet data"))
+      .catch(() => toast.error("Failed to load fleet data"));
+
+    fetch("https://goluxtrip-backend.vercel.app/api/content")
+      .then(res => res.json())
+      .then(data => {
+        const fleetData = (Array.isArray(data) ? data : []).find((c: any) => c.key === "fleet_page");
+        if (fleetData) setTextContent(fleetData);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -32,12 +42,12 @@ export default function Fleet() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="text-gltOrange font-bold tracking-widest uppercase text-sm mb-4 block">Our Fleet</span>
+          <span className="text-gltOrange font-bold tracking-widest uppercase text-sm mb-4 block">{t("nav.fleet")}</span>
           <h1 className="text-4xl md:text-5xl font-black text-navy uppercase leading-tight">
-            Built for the road. <br /> Ready for the mission.
+            {textContent ? (i18n.language === 'ru' ? textContent.text_ru : i18n.language === 'uz' ? textContent.text_uz : textContent.text_en)?.split('\n')[0] : "Built for the road. Ready for the mission."}
           </h1>
           <p className="mt-6 text-gray-500 text-lg">
-            A wide range of SUVs, 4WDs, Minivans and Buses for any mission and group size across Uzbekistan.
+            {textContent ? (i18n.language === 'ru' ? textContent.text_ru : i18n.language === 'uz' ? textContent.text_uz : textContent.text_en)?.split('\n').slice(1).join('\n') : "A wide range of SUVs, 4WDs, Minivans and Buses for any mission and group size across Uzbekistan."}
           </p>
         </motion.div>
 
