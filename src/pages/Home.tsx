@@ -48,7 +48,7 @@ const staggerContainer: Variants = {
 };
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 1000], [0, 300]);
   
@@ -112,7 +112,6 @@ export default function Home() {
 
   const solutions = t("whatWeDo.solutions", { returnObjects: true }) as {id: string, title: string, desc: string, img: string}[];
   const tCars = t("fleet.cars", { returnObjects: true }) as {id: string, name: string, seats: string, bags: string, drive: string, image: string}[];
-  const projects = t("projects.items", { returnObjects: true }) as {name: string, region: string, duration: string, vehicles: string, distance: string, img: string}[];
   const partners = t("partners.list", { returnObjects: true }) as string[];
 
   return (
