@@ -18,6 +18,8 @@ import Transfers from "./pages/Transfers";
 import Projects from "./pages/Projects";
 import ProjectDetails from "./pages/ProjectDetails";
 import IndustrySolutions from "./pages/IndustrySolutions";
+import DayTrips from "./pages/DayTrips";
+import Regional from "./pages/Regional";
 import About from "./pages/About";
 import RealMissions from "./pages/RealMissions";
 import MissionDetails from "./pages/MissionDetails";
@@ -60,7 +62,10 @@ function App() {
                 <Route path="/transfers" element={<Transfers />} />
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/projects/:id" element={<ProjectDetails />} />
+                <Route path="/industry" element={<IndustrySolutions />} />
                 <Route path="/industry-solutions" element={<IndustrySolutions />} />
+                <Route path="/day-trips" element={<DayTrips />} />
+                <Route path="/regional" element={<Regional />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/real-missions" element={<RealMissions />} />
                 <Route path="/real-missions/:id" element={<MissionDetails />} />

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
@@ -40,24 +40,32 @@ export default function About() {
         </div>
       </div>
       <div className="max-w-4xl mx-auto px-5 py-24">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <h2 className="text-3xl font-black text-navy uppercase mb-8 text-center">Our Mission</h2>
+        <div>
+          <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-3xl font-black text-navy uppercase mb-8 text-center">Our Mission</motion.h2>
           <div className="prose prose-lg mx-auto text-gray-600 leading-relaxed text-justify mb-16">
             {textData ? (
-              (i18n.language === 'ru' ? textData.text_ru : i18n.language === 'uz' ? textData.text_uz : textData.text_en)?.split('\n').map((paragraph: string, i: number) => (
-                <p key={i}>{paragraph}</p>
-              ))
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                {(i18n.language === 'ru' ? textData.text_ru : i18n.language === 'uz' ? textData.text_uz : textData.text_en)?.split('\n').map((paragraph: string, i: number) => (
+                  <p key={i}>{paragraph}</p>
+                ))}
+              </motion.div>
             ) : (
-              <div className="flex justify-center"><div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gltOrange"></div></div>
+              <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gltOrange"></div></div>
             )}
           </div>
           
           <div className="grid sm:grid-cols-3 gap-8 text-center">
             {stats.length > 0 ? stats.map((item, i) => (
-              <div key={i} className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, scale: 0.9 }} 
+                animate={{ opacity: 1, scale: 1 }} 
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                className="p-6 bg-gray-50 rounded-2xl border border-gray-100"
+              >
                 <div className="text-4xl font-black text-gltOrange mb-2">{item.value}</div>
                 <div className="text-sm font-bold text-navy uppercase tracking-widest">{item.label}</div>
-              </div>
+              </motion.div>
             )) : [
               { stat: "10+", label: "Years Experience" },
               { stat: "150+", label: "Missions Completed" },
@@ -69,7 +77,7 @@ export default function About() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
