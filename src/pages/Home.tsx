@@ -77,6 +77,7 @@ export default function Home() {
   const [stats, setStats] = useState<any[]>([]);
   const [cars, setCars] = useState<any[]>([]);
   const [missions, setMissions] = useState<any[]>([]);
+  const [partnersData, setPartnersData] = useState<any[]>([]);
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/stats")
       .then(res => res.json())
@@ -91,6 +92,11 @@ export default function Home() {
     fetch("https://goluxtrip-backend.vercel.app/api/real-missions")
       .then(res => res.json())
       .then(data => setMissions(Array.isArray(data) ? data : []))
+      .catch(err => console.error(err));
+
+    fetch("https://goluxtrip-backend.vercel.app/api/partners")
+      .then(res => res.json())
+      .then(data => setPartnersData(Array.isArray(data) ? data : []))
       .catch(err => console.error(err));
   }, []);
 
@@ -387,12 +393,20 @@ export default function Home() {
             </h3>
          </div>
          <Marquee gradient={true} gradientColor="var(--lightbg)" speed={40} className="py-4">
-            {partners.map((p, i) => (
-               <div key={i} className="flex items-center gap-3 mx-12 text-gray-400 hover:text-navy transition-colors duration-300">
-                  <ShieldCheck size={32} />
-                  <span className="font-bold uppercase tracking-wider text-sm">{p}</span>
-               </div>
-            ))}
+            {partnersData.length > 0 ? (
+               partnersData.map((p) => (
+                  <div key={p._id} className="flex items-center gap-3 mx-12">
+                     <img src={p.image} alt={p.name} className="h-16 max-w-[200px] object-contain mix-blend-multiply opacity-60 hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+               ))
+            ) : (
+               partners.map((p, i) => (
+                  <div key={i} className="flex items-center gap-3 mx-12 text-gray-400 hover:text-navy transition-colors duration-300">
+                     <ShieldCheck size={32} />
+                     <span className="font-bold uppercase tracking-wider text-sm">{p}</span>
+                  </div>
+               ))
+            )}
          </Marquee>
       </section>
 

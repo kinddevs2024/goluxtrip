@@ -29,6 +29,7 @@ export default function AdminLayout() {
     { name: "Cars", path: "/admin/cars", icon: Car },
     { name: "Real Missions", path: "/admin/real-missions", icon: Briefcase },
     { name: "Projects", path: "/admin/projects", icon: Briefcase },
+    { name: "Partners", path: "/admin/partners", icon: Briefcase },
     { name: "Stats", path: "/admin/stats", icon: BarChart },
     { name: "Content", path: "/admin/content", icon: FileText },
   ];

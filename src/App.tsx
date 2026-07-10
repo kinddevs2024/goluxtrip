@@ -27,6 +27,7 @@ import MissionDetails from "./pages/MissionDetails";
 import AdminStats from "./pages/admin/AdminStats";
 import AdminRealMissions from "./pages/admin/AdminRealMissions";
 import AdminProjects from "./pages/admin/AdminProjects";
+import AdminPartners from "./pages/admin/AdminPartners";
 
 function App() {
   useEffect(() => {
@@ -47,6 +48,7 @@ function App() {
           <Route path="stats" element={<AdminStats />} />
           <Route path="real-missions" element={<AdminRealMissions />} />
           <Route path="projects" element={<AdminProjects />} />
+          <Route path="partners" element={<AdminPartners />} />
         </Route>
 
         <Route path="*" element={
