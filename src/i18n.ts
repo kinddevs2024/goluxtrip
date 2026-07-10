@@ -189,7 +189,12 @@ const resources = {
         submit: "SUBMIT REQUEST",
         sending: "SENDING...",
         success: "Inquiry sent. Our team will contact you shortly.",
-        invalid: "Please complete all required fields."
+        invalid: "Please complete all required fields.",
+        rows: [
+          "info@goluxtrip.com",
+          "+998 90 123 45 67 (24/7 Operations)",
+          "Monday - Sunday: 24/7 Dispatch"
+        ]
       },
       footer: {
         copyright: "© 2026 GoLuxTrip. All rights reserved.",
@@ -384,8 +389,13 @@ const resources = {
         },
         submit: "ОТПРАВИТЬ ЗАПРОС",
         sending: "ОТПРАВКА...",
-        success: "Заявка отправлена. Мы свяжемся с вами в ближайшее время.",
-        invalid: "Пожалуйста, заполните обязательные поля."
+        success: "Запрос отправлен. Наша команда свяжется с вами в ближайшее время.",
+        invalid: "Пожалуйста, заполните все обязательные поля.",
+        rows: [
+          "info@goluxtrip.com",
+          "+998 90 123 45 67 (Служба диспетчеров 24/7)",
+          "Понедельник - Воскресенье: 24/7"
+        ]
       },
       footer: {
         copyright: "© 2026 GoLuxTrip. Все права защищены.",
@@ -580,8 +590,13 @@ const resources = {
         },
         submit: "SO'ROV YUBORISH",
         sending: "YUBORILMOQDA...",
-        success: "So'rov yuborildi. Biz siz bilan tez orada bog'lanamiz.",
-        invalid: "Iltimos, barcha majburiy maydonlarni to'ldiring."
+        success: "So'rov yuborildi. Tez orada bizning jamoamiz siz bilan bog'lanadi.",
+        invalid: "Iltimos, barcha majburiy maydonlarni to'ldiring.",
+        rows: [
+          "info@goluxtrip.com",
+          "+998 90 123 45 67 (24/7 Navbatchi xizmat)",
+          "Dushanba - Yakshanba: 24/7"
+        ]
       },
       footer: {
         copyright: "© 2026 GoLuxTrip. Barcha huquqlar himoyalangan.",
