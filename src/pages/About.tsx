@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
@@ -35,7 +35,7 @@ export default function About() {
         </div>
         <div className="relative z-10 text-center px-5">
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest mb-6">
-            {i18n.language === 'ru' ? "О Компании" : i18n.language === 'uz' ? "Kompaniya haqida" : "About GoLuxTrip"}
+            {i18n.language === 'ru' ? "Ðž ÐšÐ¾Ð¼Ð¿Ð°Ð½Ð¸Ð¸" : i18n.language === 'uz' ? "Kompaniya haqida" : "About GoLuxTrip"}
           </motion.h1>
         </div>
       </div>

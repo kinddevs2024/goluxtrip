@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Users, Star, Shield } from "lucide-react";
 
 export default function Delegations() {

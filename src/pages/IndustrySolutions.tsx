@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Globe, HeartHandshake, Zap } from "lucide-react";
 
 export default function IndustrySolutions() {

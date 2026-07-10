@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+﻿import { motion } from "framer-motion";
 import { Briefcase, Building, MapPin } from "lucide-react";
 
 export default function Projects() {
