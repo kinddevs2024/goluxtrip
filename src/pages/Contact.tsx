@@ -1,12 +1,24 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, CalendarDays, Mail, Phone } from "lucide-react";
+import { format } from "date-fns";
+import { ArrowRight, CalendarDays, ChevronDown, Mail, Phone } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Field, InfoRow, SectionHeading } from "../components/Shared";
+
+const SERVICE_OPTIONS = [
+  "Delegation",
+  "Transfer",
+  "Industry Solution",
+  "Regional Travel",
+  "Day Trip",
+  "Field Mission"
+];
 
 type ApplicationForm = {
   name: string;
@@ -24,8 +36,8 @@ export default function Contact() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const carParam = searchParams.get("car");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [startDate, endDate] = dateRange;
 
   const schema = useMemo(
     () =>
@@ -61,7 +73,9 @@ export default function Contact() {
 
   useEffect(() => {
     if (startDate || endDate) {
-      setValue("dates", `${startDate} - ${endDate}`, { shouldValidate: true });
+      const startStr = startDate ? format(startDate, "dd/MM/yyyy") : "";
+      const endStr = endDate ? format(endDate, "dd/MM/yyyy") : "";
+      setValue("dates", `${startStr} - ${endStr}`, { shouldValidate: true });
     }
   }, [startDate, endDate, setValue]);
 
@@ -121,26 +135,40 @@ export default function Contact() {
               <input {...register("phone")} className="input" placeholder={t("application.placeholders.phone")} />
             </Field>
             <Field label={t("application.fields.service")} error={errors.service?.message}>
-              <input {...register("service")} className="input" placeholder={t("application.placeholders.service")} />
+              <div className="relative">
+                <select
+                  {...register("service")}
+                  className="input appearance-none bg-white pr-10"
+                >
+                  <option value="" disabled hidden>
+                    {t("application.placeholders.service")}
+                  </option>
+                  {SERVICE_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+              </div>
             </Field>
             <Field label={t("application.fields.passengers")} error={errors.passengers?.message}>
               <input {...register("passengers")} type="number" min="1" className="input" placeholder={t("application.placeholders.passengers")} />
             </Field>
             <Field label={t("application.fields.dates")} error={errors.dates?.message}>
-              <div className="flex gap-2">
-                <input 
-                  type="date" 
-                  className="input flex-1 px-2" 
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+              <div className="relative w-full">
+                <DatePicker
+                  selectsRange={true}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={(update: [Date | null, Date | null]) => {
+                    setDateRange(update);
+                  }}
+                  placeholderText={t("application.placeholders.dates")}
+                  className="input w-full pl-11"
+                  dateFormat="dd/MM/yyyy"
                 />
-                <span className="self-center text-gray-400">-</span>
-                <input 
-                  type="date" 
-                  className="input flex-1 px-2" 
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                />
+                <CalendarDays className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
                 <input type="hidden" {...register("dates")} />
               </div>
             </Field>

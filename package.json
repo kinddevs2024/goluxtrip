@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@types/react-datepicker": "^6.2.0",
     "@vitejs/plugin-react": "^5.1.1",
     "aos": "^2.3.4",
     "clsx": "^2.1.1",
@@ -30,6 +31,7 @@
     "nodemailer": "^9.0.3",
     "react": "^19.2.3",
     "react-countup": "^6.5.3",
+    "react-datepicker": "^9.1.0",
     "react-dom": "^19.2.3",
     "react-fast-marquee": "^1.6.5",
     "react-hook-form": "^7.68.0",
