@@ -1,106 +1,12 @@
-﻿import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-
 export default function AdminFleet() {
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [content, setContent] = useState({
-    text_en: "",
-    text_ru: "",
-    text_uz: ""
-  });
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const res = await fetch("https://goluxtrip-backend.vercel.app/api/content");
-        const data = await res.json();
-        const fleetData = (Array.isArray(data) ? data : []).find((c: any) => c.key === "fleet_page");
-        if (fleetData) {
-          setContent({
-            text_en: fleetData.text_en || "",
-            text_ru: fleetData.text_ru || "",
-            text_uz: fleetData.text_uz || ""
-          });
-        }
-      } catch (err) {
-        toast.error("Failed to load content");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchContent();
-  }, []);
-
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      await fetch("https://goluxtrip-backend.vercel.app/api/content", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`
-        },
-        body: JSON.stringify({
-          key: "fleet_page",
-          ...content
-        })
-      });
-      toast.success("Fleet page content saved");
-    } catch (err) {
-      toast.error("Failed to save content");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  if (loading) return <div>Loading...</div>;
-
   return (
     <div>
-      <h1 className="text-3xl font-black text-navy uppercase tracking-widest mb-8">Fleet Page Content</h1>
-      
-      <div className="bg-white rounded-xl shadow-lg border border-line p-8 max-w-4xl">
-        <h2 className="text-xl font-bold mb-6 text-navy border-b border-line pb-4">Fleet Page Intro Text</h2>
-        
-        <form onSubmit={handleSave} className="space-y-6">
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">English Text</label>
-            <textarea 
-              rows={4}
-              className="w-full border border-line rounded-lg p-4 bg-gray-50 focus:bg-white focus:border-gltOrange outline-none transition-all"
-              value={content.text_en}
-              onChange={e => setContent({...content, text_en: e.target.value})}
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Russian Text</label>
-            <textarea 
-              rows={4}
-              className="w-full border border-line rounded-lg p-4 bg-gray-50 focus:bg-white focus:border-gltOrange outline-none transition-all"
-              value={content.text_ru}
-              onChange={e => setContent({...content, text_ru: e.target.value})}
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Uzbek Text</label>
-            <textarea 
-              rows={4}
-              className="w-full border border-line rounded-lg p-4 bg-gray-50 focus:bg-white focus:border-gltOrange outline-none transition-all"
-              value={content.text_uz}
-              onChange={e => setContent({...content, text_uz: e.target.value})}
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            disabled={saving}
-            className="bg-navy text-white px-8 py-4 rounded-lg font-bold uppercase tracking-widest hover:bg-[#051b2e] transition-colors disabled:opacity-50"
-          >
-            {saving ? "Saving..." : "Save Content"}
-          </button>
-        </form>
+      <h1 className="text-3xl font-black text-navy uppercase tracking-widest mb-8">Fleet Management</h1>
+      <div className="bg-white p-8 rounded-xl border border-line shadow-sm">
+        <h2 className="text-xl font-bold text-navy mb-4">Module Under Construction</h2>
+        <p className="text-gray-500">
+          The Fleet Management module is currently in development. Here you will be able to track vehicles, assign drivers, manage maintenance schedules, and view live telematics data.
+        </p>
       </div>
     </div>
   );
