@@ -1,6 +1,6 @@
-﻿import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Car, FileText, Inbox, LogOut, LayoutDashboard, BarChart, Briefcase, Truck, Menu, X } from "lucide-react";
+import { Car, FileText, Inbox, LogOut, LayoutDashboard, BarChart, Briefcase, Menu, X } from "lucide-react";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
@@ -27,8 +27,8 @@ export default function AdminLayout() {
   const navItems = [
     { name: "Applications", path: "/admin/applications", icon: Inbox },
     { name: "Cars", path: "/admin/cars", icon: Car },
-    { name: "Fleet Page", path: "/admin/fleet", icon: Truck },
     { name: "Real Missions", path: "/admin/real-missions", icon: Briefcase },
+    { name: "Projects", path: "/admin/projects", icon: Briefcase },
     { name: "Stats", path: "/admin/stats", icon: BarChart },
     { name: "Content", path: "/admin/content", icon: FileText },
   ];

@@ -16,6 +16,7 @@ import FieldMissions from "./pages/FieldMissions";
 import Delegations from "./pages/Delegations";
 import Transfers from "./pages/Transfers";
 import Projects from "./pages/Projects";
+import ProjectDetails from "./pages/ProjectDetails";
 import IndustrySolutions from "./pages/IndustrySolutions";
 import About from "./pages/About";
 import RealMissions from "./pages/RealMissions";
@@ -23,7 +24,7 @@ import MissionDetails from "./pages/MissionDetails";
 
 import AdminStats from "./pages/admin/AdminStats";
 import AdminRealMissions from "./pages/admin/AdminRealMissions";
-import AdminFleet from "./pages/admin/AdminFleet";
+import AdminProjects from "./pages/admin/AdminProjects";
 
 function App() {
   useEffect(() => {
@@ -39,11 +40,11 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminApplications />} />
           <Route path="cars" element={<AdminCars />} />
-          <Route path="fleet" element={<AdminFleet />} />
           <Route path="applications" element={<AdminApplications />} />
           <Route path="content" element={<AdminContent />} />
           <Route path="stats" element={<AdminStats />} />
           <Route path="real-missions" element={<AdminRealMissions />} />
+          <Route path="projects" element={<AdminProjects />} />
         </Route>
 
         <Route path="*" element={
@@ -58,6 +59,7 @@ function App() {
                 <Route path="/delegations" element={<Delegations />} />
                 <Route path="/transfers" element={<Transfers />} />
                 <Route path="/projects" element={<Projects />} />
+                <Route path="/projects/:id" element={<ProjectDetails />} />
                 <Route path="/industry-solutions" element={<IndustrySolutions />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/real-missions" element={<RealMissions />} />

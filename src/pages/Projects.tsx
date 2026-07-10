@@ -1,48 +1,81 @@
-﻿import { motion } from "framer-motion";
-import { Briefcase, Building, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { Calendar } from "lucide-react";
+import toast from "react-hot-toast";
+
+type Project = {
+  _id: string;
+  title: string;
+  description: string;
+  image: string;
+  createdAt: string;
+};
 
 export default function Projects() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("https://goluxtrip-backend.vercel.app/api/projects")
+      .then(res => res.json())
+      .then(data => setProjects(Array.isArray(data) ? data : []))
+      .catch(() => toast.error("Failed to load projects"))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
-    <div className="pt-24 min-h-screen bg-white">
-      <div className="relative h-[40vh] bg-ink flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 opacity-40">
-          <img src="https://images.unsplash.com/photo-1504307651254-35680f356f12?auto=format&fit=crop&q=80&w=2000" alt="Projects" className="w-full h-full object-cover mix-blend-overlay" />
-        </div>
-        <div className="relative z-10 text-center px-5">
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest mb-6">
-            Long-term Projects
-          </motion.h1>
-        </div>
-      </div>
-      <div className="max-w-7xl mx-auto px-5 py-24">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-            <img src="https://images.unsplash.com/photo-1541888087625-f8148faa5c17?auto=format&fit=crop&q=80&w=800" alt="Construction site" className="rounded-3xl shadow-2xl" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl font-black text-navy uppercase mb-8">Corporate Logistics</h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-8">
-              We provide dedicated fleet and driver leasing for long-term construction, mining, and corporate projects. Focus on your core business while we handle your daily logistics.
-            </p>
-            <ul className="space-y-6">
-              {[
-                { icon: Briefcase, title: "Monthly Leasing", desc: "Cost-effective long-term contracts tailored to your project timeline." },
-                { icon: Building, title: "Corporate Transport", desc: "Daily staff shuttles and executive transport." },
-                { icon: MapPin, title: "On-site Fleet Management", desc: "Dedicated managers to coordinate logistics directly at your facility." }
-              ].map((f, i) => (
-                <li key={i} className="flex gap-4">
-                  <div className="w-12 h-12 bg-gray-50 rounded-full shadow-sm border border-gray-100 flex items-center justify-center shrink-0">
-                    <f.icon className="text-gltOrange" size={24} />
+    <div className="pt-24 min-h-screen bg-[#f7f8f6]">
+      <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
+          <span className="text-gltOrange font-bold tracking-widest uppercase text-sm mb-4 block">Our Work</span>
+          <h1 className="text-4xl md:text-5xl font-black text-navy uppercase leading-tight">
+            Projects
+          </h1>
+          <p className="mt-6 text-gray-500 text-lg">
+            Long-term operations and corporate logistics we've successfully managed.
+          </p>
+        </motion.div>
+
+        {loading ? (
+          <div className="flex justify-center p-20"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gltOrange"></div></div>
+        ) : projects.length === 0 ? (
+          <div className="text-center text-gray-400 p-10">No projects published yet.</div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project._id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-300 flex flex-col"
+              >
+                <div className="h-64 relative overflow-hidden">
+                  <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+                <div className="p-8 flex flex-col flex-grow">
+                  <div className="flex items-center gap-2 text-gltOrange font-semibold text-sm mb-3">
+                    <Calendar size={16} /> {new Date(project.createdAt).toLocaleDateString()}
                   </div>
-                  <div>
-                    <h4 className="font-bold text-navy uppercase tracking-wide">{f.title}</h4>
-                    <p className="text-gray-500 text-sm mt-1">{f.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
+                  <h3 className="font-black text-2xl text-navy leading-tight mb-4">{project.title}</h3>
+                  <p className="text-gray-600 leading-relaxed mb-6 flex-grow">
+                    {project.description}
+                  </p>
+                  <Link to={`/projects/${project._id}`} className="mt-auto inline-block border-2 border-navy text-navy font-bold uppercase tracking-widest text-xs px-5 py-2.5 rounded-lg text-center hover:bg-navy hover:text-white transition-colors">
+                    View Details
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
