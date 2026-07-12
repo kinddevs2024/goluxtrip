@@ -52,7 +52,7 @@ export default function Home() {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 1000], [0, 300]);
   
-  const [refStats, inViewStats] = useInView({ triggerOnce: true, threshold: 0.5 });
+  const [refStats, inViewStats] = useInView({ triggerOnce: false, threshold: 0.5 });
   const [refProjects, inViewProjects] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const schema = useMemo(
@@ -531,7 +531,7 @@ export default function Home() {
                return (
                  <div key={i} className="text-center">
                     <div className="text-4xl md:text-5xl font-black text-gltOrange mb-2">
-                      {inViewStats ? <CountUp end={num} duration={2.5} suffix={suffix} /> : "0"}
+                      {inViewStats ? <CountUp key={String(inViewStats)} end={num} duration={2.5} suffix={suffix} /> : "0"}
                     </div>
                     <div className="text-sm font-bold uppercase tracking-widest text-asphalt">{stat.label}</div>
                  </div>
@@ -540,11 +540,11 @@ export default function Home() {
                { num: 150, suffix: "+", label: "Missions Completed" },
                { num: 45, suffix: "", label: "Vehicles in Fleet" },
                { num: 14, suffix: "", label: "Regions Covered" },
-               { num: 24, suffix: "/7", label: "Operations Support" }
+               { num: 12, suffix: "", label: "Active Missions" }
              ].map((stat, i) => (
                 <div key={i} className="text-center opacity-50">
                    <div className="text-4xl md:text-5xl font-black text-gltOrange mb-2">
-                     {inViewStats ? <CountUp end={stat.num} duration={2.5} suffix={stat.suffix} /> : "0"}
+                     {inViewStats ? <CountUp key={String(inViewStats)} end={stat.num} duration={2.5} suffix={stat.suffix} /> : "0"}
                    </div>
                    <div className="text-sm font-bold uppercase tracking-widest text-asphalt">{stat.label}</div>
                 </div>
