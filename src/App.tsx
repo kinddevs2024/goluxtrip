@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Header, Footer } from "./components/Layout";
+import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -53,6 +54,7 @@ function App() {
 
         <Route path="*" element={
           <>
+            <ScrollToTop />
             <Header />
             <main className="flex-1">
               <Routes>

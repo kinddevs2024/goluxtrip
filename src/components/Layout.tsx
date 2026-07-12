@@ -54,10 +54,18 @@ export function Header() {
       <header className="sticky top-0 z-50 bg-white border-b border-line shadow-sm">
         <div className="mx-auto flex h-24 max-w-[1400px] items-center justify-between px-5 lg:px-8">
           <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
-            <img src="/glt-mark.png" alt="" className="h-12 w-auto xl:hidden" />
-            <div className="hidden xl:flex flex-col">
-              <img src="/glt-wide.png" alt="GoLuxTrip" className="h-10 w-auto" />
-              <span className="text-[9px] font-semibold tracking-[0.18em] text-gray-400 uppercase mt-0.5 pl-0.5">Transportation &amp; Field Logistics Partner</span>
+            {/* Mobile / medium screens — icon mark only */}
+            <img src="/glt-mark.png" alt="GoLuxTrip" className="h-11 w-auto xl:hidden" />
+            {/* Desktop — wide logo + tagline */}
+            <div className="hidden xl:flex flex-col gap-0.5">
+              <img
+                src="/glt-wide.png"
+                alt="GoLuxTrip"
+                className="h-9 w-auto max-w-[200px] object-contain object-left"
+              />
+              <span className="text-[8.5px] font-bold tracking-[0.15em] text-gray-400 uppercase pl-0.5">
+                Transportation &amp; Field Logistics Partner
+              </span>
             </div>
           </Link>
 
