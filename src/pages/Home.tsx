@@ -186,7 +186,7 @@ export default function Home() {
                 {t("hero.cta")}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
-              <Link to="/fleet" className="border border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy hover:scale-105 transition-all duration-300">
+              <Link to="/about" className="border border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy hover:scale-105 transition-all duration-300">
                 {t("hero.secondary")}
               </Link>
             </motion.div>
