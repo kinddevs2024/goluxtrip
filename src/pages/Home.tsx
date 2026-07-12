@@ -135,6 +135,8 @@ export default function Home() {
         </motion.div>
         
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent" />
+        {/* subtle bottom fade */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy/80 to-transparent" />
         
         <div className="relative mx-auto max-w-[1400px] h-full flex flex-col justify-center px-5 lg:px-8">
           <motion.div 
@@ -143,15 +145,45 @@ export default function Home() {
             variants={staggerContainer}
             className="max-w-3xl"
           >
-            <motion.h1 variants={fadeUp} className={`font-black text-white leading-[1.05] tracking-tight whitespace-pre-line ${i18n.language === "ru" ? "text-4xl sm:text-5xl md:text-6xl lg:text-7xl" : "text-5xl sm:text-6xl md:text-7xl lg:text-[5rem]"}`}>
-              {t("hero.title")}
+            {/* Decorative label */}
+            <motion.div variants={fadeUp} className="inline-flex items-center gap-3 mb-7">
+              <span className="block w-8 h-[2px] bg-gltOrange" />
+              <span className="text-gltOrange font-bold text-xs tracking-[0.25em] uppercase">GoLuxTrip</span>
+            </motion.div>
+
+            <motion.h1 
+              variants={fadeUp} 
+              className={`font-black text-white leading-[1.02] tracking-tight ${i18n.language === "ru" ? "text-4xl sm:text-5xl md:text-6xl lg:text-7xl" : "text-5xl sm:text-6xl md:text-7xl lg:text-[5rem]"}`}
+            >
+              {/* Split the title to style individual words */}
+              <span className="block">{t("hero.title").split("\n")[0]}</span>
+              {t("hero.title").split("\n").slice(1).map((line: string, i: number) => (
+                <span key={i} className="block">
+                  {line.split(" ").map((word: string, wi: number) => (
+                    wi === line.split(" ").length - 1
+                      ? <span key={wi} className="text-gltOrange">{word}</span>
+                      : <span key={wi}>{word} </span>
+                  ))}
+                </span>
+              ))}
             </motion.h1>
-            <motion.p variants={fadeUp} className="mt-8 text-lg sm:text-xl text-gray-300 font-medium whitespace-pre-line leading-relaxed max-w-2xl">
-              {t("hero.text")}
+
+            {/* Divider */}
+            <motion.div variants={fadeUp} className="flex items-center gap-4 my-7">
+              <div className="h-[1px] w-12 bg-gltOrange/60" />
+              <div className="h-[1px] flex-1 max-w-[180px] bg-white/10" />
+            </motion.div>
+
+            <motion.p variants={fadeUp} className="text-gray-300 font-medium leading-relaxed max-w-xl" style={{fontSize: '0.95rem', letterSpacing: '0.01em'}}>
+              {t("hero.text").split("\n").map((line: string, i: number) => (
+                <span key={i} className="block">{line}</span>
+              ))}
             </motion.p>
-            <motion.div variants={fadeUp} className="mt-12 flex flex-col sm:flex-row gap-5">
-              <Link to="/contact" className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
-                {t("hero.cta")} <ArrowRight size={18} />
+
+            <motion.div variants={fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Link to="/contact" className="group bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-3 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
+                {t("hero.cta")}
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
               <Link to="/fleet" className="border border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy hover:scale-105 transition-all duration-300">
                 {t("hero.secondary")}

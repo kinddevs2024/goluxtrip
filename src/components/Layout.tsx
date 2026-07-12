@@ -45,19 +45,22 @@ export function Header() {
         <div className="mx-auto flex h-24 max-w-[1400px] items-center justify-between px-5 lg:px-8">
           <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
             <img src="/glt-mark.png" alt="" className="h-12 w-auto xl:hidden" />
-            <img src="/glt-wide.png" alt="GoLuxTrip" className="hidden h-12 w-auto xl:block" />
+            <div className="hidden xl:flex flex-col">
+              <img src="/glt-wide.png" alt="GoLuxTrip" className="h-10 w-auto" />
+              <span className="text-[9px] font-semibold tracking-[0.18em] text-gray-400 uppercase mt-0.5 pl-0.5">Transportation &amp; Field Logistics Partner</span>
+            </div>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-6 text-xs uppercase tracking-widest font-bold text-navy xl:flex relative">
-            <Link to="/" className="transition hover:text-gltOrange">{t("nav.home")}</Link>
+            <Link to="/" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.home")}</Link>
             
             <div 
               className="relative group"
               onMouseEnter={() => setDropdownOpen(true)}
               onMouseLeave={() => setDropdownOpen(false)}
             >
-              <button className="flex items-center gap-1 transition hover:text-gltOrange uppercase outline-none">
+              <button className="flex items-center gap-1 transition hover:text-gltOrange uppercase outline-none relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">
                 Services <ChevronDown size={14} className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
               </button>
               
@@ -77,15 +80,15 @@ export function Header() {
               )}
             </div>
 
-            <Link to="/fleet" className="transition hover:text-gltOrange">{t("nav.fleet")}</Link>
-            <Link to="/about" className="transition hover:text-gltOrange">{t("nav.about")}</Link>
-            <Link to="/real-missions" className="transition hover:text-gltOrange">Real Missions</Link>
+            <Link to="/fleet" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.fleet")}</Link>
+            <Link to="/about" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.about")}</Link>
+            <Link to="/real-missions" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">Real Missions</Link>
           </nav>
 
           <div className="hidden items-center gap-5 xl:flex">
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center rounded bg-gltOrange px-6 py-3 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-[#c84211]"
+              className="inline-flex items-center justify-center rounded bg-gltOrange px-6 py-3 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-[#c84211] hover:scale-105 hover:shadow-lg hover:shadow-gltOrange/40 shadow-md shadow-gltOrange/20 animate-pulse-soft"
             >
               {t("nav.apply")}
             </Link>

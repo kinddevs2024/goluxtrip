@@ -44,3 +44,11 @@ textarea {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@keyframes pulse-soft {
+  0%, 100% { box-shadow: 0 4px 20px rgba(225, 95, 33, 0.35); }
+  50%       { box-shadow: 0 4px 30px rgba(225, 95, 33, 0.65); }
+}
+.animate-pulse-soft {
+  animation: pulse-soft 2.5s ease-in-out infinite;
+}
