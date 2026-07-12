@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { 
   ArrowRight, ShieldCheck, Map, Truck, Globe, Clock, 
-  Users, Briefcase, ChevronDown, CheckCircle
+  Users, Briefcase, ChevronDown, CheckCircle, X
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -78,6 +78,7 @@ export default function Home() {
   const [cars, setCars] = useState<any[]>([]);
   const [missions, setMissions] = useState<any[]>([]);
   const [partnersData, setPartnersData] = useState<any[]>([]);
+  const [selectedFeature, setSelectedFeature] = useState<null | { icon: any; title: string; desc: string; detail: string; bullets: string[] }>(null);
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/stats")
       .then(res => res.json())
@@ -122,8 +123,8 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden bg-white">
-      {/* 1. HERO SECTION (Parallax) */}
-      <section className="relative h-[85vh] min-h-[600px] w-full bg-navy overflow-hidden">
+      {/* 1. HERO SECTION (Parallax) — features bar pinned to bottom */}
+      <section className="relative h-screen min-h-[640px] w-full bg-navy overflow-hidden flex flex-col">
         <motion.div 
           style={{ y: y1 }}
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 mix-blend-luminosity scale-110" 
@@ -135,10 +136,11 @@ export default function Home() {
         </motion.div>
         
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent" />
-        {/* subtle bottom fade */}
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy/80 to-transparent" />
+        {/* bottom fade for seamless banner blend */}
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-navy to-transparent" />
         
-        <div className="relative mx-auto max-w-[1400px] h-full flex flex-col justify-center px-5 lg:px-8">
+        {/* Hero text — centered vertically, pushes up a bit to leave room for banner */}
+        <div className="relative flex-1 mx-auto max-w-[1400px] w-full flex flex-col justify-center px-5 lg:px-8 pb-28">
           <motion.div 
             initial="hidden" 
             animate="visible" 
@@ -155,7 +157,6 @@ export default function Home() {
               variants={fadeUp} 
               className={`font-black text-white leading-[1.02] tracking-tight ${i18n.language === "ru" ? "text-4xl sm:text-5xl md:text-6xl lg:text-7xl" : "text-5xl sm:text-6xl md:text-7xl lg:text-[5rem]"}`}
             >
-              {/* Split the title to style individual words */}
               <span className="block">{t("hero.title").split("\n")[0]}</span>
               {t("hero.title").split("\n").slice(1).map((line: string, i: number) => (
                 <span key={i} className="block">
@@ -191,38 +192,132 @@ export default function Home() {
             </motion.div>
           </motion.div>
         </div>
-      </section>
 
-      {/* 2. FEATURES BANNER */}
-      <section className="bg-navy border-b border-white/10 relative z-10 -mt-1 shadow-2xl">
-        <div className="mx-auto max-w-[1400px] px-5 lg:px-8 py-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-4 text-white text-sm"
-          >
-            {[
+        {/* ── FEATURES BANNER pinned to bottom of hero (desktop) ── */}
+        <div className="relative z-10 w-full border-t border-white/10 bg-navy/80 backdrop-blur-sm hidden lg:block">
+          <div className="mx-auto max-w-[1400px] px-8 py-5">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              className="grid grid-cols-5 gap-4 text-white text-sm"
+            >
+              {([
+                { icon: Truck, title: t("featuresBanner.suvs"), desc: t("featuresBanner.suvsDesc"),
+                  detail: "Our modern fleet of SUVs and 4WD vehicles is equipped for any terrain — from city roads to remote mountain tracks.",
+                  bullets: ["Toyota Land Cruiser 200 & 300", "Ford Expedition & Explorer", "Lexus LX & GX series", "All vehicles regularly serviced", "GPS tracking enabled"] },
+                { icon: Map, title: t("featuresBanner.remote"), desc: t("featuresBanner.remoteDesc"),
+                  detail: "We operate in the most remote and challenging regions of Uzbekistan, including field sites inaccessible to standard transportation.",
+                  bullets: ["Karakalpakstan & Aral region", "Fergana Valley & mountain areas", "Desert and off-road routes", "Field camp logistics support", "Local knowledge & experience"] },
+                { icon: Users, title: t("featuresBanner.drivers"), desc: t("featuresBanner.driversDesc"),
+                  detail: "All our drivers are professionally trained, vetted, and experienced in working with international organizations and diplomatic clients.",
+                  bullets: ["English-speaking drivers available", "Security & defensive driving trained", "Background-checked & certified", "Familiar with UN & NGO protocols", "Available 24/7 on request"] },
+                { icon: Clock, title: t("featuresBanner.ops"), desc: t("featuresBanner.opsDesc"),
+                  detail: "GoLuxTrip operates around the clock. Whether it's an early morning airport transfer or an emergency field evacuation — we are always ready.",
+                  bullets: ["24/7 dispatch center", "Emergency response available", "Same-day booking accepted", "Real-time driver communication", "Operations manager on call"] },
+                { icon: Globe, title: t("featuresBanner.coverage"), desc: t("featuresBanner.coverageDesc"),
+                  detail: "We cover all regions across Uzbekistan and neighboring countries, supporting international missions and corporate travel seamlessly.",
+                  bullets: ["All 14 regions of Uzbekistan", "Tashkent city & airport transfers", "Cross-border trips (Tajikistan, Kazakhstan)", "Multi-city itinerary planning", "Dedicated route coordinators"] },
+              ] as { icon: any; title: string; desc: string; detail: string; bullets: string[] }[]).map((feature, idx) => (
+                <motion.button
+                  key={idx}
+                  whileHover={{ y: -4 }}
+                  onClick={() => setSelectedFeature(feature)}
+                  className="flex items-center gap-4 group cursor-pointer text-left w-full rounded-xl px-3 py-2 hover:bg-white/5 transition-colors duration-200"
+                >
+                  <div className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gltOrange transition-colors duration-300 flex-shrink-0">
+                    <feature.icon size={22} className="text-gltOrange group-hover:text-white transition-colors duration-300" />
+                  </div>
+                  <div>
+                    <div className="font-bold uppercase tracking-wide text-xs">{feature.title}</div>
+                    <div className="text-gray-400 text-[11px] mt-0.5">{feature.desc}</div>
+                    <div className="text-gltOrange text-[10px] mt-1 font-semibold tracking-wider opacity-0 group-hover:opacity-100 transition-opacity">Learn more →</div>
+                  </div>
+                </motion.button>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Mobile features — shown below hero, scrollable */}
+        <div className="relative z-10 w-full border-t border-white/10 bg-navy lg:hidden">
+          <div className="px-5 py-4 grid grid-cols-2 gap-4 text-white text-sm">
+            {([
               { icon: Truck, title: t("featuresBanner.suvs"), desc: t("featuresBanner.suvsDesc") },
               { icon: Map, title: t("featuresBanner.remote"), desc: t("featuresBanner.remoteDesc") },
               { icon: Users, title: t("featuresBanner.drivers"), desc: t("featuresBanner.driversDesc") },
               { icon: Clock, title: t("featuresBanner.ops"), desc: t("featuresBanner.opsDesc") },
-              { icon: Globe, title: t("featuresBanner.coverage"), desc: t("featuresBanner.coverageDesc") }
-            ].map((feature, idx) => (
-              <motion.div key={idx} whileHover={{ y: -5 }} className="flex items-center gap-4 group cursor-default">
-                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gltOrange transition-colors duration-300">
-                  <feature.icon size={24} className="text-gltOrange group-hover:text-white transition-colors duration-300" />
+              { icon: Globe, title: t("featuresBanner.coverage"), desc: t("featuresBanner.coverageDesc") },
+            ] as { icon: any; title: string; desc: string }[]).map((f, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <f.icon size={18} className="text-gltOrange" />
                 </div>
                 <div>
-                  <div className="font-bold uppercase tracking-wide">{feature.title}</div>
-                  <div className="text-gray-400 text-xs mt-1">{feature.desc}</div>
+                  <div className="font-bold uppercase tracking-wide text-[10px]">{f.title}</div>
+                  <div className="text-gray-400 text-[10px] mt-0.5">{f.desc}</div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
+
+      {/* ── FEATURE DETAIL MODAL ── */}
+      {selectedFeature && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[999] flex items-center justify-center p-4"
+          onClick={() => setSelectedFeature(null)}
+        >
+          <div className="absolute inset-0 bg-navy/80 backdrop-blur-sm" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ type: "spring", damping: 20 }}
+            className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="bg-navy px-8 py-6 flex items-center gap-4">
+              <div className="w-14 h-14 rounded-full bg-gltOrange/20 flex items-center justify-center flex-shrink-0">
+                <selectedFeature.icon size={28} className="text-gltOrange" />
+              </div>
+              <div className="flex-1">
+                <p className="text-gltOrange text-xs font-bold tracking-widest uppercase mb-1">GoLuxTrip Service</p>
+                <h2 className="text-white font-black text-xl tracking-tight">{selectedFeature.title}</h2>
+              </div>
+              <button
+                onClick={() => setSelectedFeature(null)}
+                className="text-white/50 hover:text-white transition ml-2"
+              >
+                <X size={22} />
+              </button>
+            </div>
+            {/* Body */}
+            <div className="px-8 py-6">
+              <p className="text-gray-600 leading-relaxed text-sm mb-6">{selectedFeature.detail}</p>
+              <ul className="space-y-3">
+                {selectedFeature.bullets.map((b, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                    <CheckCircle size={16} className="text-gltOrange flex-shrink-0 mt-0.5" />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                to="/contact"
+                onClick={() => setSelectedFeature(null)}
+                className="mt-8 flex items-center justify-center gap-2 w-full bg-gltOrange text-white font-bold text-sm uppercase tracking-widest px-6 py-3.5 rounded-xl hover:bg-[#c84211] hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-gltOrange/30"
+              >
+                Request This Service <ArrowRight size={16} />
+              </Link>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* 3. WHAT WE DO (SOLUTIONS GRID - 3D TILT) */}
       <section className="py-24 bg-lightbg relative">
