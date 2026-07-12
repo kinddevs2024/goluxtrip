@@ -36,6 +36,7 @@ export default function Contact() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const carParam = searchParams.get("car");
+  const serviceParam = searchParams.get("service");
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
   const [startDate, endDate] = dateRange;
 
@@ -69,7 +70,10 @@ export default function Contact() {
     if (carParam) {
       setValue("message", `Interested in vehicle: ${carParam}`);
     }
-  }, [carParam, setValue]);
+    if (serviceParam) {
+      setValue("service", serviceParam, { shouldValidate: false });
+    }
+  }, [carParam, serviceParam, setValue]);
 
   useEffect(() => {
     if (startDate || endDate) {
@@ -106,6 +110,18 @@ export default function Contact() {
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-32 lg:px-8">
+      {/* Pre-selected service banner */}
+      {serviceParam && (
+        <div className="mb-10 flex items-center gap-4 bg-navy text-white px-6 py-4 rounded-2xl shadow-lg">
+          <div className="w-10 h-10 rounded-full bg-gltOrange/20 flex items-center justify-center flex-shrink-0">
+            <ArrowRight size={18} className="text-gltOrange" />
+          </div>
+          <div>
+            <p className="text-xs text-gltOrange font-bold uppercase tracking-widest mb-0.5">Service Pre-Selected</p>
+            <p className="font-bold text-sm">{serviceParam} — Fill in your details below and submit the request.</p>
+          </div>
+        </div>
+      )}
       <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <div data-aos="fade-right">
           <SectionHeading kicker={t("application.kicker")} title={t("application.title")} text={t("application.text")} />

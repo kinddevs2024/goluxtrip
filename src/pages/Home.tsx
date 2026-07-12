@@ -359,8 +359,18 @@ export default function Home() {
                     <div className="p-8 flex-1 flex flex-col bg-white z-20 relative">
                       <h3 className="font-bold text-navy text-xl uppercase tracking-wide mb-4 group-hover:text-gltOrange transition-colors">{sol.title}</h3>
                       <p className="text-sm text-asphalt mb-6 leading-relaxed flex-1">{sol.desc}</p>
-                      <Link to={`/${sol.id}`} className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-navy group-hover:text-gltOrange transition-colors">
-                        Learn More <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
+                      <Link
+                        to={`/contact?service=${encodeURIComponent(
+                          sol.id === 'field-missions' ? 'Field Mission' :
+                          sol.id === 'delegations' ? 'Delegation' :
+                          sol.id === 'transfers' ? 'Transfer' :
+                          sol.id === 'regional' ? 'Regional Travel' :
+                          sol.id === 'day-trips' ? 'Day Trip' :
+                          sol.id === 'industry' ? 'Industry Solution' : sol.title
+                        )}`}
+                        className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-navy group-hover:text-gltOrange transition-colors"
+                      >
+                        Request This Service <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
                       </Link>
                     </div>
                   </div>
