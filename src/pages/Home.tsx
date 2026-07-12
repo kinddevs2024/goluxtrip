@@ -132,7 +132,7 @@ export default function Home() {
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
-          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1920" alt="Hero" className="w-full h-full object-cover" />
+          <img src="/hero-car.jpg" alt="Hero" className="w-full h-full object-cover" />
         </motion.div>
         
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent" />
