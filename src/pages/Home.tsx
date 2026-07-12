@@ -591,29 +591,88 @@ export default function Home() {
       </section>
 
       {/* 6. PARTNERS BANNER (Infinite Marquee) */}
-      <section className="bg-lightbg border-y border-line py-16 overflow-hidden">
-         <div className="mx-auto max-w-[1400px] px-5 lg:px-8 mb-8 text-center">
-            <h3 className="text-navy font-bold text-sm tracking-[0.2em] uppercase">
-               {t("partners.title")}
-            </h3>
-         </div>
-         <Marquee gradient={true} gradientColor="var(--lightbg)" speed={40} className="py-4">
+      <section className="bg-navy relative overflow-hidden py-16">
+        {/* Subtle background grid */}
+        <div className="absolute inset-0 opacity-5" style={{backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px'}} />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gltOrange to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gltOrange/30 to-transparent" />
+
+        {/* Heading */}
+        <div className="mx-auto max-w-[1400px] px-5 lg:px-8 mb-10 text-center relative z-10">
+          <div className="inline-flex items-center gap-4 mb-4">
+            <span className="block w-12 h-[2px] bg-gltOrange" />
+            <span className="text-gltOrange font-black text-xs tracking-[0.3em] uppercase">Industries We Serve</span>
+            <span className="block w-12 h-[2px] bg-gltOrange" />
+          </div>
+          <h2 className="text-white font-black text-3xl md:text-4xl lg:text-5xl tracking-tight leading-tight">
+            Trusted Transportation<br />
+            <span className="text-gltOrange">Partner</span> For
+          </h2>
+        </div>
+
+        {/* Marquee */}
+        <div className="relative z-10">
+          <Marquee gradient={false} speed={50} className="py-3">
             {partnersData.length > 0 ? (
-               partnersData.map((p) => (
-                  <div key={p._id} className="flex items-center gap-3 mx-12">
-                     <img src={p.image} alt="Partner Logo" className="h-16 max-w-[200px] object-contain mix-blend-multiply opacity-60 hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-               ))
+              partnersData.map((p) => (
+                <div key={p._id} className="flex items-center mx-8 bg-white/5 border border-white/10 rounded-xl px-5 py-3 hover:bg-white/10 hover:border-gltOrange/40 transition-all duration-300 group">
+                  <img src={p.image} alt="Partner Logo" className="h-12 max-w-[160px] object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              ))
             ) : (
-               partners.map((p, i) => (
-                  <div key={i} className="flex items-center gap-3 mx-12 text-gray-400 hover:text-navy transition-colors duration-300">
-                     <ShieldCheck size={32} />
-                     <span className="font-bold uppercase tracking-wider text-sm">{p}</span>
+              partners.map((p, i) => {
+                const colors = [
+                  "from-orange-500/20 to-orange-600/10 border-orange-500/30 text-orange-300",
+                  "from-blue-500/20 to-blue-600/10 border-blue-500/30 text-blue-300",
+                  "from-emerald-500/20 to-emerald-600/10 border-emerald-500/30 text-emerald-300",
+                  "from-purple-500/20 to-purple-600/10 border-purple-500/30 text-purple-300",
+                  "from-cyan-500/20 to-cyan-600/10 border-cyan-500/30 text-cyan-300",
+                  "from-pink-500/20 to-pink-600/10 border-pink-500/30 text-pink-300",
+                  "from-amber-500/20 to-amber-600/10 border-amber-500/30 text-amber-300",
+                ];
+                const c = colors[i % colors.length];
+                return (
+                  <div
+                    key={i}
+                    className={`flex items-center gap-3 mx-4 bg-gradient-to-r ${c} border rounded-xl px-6 py-3.5 hover:scale-105 transition-all duration-300 cursor-default group`}
+                  >
+                    <ShieldCheck size={18} className="flex-shrink-0 opacity-80" />
+                    <span className="font-black uppercase tracking-[0.12em] text-sm text-white whitespace-nowrap">{p}</span>
                   </div>
-               ))
+                );
+              })
             )}
-         </Marquee>
+          </Marquee>
+
+          {/* Second row marquee — opposite direction */}
+          {partnersData.length === 0 && (
+            <Marquee gradient={false} speed={35} direction="right" className="py-3 mt-2">
+              {[...partners].reverse().map((p, i) => {
+                const colors2 = [
+                  "from-slate-500/20 to-slate-600/10 border-slate-500/30 text-slate-300",
+                  "from-teal-500/20 to-teal-600/10 border-teal-500/30 text-teal-300",
+                  "from-violet-500/20 to-violet-600/10 border-violet-500/30 text-violet-300",
+                  "from-rose-500/20 to-rose-600/10 border-rose-500/30 text-rose-300",
+                  "from-lime-500/20 to-lime-600/10 border-lime-500/30 text-lime-300",
+                  "from-sky-500/20 to-sky-600/10 border-sky-500/30 text-sky-300",
+                  "from-fuchsia-500/20 to-fuchsia-600/10 border-fuchsia-500/30 text-fuchsia-300",
+                ];
+                const c2 = colors2[i % colors2.length];
+                return (
+                  <div
+                    key={i}
+                    className={`flex items-center gap-3 mx-4 bg-gradient-to-r ${c2} border rounded-xl px-6 py-3.5 hover:scale-105 transition-all duration-300 cursor-default`}
+                  >
+                    <ShieldCheck size={18} className="flex-shrink-0 opacity-80" />
+                    <span className="font-black uppercase tracking-[0.12em] text-sm text-white whitespace-nowrap">{p}</span>
+                  </div>
+                );
+              })}
+            </Marquee>
+          )}
+        </div>
       </section>
+
 
       {/* 7. CONTACT / APPLICATION */}
       <section className="bg-navy relative overflow-hidden" id="contact">
