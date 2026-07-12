@@ -29,14 +29,30 @@ export default function About() {
 
   return (
     <div className="pt-24 min-h-screen bg-white">
-      <div className="relative h-[50vh] bg-navy flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          <img src={image || "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000"} alt="About Us" className="w-full h-full object-cover mix-blend-overlay" />
+      <div className="relative h-[60vh] bg-navy flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={image || "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000"} alt="About Us" className="w-full h-full object-cover opacity-25 mix-blend-luminosity" />
         </div>
-        <div className="relative z-10 text-center px-5">
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest mb-6">
-            {i18n.language === 'ru' ? "Ðž ÐšÐ¾Ð¼Ð¿Ð°Ð½Ð¸Ð¸" : i18n.language === 'uz' ? "Kompaniya haqida" : "About GoLuxTrip"}
-          </motion.h1>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/60 via-navy/80 to-navy" />
+        {/* Left orange accent */}
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gltOrange via-gltOrange/50 to-transparent" />
+        <div className="relative z-10 text-center px-5 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+            <div className="inline-flex items-center gap-3 mb-6">
+              <span className="block w-10 h-[2px] bg-gltOrange" />
+              <span className="text-gltOrange font-black text-xs tracking-[0.3em] uppercase">GoLuxTrip</span>
+              <span className="block w-10 h-[2px] bg-gltOrange" />
+            </div>
+            <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight leading-[1.05] mb-8">
+              Where the Road Ends,<br />
+              <span className="text-gltOrange">We Continue.</span>
+            </h1>
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed max-w-2xl mx-auto font-medium">
+              Reliable Transportation &amp; Field Logistics for International Organizations,
+              Development Projects, Official Delegations and Corporate Clients across Uzbekistan.
+            </p>
+          </motion.div>
         </div>
       </div>
       <div className="max-w-4xl mx-auto px-5 py-24">
