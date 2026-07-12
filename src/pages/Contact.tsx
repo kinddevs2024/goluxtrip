@@ -62,10 +62,10 @@ type ApplicationForm = {
   organization: string;
   service: string;
   departureDatetime: string;
-  returnDatetime: string;
+  returnDatetime?: string;
   route: string;
   passengers: string;
-  itinerary: string;
+  itinerary?: string;
   note?: string;
 };
 
@@ -125,10 +125,10 @@ export default function Contact() {
       phone: z.string().min(5, "Phone number is required"),
       service: z.string().min(2, "Please select a service type"),
       departureDatetime: z.string().min(2, "Departure date & time is required"),
-      returnDatetime: z.string().min(2, "Return date & time is required"),
+      returnDatetime: z.string().optional().default(""),
       route: z.string().min(2, "Region/City is required"),
       passengers: z.string().min(1, "Number of passengers is required"),
-      itinerary: z.string().min(2, "Trip itinerary is required"),
+      itinerary: z.string().optional().default(""),
       note: z.string().max(1000).optional(),
     }),
     []
@@ -165,14 +165,29 @@ export default function Contact() {
   }, [returnDate, setValue]);
 
   async function onSubmit(values: ApplicationForm) {
+    const datesStr = values.returnDatetime
+      ? `Departure: ${values.departureDatetime} | Return: ${values.returnDatetime}`
+      : `Departure: ${values.departureDatetime} (one-way)`;
+
+    const routeStr = [
+      `Organization: ${values.organization}`,
+      `Region/City: ${values.route}`,
+      `Passengers: ${values.passengers}`,
+    ].join(" | ");
+
+    const msgParts = [
+      values.itinerary ? `Itinerary: ${values.itinerary}` : "",
+      values.note ? `Note: ${values.note}` : "",
+    ].filter(Boolean).join(" | ");
+
     const payload = {
       name: values.name,
       email: values.email,
       phone: `${values.countryCode} ${values.phone}`,
       car: values.service,
-      dates: `Depart: ${values.departureDatetime} | Return: ${values.returnDatetime}`,
-      route: `Org: ${values.organization} | Region: ${values.route} | Pax: ${values.passengers}`,
-      message: `Itinerary: ${values.itinerary}${values.note ? " | Note: " + values.note : ""}`,
+      dates: datesStr,
+      route: routeStr,
+      message: msgParts || "No additional info",
     };
 
     const response = await fetch("https://goluxtrip-backend.vercel.app/api/apply", {
