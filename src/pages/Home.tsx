@@ -685,7 +685,9 @@ export default function Home() {
                  whileInView={{ scale: 1 }}
                  transition={{ duration: 5, ease: "linear" }}
                />
-               <div className="absolute inset-0 bg-navy/90" />
+               <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy/95 to-[#061525]" />
+               {/* Orange accent line */}
+               <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gltOrange via-gltOrange/50 to-transparent" />
                <motion.div 
                  initial={{ opacity: 0, x: -50 }}
                  whileInView={{ opacity: 1, x: 0 }}
@@ -693,12 +695,30 @@ export default function Home() {
                  transition={{ duration: 0.4 }}
                  className="relative z-10"
                >
-                  <h4 className="text-gltOrange font-bold text-sm tracking-[0.2em] uppercase mb-6 flex items-center gap-4">
-                    <span className="w-12 h-px bg-gltOrange"></span>
-                    {t("application.kicker")}
-                  </h4>
-                  <h2 className="text-4xl md:text-5xl font-black mb-8 whitespace-pre-line leading-tight">{t("application.title")}</h2>
-                  <p className="text-gray-300 text-base whitespace-pre-line leading-relaxed max-w-sm">{t("application.text")}</p>
+                  <div className="inline-flex items-center gap-3 mb-6">
+                    <span className="block w-8 h-[2px] bg-gltOrange" />
+                    <span className="text-gltOrange font-black text-[10px] tracking-[0.3em] uppercase">Transportation Request</span>
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black mb-6 leading-[1.1]">
+                    Need a Ride<br />
+                    <span className="text-gltOrange">Across</span><br />
+                    Uzbekistan?
+                  </h2>
+                  <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
+                    Fill in the form — our team responds within 2 hours with the best transport solution.
+                  </p>
+                  <div className="mt-8 space-y-3 text-sm">
+                    {[
+                      { icon: "📧", text: "info@goluxtrip.com" },
+                      { icon: "📞", text: "+998 90 000 00 00" },
+                      { icon: "🕐", text: "24/7 Operations" },
+                    ].map((r, i) => (
+                      <div key={i} className="flex items-center gap-3 text-gray-400">
+                        <span>{r.icon}</span>
+                        <span className="font-semibold text-gray-300">{r.text}</span>
+                      </div>
+                    ))}
+                  </div>
                </motion.div>
             </div>
 
@@ -709,67 +729,75 @@ export default function Home() {
                transition={{ duration: 0.4 }}
                className="lg:w-7/12 p-8 lg:p-24 bg-[#051b2e] shadow-2xl relative z-20"
             >
-               <form className="grid sm:grid-cols-2 gap-x-8 gap-y-6" onSubmit={handleSubmit(onSubmit, () => toast.error(t("application.invalid")))}>
-                  
-                  {/* Inputs mapped to look identical but fully functional */}
+               <form className="grid sm:grid-cols-2 gap-x-8 gap-y-5" onSubmit={handleSubmit(onSubmit, () => toast.error(t("application.invalid")))}>
+
+                  {/* Organization */}
                   <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.organization")}</label>
-                     <input type="text" {...register("organization")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.route")}</label>
-                     <input type="text" {...register("route")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
-                  </div>
-                  
-                  <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.name")}</label>
-                     <input type="text" {...register("name")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.passengers")}</label>
-                     <div className="relative">
-                        <select {...register("passengers")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none w-full appearance-none transition-all">
-                           <option value="1-4" className="bg-navy">1-4</option>
-                           <option value="5-10" className="bg-navy">5-10</option>
-                           <option value="10+" className="bg-navy">10+</option>
-                        </select>
-                        <ChevronDown size={18} className="absolute right-4 top-4 text-gray-400 pointer-events-none" />
-                     </div>
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Organization</label>
+                     <input type="text" {...register("organization")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none transition-all placeholder:text-gray-600" placeholder="UN, World Bank..." />
                   </div>
 
+                  {/* Contact Person */}
                   <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.email")}</label>
-                     <input type="email" {...register("email")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.upload")}</label>
-                     <input type="file" className="bg-white/5 border border-white/10 text-gray-400 text-sm rounded-lg p-3 focus:border-gltOrange focus:bg-white/10 outline-none file:bg-white/10 file:border-0 file:text-white file:px-4 file:py-1.5 file:rounded-md file:mr-4 file:font-semibold file:text-xs file:uppercase file:tracking-wider file:cursor-pointer transition-all" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Contact Person</label>
+                     <input type="text" {...register("name")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none transition-all placeholder:text-gray-600" placeholder="Full name" />
                   </div>
 
+                  {/* Email */}
                   <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.service")}</label>
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Email <span className="text-gltOrange">*</span></label>
+                     <input type="email" {...register("email")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none transition-all placeholder:text-gray-600" placeholder="email@example.com" />
+                  </div>
+
+                  {/* Passengers — text input */}
+                  <div className="flex flex-col gap-2">
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Nr. of Passenger(s) <span className="text-gltOrange">*</span></label>
+                     <input type="text" inputMode="numeric" {...register("passengers")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none transition-all placeholder:text-gray-600" placeholder="e.g. 4" />
+                  </div>
+
+                  {/* Service Type */}
+                  <div className="flex flex-col gap-2">
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Service Type <span className="text-gltOrange">*</span></label>
                      <div className="relative">
-                        <select {...register("service")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none w-full appearance-none transition-all">
-                           <option value="Field Mission" className="bg-navy">Field Mission</option>
+                        <select {...register("service")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none w-full appearance-none transition-all">
+                           <option value="" className="bg-navy">Select service...</option>
+                           <option value="Project Site Visit" className="bg-navy">Project Site Visit</option>
                            <option value="Delegation" className="bg-navy">Delegation</option>
+                           <option value="Airport Drop Off" className="bg-navy">Airport Drop Off</option>
+                           <option value="Airport Pick Up" className="bg-navy">Airport Pick Up</option>
                            <option value="Transfer" className="bg-navy">Transfer</option>
                         </select>
                         <ChevronDown size={18} className="absolute right-4 top-4 text-gray-400 pointer-events-none" />
                      </div>
                   </div>
+
+                  {/* Region/City */}
                   <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.message")}</label>
-                     <input type="text" {...register("message")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
-                  </div>
-                  
-                  <div className="flex flex-col gap-2">
-                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">{t("application.fields.dates")}</label>
-                     <input type="text" {...register("dates")} className="bg-white/5 border border-white/10 text-white text-sm rounded-lg p-4 focus:border-gltOrange focus:bg-white/10 outline-none transition-all" />
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Region / City <span className="text-gltOrange">*</span></label>
+                     <input type="text" {...register("route")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none transition-all placeholder:text-gray-600" placeholder="e.g. Tashkent, Samarkand" />
                   </div>
 
-                  <div className="flex items-end mt-4 sm:mt-0">
-                     <button type="submit" disabled={isSubmitting} className="bg-gltOrange text-white font-bold text-sm tracking-widest uppercase rounded-lg p-4 w-full hover:bg-[#c84211] transition-all duration-300 disabled:opacity-50 shadow-lg shadow-gltOrange/20 hover:shadow-gltOrange/40 hover:-translate-y-1">
-                        {isSubmitting ? t("application.sending") : t("application.submit")}
+                  {/* Departure */}
+                  <div className="flex flex-col gap-2">
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Departure Date &amp; Time <span className="text-gltOrange">*</span></label>
+                     <input type="datetime-local" {...register("dates")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none transition-all [color-scheme:dark]" />
+                  </div>
+
+                  {/* Return */}
+                  <div className="flex flex-col gap-2">
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Return Date &amp; Time</label>
+                     <input type="datetime-local" {...register("message")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none transition-all [color-scheme:dark]" />
+                  </div>
+
+                  {/* Note full width */}
+                  <div className="flex flex-col gap-2 sm:col-span-2">
+                     <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">Note</label>
+                     <input type="text" {...register("message")} className="bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange outline-none transition-all placeholder:text-gray-600" placeholder="Additional requirements, trip notes..." />
+                  </div>
+
+                  <div className="flex items-end sm:col-span-2">
+                     <button type="submit" disabled={isSubmitting} className="bg-gltOrange text-white font-bold text-sm tracking-widest uppercase rounded-xl p-4 w-full hover:bg-[#c84211] transition-all duration-300 disabled:opacity-50 shadow-lg shadow-gltOrange/20 hover:shadow-gltOrange/40 hover:-translate-y-0.5">
+                        {isSubmitting ? t("application.sending") : "Submit Request →"}
                      </button>
                   </div>
                </form>
