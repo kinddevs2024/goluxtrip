@@ -118,7 +118,7 @@ export default function Home() {
   }
 
   const solutions = t("whatWeDo.solutions", { returnObjects: true }) as {id: string, title: string, desc: string, img: string}[];
-  const tCars = t("fleet.cars", { returnObjects: true }) as {id: string, name: string, seats: string, bags: string, drive: string, image: string}[];
+  const tCars = t("fleet.cars", { returnObjects: true }) as {id: string, name: string, seats: string, bags: string, drive: string, ac?: string, fuel?: string, year?: string, category?: string, image: string}[];
   const partners = t("partners.list", { returnObjects: true }) as string[];
 
   return (
@@ -427,21 +427,89 @@ export default function Home() {
                  className="w-full py-10"
                >
                  {(cars.length > 0 ? cars : tCars).map((car, i) => (
-                   <SwiperSlide key={i} className="w-[320px] sm:w-[380px]">
-                     <div className="bg-white rounded-2xl flex flex-col shadow-2xl overflow-hidden group">
-                        <div className="h-56 p-6 flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 relative">
-                           <img src={car.image} alt={car.name} className="max-h-full object-contain mix-blend-multiply drop-shadow-xl group-hover:scale-110 transition-transform duration-500" />
+                    <SwiperSlide key={i} className="w-[300px] sm:w-[340px]">
+                      <div className="rounded-2xl overflow-hidden shadow-2xl group bg-[#0a1f35] border border-white/10 flex flex-col">
+                        {/* Image */}
+                        <div className="relative h-52 bg-gradient-to-br from-navy via-[#0d2540] to-[#061525] flex items-center justify-center p-5 overflow-hidden">
+                          {/* Category badge */}
+                          {(car as any).category && (
+                            <span className="absolute top-3 left-3 bg-gltOrange/20 text-gltOrange text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-gltOrange/30">
+                              {(car as any).category}
+                            </span>
+                          )}
+                          {/* Year badge */}
+                          {(car as any).year && (
+                            <span className="absolute top-3 right-3 bg-white/5 text-gray-300 text-[9px] font-bold tracking-wide px-2.5 py-1 rounded-full border border-white/10">
+                              {(car as any).year}
+                            </span>
+                          )}
+                          <img
+                            src={car.image}
+                            alt={car.name}
+                            className="max-h-full max-w-full object-contain mix-blend-luminosity drop-shadow-2xl group-hover:scale-110 transition-transform duration-700 ease-in-out opacity-90 group-hover:opacity-100"
+                          />
                         </div>
-                        <div className="p-6 flex flex-col items-center bg-white relative z-10">
-                           <h3 className="font-black text-navy text-lg text-center h-12 mb-4 uppercase tracking-wide">{car.name}</h3>
-                           <div className="flex items-center gap-5 text-xs text-asphalt font-bold w-full justify-center border-t border-line pt-5">
-                              <span className="flex items-center gap-1.5 bg-lightbg px-3 py-1.5 rounded-full"><Users size={14} className="text-gltOrange" /> {car.seats}</span>
-                              <span className="flex items-center gap-1.5 bg-lightbg px-3 py-1.5 rounded-full"><Briefcase size={14} className="text-gltOrange" /> {car.bags}</span>
-                              <span className="flex items-center gap-1.5 bg-lightbg px-3 py-1.5 rounded-full"><CheckCircle size={14} className="text-gltOrange" /> {car.drive}</span>
-                           </div>
+
+                        {/* Card content */}
+                        <div className="p-5 flex flex-col gap-4">
+                          {/* Name */}
+                          <h3 className="font-black text-white text-base uppercase tracking-wider leading-tight">{car.name}</h3>
+
+                          {/* Divider */}
+                          <div className="h-px w-full bg-white/10" />
+
+                          {/* Primary specs grid */}
+                          <div className="grid grid-cols-3 gap-2">
+                            <div className="bg-white/5 rounded-xl p-3 flex flex-col items-center gap-1 border border-white/5">
+                              <Users size={15} className="text-gltOrange" />
+                              <span className="text-white font-black text-lg leading-none">{car.seats}</span>
+                              <span className="text-gray-500 text-[9px] uppercase tracking-wide font-bold">Seats</span>
+                            </div>
+                            <div className="bg-white/5 rounded-xl p-3 flex flex-col items-center gap-1 border border-white/5">
+                              <Briefcase size={15} className="text-gltOrange" />
+                              <span className="text-white font-black text-lg leading-none">{car.bags}</span>
+                              <span className="text-gray-500 text-[9px] uppercase tracking-wide font-bold">Bags</span>
+                            </div>
+                            <div className="bg-white/5 rounded-xl p-3 flex flex-col items-center gap-1 border border-white/5">
+                              <CheckCircle size={15} className="text-gltOrange" />
+                              <span className="text-white font-black text-sm leading-none text-center">{car.drive}</span>
+                              <span className="text-gray-500 text-[9px] uppercase tracking-wide font-bold">Drive</span>
+                            </div>
+                          </div>
+
+                          {/* Secondary specs — fuel, ac */}
+                          <div className="flex gap-2">
+                            {(car as any).fuel && (
+                              <div className="flex-1 flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 border border-white/5">
+                                <Truck size={12} className="text-gltOrange flex-shrink-0" />
+                                <div>
+                                  <div className="text-[9px] text-gray-500 uppercase tracking-wide font-bold">Fuel</div>
+                                  <div className="text-white text-xs font-bold">{(car as any).fuel}</div>
+                                </div>
+                              </div>
+                            )}
+                            {(car as any).ac && (
+                              <div className="flex-1 flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 border border-white/5">
+                                <Globe size={12} className="text-gltOrange flex-shrink-0" />
+                                <div>
+                                  <div className="text-[9px] text-gray-500 uppercase tracking-wide font-bold">A/C</div>
+                                  <div className="text-white text-xs font-bold">{(car as any).ac}</div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* CTA */}
+                          <Link
+                            to={`/contact?service=Transfer`}
+                            className="mt-1 w-full flex items-center justify-center gap-2 bg-gltOrange text-white text-xs font-bold uppercase tracking-widest py-3 rounded-xl hover:bg-[#c84211] hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-gltOrange/20 group/btn"
+                          >
+                            Book This Vehicle
+                            <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                          </Link>
                         </div>
-                     </div>
-                   </SwiperSlide>
+                      </div>
+                    </SwiperSlide>
                  ))}
                </Swiper>
             </motion.div>

@@ -86,25 +86,37 @@ const resources = {
           {
             id: "lc200",
             name: "Toyota Land Cruiser 200",
-            seats: "5",
+            seats: "7",
             bags: "4",
             drive: "4WD",
+            ac: "Yes",
+            fuel: "Petrol",
+            year: "2020",
+            category: "SUV",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQtfC1YAPQ5kcKFQ6ABBoLEAsWXxhCpqcx0LiWSiHFGFj_A6nC8n8pBXD2&s=10"
           },
           {
             id: "prado",
             name: "Toyota Land Cruiser Prado",
             seats: "5",
-            bags: "4",
+            bags: "3",
             drive: "4WD",
-            image: "https://chevrolet.uz/assets/images/tracker/colors/07.png" // Placeholder
+            ac: "Yes",
+            fuel: "Diesel",
+            year: "2021",
+            category: "SUV",
+            image: "https://chevrolet.uz/assets/images/tracker/colors/07.png"
           },
           {
             id: "staria",
             name: "Hyundai Staria",
             seats: "7",
             bags: "7",
-            drive: "A/C",
+            drive: "FWD",
+            ac: "Yes",
+            fuel: "Petrol",
+            year: "2022",
+            category: "Minivan",
             image: "https://cdn.motor1.com/images/mgl/POJEW/s3/2021-hyundai-staria.jpg"
           },
           {
@@ -112,7 +124,11 @@ const resources = {
             name: "Black Mercedes Sprinter",
             seats: "16",
             bags: "16",
-            drive: "A/C",
+            drive: "RWD",
+            ac: "Yes",
+            fuel: "Diesel",
+            year: "2021",
+            category: "Van",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPV4fuqp4oj5NGDEL0o0VArGsXtXGddOyQbdzO_vcEzwo1G-Lmog25vWpU&s=10"
           },
           {
@@ -120,7 +136,11 @@ const resources = {
             name: "King Long Bus",
             seats: "30",
             bags: "20",
-            drive: "A/C",
+            drive: "RWD",
+            ac: "Yes",
+            fuel: "Diesel",
+            year: "2022",
+            category: "Bus",
             image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPV4fuqp4oj5NGDEL0o0VArGsXtXGddOyQbdzO_vcEzwo1G-Lmog25vWpU&s=10"
           }
         ]
