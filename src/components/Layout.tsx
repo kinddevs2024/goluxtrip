@@ -171,7 +171,7 @@ export function Footer() {
 
         {/* Col 1: Logo + tagline */}
         <div className="flex flex-col gap-5">
-          <img src="/glt-wide.png" alt="GoLuxTrip" className="h-10 w-fit brightness-0 invert" />
+          <img src="/glt.png" alt="GoLuxTrip" className="h-20 w-40" />
           <p className="text-gray-400 text-sm leading-relaxed max-w-[220px]">
             Reliable Transportation &amp; Field Logistics across Uzbekistan — for organizations, delegations &amp; corporates.
           </p>

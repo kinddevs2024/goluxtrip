@@ -40,7 +40,7 @@ export default function FieldMissions() {
               {[
                 { icon: ShieldCheck, title: "Armored & Standard 4WDs", desc: "Top-tier vehicles maintained to the highest safety standards." },
                 { icon: Map, title: "Remote Area Experts", desc: "Drivers with extensive experience navigating unpaved roads and harsh terrain." },
-                { icon: Clock, title: "24/7 Operations Support", desc: "Constant communication and backup vehicle readiness." }
+                { icon: Clock, title: "24/7 Active Missions", desc: "Constant communication and backup vehicle readiness." }
               ].map((feature, i) => (
                 <li key={i} className="flex gap-4">
                   <div className="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center shrink-0">

@@ -87,7 +87,7 @@ export default function About() {
               { value: "245+", label: "Missions Completed", icon: "🎯" },
               { value: "45",   label: "Vehicles in Fleet",  icon: "🚗" },
               { value: "14",   label: "Regions Covered",    icon: "📍" },
-              { value: "24/7", label: "Operations Support", icon: "🕐" },
+              { value: "24/7", label: "Active Missions", icon: "🕐" },
             ]).map((item: any, i: number) => (
               <motion.div
                 key={i}

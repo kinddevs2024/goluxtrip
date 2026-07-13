@@ -13,7 +13,7 @@ const DEFAULT_STATS = [
   { label: "Missions Completed", value: "150+", order: 1 },
   { label: "Vehicles in Fleet", value: "45", order: 2 },
   { label: "Regions Covered", value: "14", order: 3 },
-  { label: "Operations Support", value: "24/7", order: 4 },
+  { label: "Active Missions", value: "24/7", order: 4 },
 ];
 
 export default function AdminStats() {

@@ -229,7 +229,7 @@ export default function Contact() {
             {[
               { icon: <Mail size={16} />, text: "info@goluxtrip.com" },
               { icon: <Phone size={16} />, text: "+998 (94) 626-43-46" },
-              { icon: <CalendarDays size={16} />, text: "24/7 Operations Support" },
+              { icon: <CalendarDays size={16} />, text: "24/7 Active Missions" },
               { icon: <MapPin size={16} />, text: "Tashkent, Uzbekistan" },
             ].map((row, i) => (
               <div key={i} className="flex items-center gap-3 text-gray-600 font-semibold">

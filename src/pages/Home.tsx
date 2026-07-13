@@ -163,10 +163,10 @@ export default function Home() {
           animate={{ scale: 1.06 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
-          <img src="/hero-car.jpg" alt="Hero" className="w-full h-full object-cover object-[center_70%]" />
+          <img src="/Car_on_center_of_image_202607131846.jpg" alt="Hero" className="w-full h-full object-cover object-[center_70%]" />
         </motion.div>
         
-        <div className="absolute inset-0 bg-gradient-to-r from-navy/65 via-navy/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/60 to-transparent" />
         {/* bottom fade for seamless banner blend */}
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy/55 to-transparent" />
         

@@ -6,7 +6,7 @@ export function PrivacyPolicy() {
       <div className="mt-8 space-y-5 text-base leading-8 text-asphalt">
         <p>
           GoLuxTrip collects only the contact and trip details needed to respond to transportation requests,
-          coordinate bookings, and provide operations support.
+          coordinate bookings, and provide Active Missions.
         </p>
         <p>
           Request details may include your name, organization, email, phone number, route, travel dates,
