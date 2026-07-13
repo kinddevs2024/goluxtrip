@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, CalendarDays, ChevronDown, Mail, MapPin, Phone, Users, FileText, ClipboardList, Briefcase } from "lucide-react";
+import { ArrowRight, CalendarDays, ChevronDown, Mail, MapPin, Phone, Users, FileText, Briefcase } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -72,7 +72,7 @@ type ApplicationForm = {
 function FormField({ label, required, error, children }: { label: string; required?: boolean; error?: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-gray-400 font-semibold text-xs tracking-wider uppercase">
+      <label className="text-navy/70 font-bold text-xs tracking-wider uppercase">
         {label}{required && <span className="text-gltOrange ml-1">*</span>}
       </label>
       {children}
@@ -220,7 +220,7 @@ export default function Contact() {
         </div>
       )}
 
-      <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+      <div className="grid gap-10 rounded-2xl border border-line bg-white p-6 shadow-xl sm:p-8 lg:grid-cols-[0.75fr_1.25fr]">
 
         {/* Left info panel */}
         <div className="flex flex-col gap-8">
@@ -240,7 +240,7 @@ export default function Contact() {
           <div className="space-y-4 text-sm">
             {[
               { icon: <Mail size={16} />, text: "info@goluxtrip.com" },
-              { icon: <Phone size={16} />, text: "+998 90 000 00 00" },
+              { icon: <Phone size={16} />, text: "+998 (94) 626-43-46" },
               { icon: <CalendarDays size={16} />, text: "24/7 Operations Support" },
               { icon: <MapPin size={16} />, text: "Tashkent, Uzbekistan" },
             ].map((row, i) => (
@@ -255,7 +255,7 @@ export default function Contact() {
         {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit, () => toast.error(t("application.invalid")))}
-          className="rounded-3xl border border-line bg-white p-6 shadow-xl sm:p-8 flex flex-col gap-5"
+          className="rounded-2xl border border-line bg-gray-50 p-5 shadow-sm sm:p-6 flex flex-col gap-5"
         >
           <div className="grid gap-5 sm:grid-cols-2">
 
@@ -367,7 +367,7 @@ export default function Contact() {
             </FormField>
 
             {/* Return Date & Time */}
-            <FormField label="Return Date & Time" required error={errors.returnDatetime?.message}>
+            <FormField label="Return Date & Time" error={errors.returnDatetime?.message}>
               <div className="relative">
                 <CalendarDays size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
                 <DatePicker
@@ -399,18 +399,6 @@ export default function Contact() {
               </div>
             </FormField>
 
-            {/* Trip Itinerary — required */}
-            <FormField label="Trip Itinerary" required error={errors.itinerary?.message}>
-              <div className="relative">
-                <ClipboardList size={15} className="absolute left-3.5 top-3.5 text-gray-400" />
-                <textarea
-                  {...register("itinerary")}
-                  rows={3}
-                  className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} pl-9 resize-none w-full`}
-                  placeholder="Describe your trip plan, stops, waypoints..."
-                />
-              </div>
-            </FormField>
           </div>
 
           {/* Note (full width) */}

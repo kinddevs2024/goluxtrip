@@ -24,6 +24,7 @@ import Regional from "./pages/Regional";
 import About from "./pages/About";
 import RealMissions from "./pages/RealMissions";
 import MissionDetails from "./pages/MissionDetails";
+import { PrivacyPolicy, TermsAndConditions } from "./pages/Legal";
 
 import AdminStats from "./pages/admin/AdminStats";
 import AdminRealMissions from "./pages/admin/AdminRealMissions";
@@ -71,6 +72,8 @@ function App() {
                 <Route path="/day-trips" element={<DayTrips />} />
                 <Route path="/regional" element={<Regional />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsAndConditions />} />
                 <Route path="/real-missions" element={<RealMissions />} />
                 <Route path="/real-missions/:id" element={<MissionDetails />} />
               </Routes>

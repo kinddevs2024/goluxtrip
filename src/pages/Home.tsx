@@ -132,7 +132,7 @@ export default function Home() {
           animate={{ scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
-          <img src="/hero-car.jpg" alt="Hero" className="w-full h-full object-cover" />
+          <img src="/hero-car.jpg" alt="Hero" className="w-full h-full object-cover object-[center_68%]" />
         </motion.div>
         
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent" />
@@ -181,12 +181,12 @@ export default function Home() {
               ))}
             </motion.p>
 
-            <motion.div variants={fadeUp} className="mt-10 flex flex-col sm:flex-row gap-4">
-              <Link to="/contact" className="group bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-3 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
+            <motion.div variants={fadeUp} className="mt-8 flex flex-col sm:flex-row gap-3">
+              <Link to="/contact" className="group bg-gltOrange text-white px-6 py-3 rounded font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-[#c84211] hover:scale-105 transition-all duration-300 shadow-lg shadow-gltOrange/30">
                 {t("hero.cta")}
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
-              <Link to="/about" className="border border-white/30 backdrop-blur-sm text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy hover:scale-105 transition-all duration-300">
+              <Link to="/about" className="border border-white/30 backdrop-blur-sm text-white px-6 py-3 rounded font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-white hover:text-navy hover:scale-105 transition-all duration-300">
                 {t("hero.secondary")}
               </Link>
             </motion.div>
@@ -194,8 +194,8 @@ export default function Home() {
         </div>
 
         {/* ── FEATURES BANNER pinned to bottom of hero (desktop) ── */}
-        <div className="relative z-10 w-full border-t border-white/10 bg-navy/80 backdrop-blur-sm hidden lg:block">
-          <div className="mx-auto max-w-[1400px] px-8 py-5">
+        <div className="relative z-10 w-full border-t border-white/10 bg-navy/95 backdrop-blur-sm hidden lg:block">
+          <div className="mx-auto max-w-[1400px] px-8 py-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -223,7 +223,7 @@ export default function Home() {
                   key={idx}
                   whileHover={{ y: -4 }}
                   onClick={() => setSelectedFeature(feature)}
-                  className="flex items-center gap-4 group cursor-pointer text-left w-full rounded-xl px-3 py-2 hover:bg-white/5 transition-colors duration-200"
+                  className="flex items-center gap-4 group cursor-pointer text-left w-full rounded-xl px-3 py-3 hover:bg-white/5 transition-colors duration-200"
                 >
                   <div className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-gltOrange transition-colors duration-300 flex-shrink-0">
                     <feature.icon size={22} className="text-gltOrange group-hover:text-white transition-colors duration-300" />
@@ -320,7 +320,7 @@ export default function Home() {
       )}
 
       {/* 3. WHAT WE DO (SOLUTIONS GRID - 3D TILT) */}
-      <section className="py-24 bg-lightbg relative">
+      <section className="pt-14 pb-24 bg-lightbg relative">
         <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent" />
         <div className="mx-auto max-w-[1400px] px-5 lg:px-8 relative z-10">
           <motion.div 
@@ -370,7 +370,7 @@ export default function Home() {
                         )}`}
                         className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-navy group-hover:text-gltOrange transition-colors"
                       >
-                        Request This Service <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
+                        More Info <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
                       </Link>
                     </div>
                   </div>
@@ -501,10 +501,10 @@ export default function Home() {
 
                           {/* CTA */}
                           <Link
-                            to={`/contact?service=Transfer`}
+                            to="/fleet"
                             className="mt-1 w-full flex items-center justify-center gap-2 bg-gltOrange text-white text-xs font-bold uppercase tracking-widest py-3 rounded-xl hover:bg-[#c84211] hover:scale-[1.02] transition-all duration-300 shadow-lg shadow-gltOrange/20 group/btn"
                           >
-                            Book This Vehicle
+                            View Fleet
                             <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
                           </Link>
                         </div>

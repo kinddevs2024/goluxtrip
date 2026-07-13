@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Menu, X, Clock, Mail, ChevronDown, Instagram, Facebook, Linkedin, Send } from "lucide-react";
+import { Menu, X, Clock, Mail, ChevronDown, Linkedin, Send } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -105,7 +105,7 @@ export function Header() {
           <div className="hidden items-center gap-5 xl:flex">
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center rounded bg-gltOrange px-6 py-3 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-[#c84211] hover:scale-105 hover:shadow-lg hover:shadow-gltOrange/40 shadow-md shadow-gltOrange/20 animate-pulse-soft"
+              className="inline-flex items-center justify-center rounded bg-gltOrange px-4 py-2.5 text-[11px] font-bold uppercase tracking-wide text-white transition hover:bg-[#c84211] hover:scale-105 hover:shadow-lg hover:shadow-gltOrange/40 shadow-md shadow-gltOrange/20"
             >
               {t("nav.apply")}
             </Link>
@@ -179,12 +179,6 @@ export function Footer() {
           <div className="flex items-center gap-3 mt-2">
             <a href="#" aria-label="LinkedIn" className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gltOrange hover:border-gltOrange transition-all duration-300">
               <Linkedin size={16} />
-            </a>
-            <a href="#" aria-label="Facebook" className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gltOrange hover:border-gltOrange transition-all duration-300">
-              <Facebook size={16} />
-            </a>
-            <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gltOrange hover:border-gltOrange transition-all duration-300">
-              <Instagram size={16} />
             </a>
             {/* Telegram */}
             <a href="#" aria-label="Telegram" className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gltOrange hover:border-gltOrange transition-all duration-300">
@@ -281,13 +275,18 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Col 4: Payment Methods */}
+        {/* Col 4: Legal */}
         <div className="flex flex-col gap-4">
           <h4 className="text-white font-black text-xs tracking-[0.2em] uppercase mb-2 flex items-center gap-2">
             <span className="block w-4 h-[2px] bg-gltOrange" />
-            Payment Methods
+            Legal
           </h4>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-3 text-sm text-gray-400">
+            <Link to="/privacy" className="block hover:text-gltOrange transition-colors">{t("footer.privacy")}</Link>
+            <Link to="/terms" className="block hover:text-gltOrange transition-colors">{t("footer.terms")}</Link>
+            <p className="pt-2 text-xs leading-relaxed text-gray-500">{t("footer.copyright")}</p>
+          </div>
+          <div className="hidden">
             {[
               { label: "Cash (USD/UZS)", icon: "💵" },
               { label: "Bank Transfer", icon: "🏦" },
@@ -311,7 +310,7 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-[1400px] px-5 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-          <p>{t("footer.copyright")}</p>
+          <p>GoLuxTrip</p>
           <div className="flex gap-5">
             <Link to="/privacy" className="hover:text-gltOrange transition-colors">{t("footer.privacy")}</Link>
             <Link to="/terms" className="hover:text-gltOrange transition-colors">{t("footer.terms")}</Link>
