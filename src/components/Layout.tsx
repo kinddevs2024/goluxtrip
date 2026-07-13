@@ -177,11 +177,11 @@ export function Footer() {
           </p>
           {/* Social icons */}
           <div className="flex items-center gap-3 mt-2">
-            <a href="#" aria-label="LinkedIn" className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gltOrange hover:border-gltOrange transition-all duration-300">
+            <a href="#" aria-label="LinkedIn" className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-gray-400 flex items-center justify-center hover:bg-[#0A66C2] hover:border-[#0A66C2] hover:text-white transition-all duration-300">
               <Linkedin size={16} />
             </a>
             {/* Telegram */}
-            <a href="#" aria-label="Telegram" className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-gltOrange hover:border-gltOrange transition-all duration-300">
+            <a href="#" aria-label="Telegram" className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-gray-400 flex items-center justify-center hover:bg-[#229ED9] hover:border-[#229ED9] hover:text-white transition-all duration-300">
               <Send size={16} />
             </a>
             {/* WhatsApp — opens whatsapp chat directly */}
@@ -190,7 +190,7 @@ export function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
-              className="w-9 h-9 rounded-lg bg-[#25D366]/20 border border-[#25D366]/30 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-all duration-300"
+              className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 text-gray-400 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all duration-300"
             >
               {/* WhatsApp SVG icon */}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -320,3 +320,4 @@ export function Footer() {
     </footer>
   );
 }
+

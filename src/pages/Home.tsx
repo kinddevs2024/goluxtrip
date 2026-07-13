@@ -47,6 +47,14 @@ const staggerContainer: Variants = {
   }
 };
 
+const defaultFeatureDetails = [
+  { id: "suvs", icon: Truck, detail: "Our modern fleet of SUVs and 4WD vehicles is equipped for any terrain - from city roads to remote mountain tracks.", bullets: ["Toyota Land Cruiser 200 & 300", "Ford Expedition & Explorer", "Lexus LX & GX series", "All vehicles regularly serviced", "GPS tracking enabled"] },
+  { id: "remote", icon: Map, detail: "We operate in the most remote and challenging regions of Uzbekistan, including field sites inaccessible to standard transportation.", bullets: ["Karakalpakstan & Aral region", "Fergana Valley & mountain areas", "Desert and off-road routes", "Field camp logistics support", "Local knowledge & experience"] },
+  { id: "drivers", icon: Users, detail: "All our drivers are professionally trained, vetted, and experienced in working with international organizations and diplomatic clients.", bullets: ["English-speaking drivers available", "Security & defensive driving trained", "Background-checked & certified", "Familiar with UN & NGO protocols", "Available 24/7 on request"] },
+  { id: "ops", icon: Clock, detail: "GoLuxTrip operates around the clock. Whether it is an early morning airport transfer or an emergency field evacuation - we are always ready.", bullets: ["24/7 dispatch center", "Emergency response available", "Same-day booking accepted", "Real-time driver communication", "Operations manager on call"] },
+  { id: "coverage", icon: Globe, detail: "We cover all regions across Uzbekistan and neighboring countries, supporting international missions and corporate travel seamlessly.", bullets: ["All 14 regions of Uzbekistan", "Tashkent city & airport transfers", "Cross-border trips (Tajikistan, Kazakhstan)", "Multi-city itinerary planning", "Dedicated route coordinators"] },
+];
+
 export default function Home() {
   const { t, i18n } = useTranslation();
   const { scrollY } = useScroll();
@@ -78,6 +86,7 @@ export default function Home() {
   const [cars, setCars] = useState<any[]>([]);
   const [missions, setMissions] = useState<any[]>([]);
   const [partnersData, setPartnersData] = useState<any[]>([]);
+  const [featureContent, setFeatureContent] = useState<any[]>([]);
   const [selectedFeature, setSelectedFeature] = useState<null | { icon: any; title: string; desc: string; detail: string; bullets: string[] }>(null);
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/stats")
@@ -98,6 +107,16 @@ export default function Home() {
     fetch("https://goluxtrip-backend.vercel.app/api/partners")
       .then(res => res.json())
       .then(data => setPartnersData(Array.isArray(data) ? data : []))
+      .catch(err => console.error(err));
+
+    fetch("https://goluxtrip-backend.vercel.app/api/content")
+      .then(res => res.json())
+      .then(data => {
+        const raw = Array.isArray(data) ? data.find((item: any) => item.key === "hero_services")?.text_en : "";
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) setFeatureContent(parsed);
+      })
       .catch(err => console.error(err));
   }, []);
 
@@ -120,6 +139,18 @@ export default function Home() {
   const solutions = t("whatWeDo.solutions", { returnObjects: true }) as {id: string, title: string, desc: string, img: string}[];
   const tCars = t("fleet.cars", { returnObjects: true }) as {id: string, name: string, seats: string, bags: string, drive: string, ac?: string, fuel?: string, year?: string, category?: string, image: string}[];
   const partners = t("partners.list", { returnObjects: true }) as string[];
+  const heroFeatures = defaultFeatureDetails.map((base) => {
+    const admin = featureContent.find((item) => item.id === base.id) || {};
+    const titleKey = base.id === "suvs" ? "suvs" : base.id === "remote" ? "remote" : base.id === "drivers" ? "drivers" : base.id === "ops" ? "ops" : "coverage";
+    const descKey = `${titleKey}Desc`;
+    return {
+      icon: base.icon,
+      title: admin.title || t(`featuresBanner.${titleKey}`),
+      desc: admin.desc || t(`featuresBanner.${descKey}`),
+      detail: admin.detail || base.detail,
+      bullets: Array.isArray(admin.bullets) && admin.bullets.length > 0 ? admin.bullets : base.bullets,
+    };
+  });
 
   return (
     <div className="overflow-hidden bg-white">
@@ -127,17 +158,17 @@ export default function Home() {
       <section className="relative h-screen min-h-[640px] w-full bg-navy overflow-hidden flex flex-col">
         <motion.div 
           style={{ y: y1 }}
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60 mix-blend-luminosity scale-110" 
-          initial={{ scale: 1.2 }}
-          animate={{ scale: 1 }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-[1.06]" 
+          initial={{ scale: 1.12 }}
+          animate={{ scale: 1.06 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
-          <img src="/hero-car.jpg" alt="Hero" className="w-full h-full object-cover object-[center_68%]" />
+          <img src="/hero-car.jpg" alt="Hero" className="w-full h-full object-cover object-[center_70%]" />
         </motion.div>
         
-        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy/65 via-navy/20 to-transparent" />
         {/* bottom fade for seamless banner blend */}
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-navy to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy/55 to-transparent" />
         
         {/* Hero text — centered vertically, pushes up a bit to leave room for banner */}
         <div className="relative flex-1 mx-auto max-w-[1400px] w-full flex flex-col justify-center px-5 lg:px-8 pb-28">
@@ -194,7 +225,7 @@ export default function Home() {
         </div>
 
         {/* ── FEATURES BANNER pinned to bottom of hero (desktop) ── */}
-        <div className="relative z-10 w-full border-t border-white/10 bg-navy/95 backdrop-blur-sm hidden lg:block">
+        <div className="absolute inset-x-0 bottom-0 z-20 w-full border-t border-white/10 bg-navy/45 backdrop-blur-[2px] hidden lg:block">
           <div className="mx-auto max-w-[1400px] px-8 py-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -202,23 +233,7 @@ export default function Home() {
               transition={{ delay: 0.8, duration: 0.6 }}
               className="grid grid-cols-5 gap-4 text-white text-sm"
             >
-              {([
-                { icon: Truck, title: t("featuresBanner.suvs"), desc: t("featuresBanner.suvsDesc"),
-                  detail: "Our modern fleet of SUVs and 4WD vehicles is equipped for any terrain — from city roads to remote mountain tracks.",
-                  bullets: ["Toyota Land Cruiser 200 & 300", "Ford Expedition & Explorer", "Lexus LX & GX series", "All vehicles regularly serviced", "GPS tracking enabled"] },
-                { icon: Map, title: t("featuresBanner.remote"), desc: t("featuresBanner.remoteDesc"),
-                  detail: "We operate in the most remote and challenging regions of Uzbekistan, including field sites inaccessible to standard transportation.",
-                  bullets: ["Karakalpakstan & Aral region", "Fergana Valley & mountain areas", "Desert and off-road routes", "Field camp logistics support", "Local knowledge & experience"] },
-                { icon: Users, title: t("featuresBanner.drivers"), desc: t("featuresBanner.driversDesc"),
-                  detail: "All our drivers are professionally trained, vetted, and experienced in working with international organizations and diplomatic clients.",
-                  bullets: ["English-speaking drivers available", "Security & defensive driving trained", "Background-checked & certified", "Familiar with UN & NGO protocols", "Available 24/7 on request"] },
-                { icon: Clock, title: t("featuresBanner.ops"), desc: t("featuresBanner.opsDesc"),
-                  detail: "GoLuxTrip operates around the clock. Whether it's an early morning airport transfer or an emergency field evacuation — we are always ready.",
-                  bullets: ["24/7 dispatch center", "Emergency response available", "Same-day booking accepted", "Real-time driver communication", "Operations manager on call"] },
-                { icon: Globe, title: t("featuresBanner.coverage"), desc: t("featuresBanner.coverageDesc"),
-                  detail: "We cover all regions across Uzbekistan and neighboring countries, supporting international missions and corporate travel seamlessly.",
-                  bullets: ["All 14 regions of Uzbekistan", "Tashkent city & airport transfers", "Cross-border trips (Tajikistan, Kazakhstan)", "Multi-city itinerary planning", "Dedicated route coordinators"] },
-              ] as { icon: any; title: string; desc: string; detail: string; bullets: string[] }[]).map((feature, idx) => (
+              {heroFeatures.map((feature, idx) => (
                 <motion.button
                   key={idx}
                   whileHover={{ y: -4 }}
@@ -348,7 +363,17 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
               >
                 <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2500} className="h-full">
-                  <div className="group flex flex-col h-full bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-line">
+                  <Link
+                    to={`/contact?service=${encodeURIComponent(
+                      sol.id === 'field-missions' ? 'Field Mission' :
+                      sol.id === 'delegations' ? 'Delegation' :
+                      sol.id === 'transfers' ? 'Transfer' :
+                      sol.id === 'regional' ? 'Regional Travel' :
+                      sol.id === 'day-trips' ? 'Day Trip' :
+                      sol.id === 'industry' ? 'Industry Solution' : sol.title
+                    )}`}
+                    className="group flex flex-col h-full bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-line"
+                  >
                     <div className="h-64 relative overflow-hidden">
                       <div className="absolute inset-0 bg-navy/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
                       <div className="absolute top-5 left-5 z-20 bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg">
@@ -359,21 +384,11 @@ export default function Home() {
                     <div className="p-8 flex-1 flex flex-col bg-white z-20 relative">
                       <h3 className="font-bold text-navy text-xl uppercase tracking-wide mb-4 group-hover:text-gltOrange transition-colors">{sol.title}</h3>
                       <p className="text-sm text-asphalt mb-6 leading-relaxed flex-1">{sol.desc}</p>
-                      <Link
-                        to={`/contact?service=${encodeURIComponent(
-                          sol.id === 'field-missions' ? 'Field Mission' :
-                          sol.id === 'delegations' ? 'Delegation' :
-                          sol.id === 'transfers' ? 'Transfer' :
-                          sol.id === 'regional' ? 'Regional Travel' :
-                          sol.id === 'day-trips' ? 'Day Trip' :
-                          sol.id === 'industry' ? 'Industry Solution' : sol.title
-                        )}`}
-                        className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-navy group-hover:text-gltOrange transition-colors"
-                      >
+                      <span className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-navy group-hover:text-gltOrange transition-colors">
                         More Info <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
-                      </Link>
+                      </span>
                     </div>
-                  </div>
+                  </Link>
                 </Tilt>
               </motion.div>
             ))}
@@ -819,3 +834,4 @@ export default function Home() {
     </div>
   );
 }
+

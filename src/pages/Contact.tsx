@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, CalendarDays, ChevronDown, Mail, MapPin, Phone, Users, FileText, Briefcase } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight, CalendarDays, ChevronDown, Mail, MapPin, Phone, Users, FileText, Briefcase, Upload } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -8,43 +8,6 @@ import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-// Country codes list
-const COUNTRY_CODES = [
-  { code: "+1",   flag: "🇺🇸", name: "US" },
-  { code: "+44",  flag: "🇬🇧", name: "UK" },
-  { code: "+49",  flag: "🇩🇪", name: "DE" },
-  { code: "+33",  flag: "🇫🇷", name: "FR" },
-  { code: "+39",  flag: "🇮🇹", name: "IT" },
-  { code: "+34",  flag: "🇪🇸", name: "ES" },
-  { code: "+31",  flag: "🇳🇱", name: "NL" },
-  { code: "+46",  flag: "🇸🇪", name: "SE" },
-  { code: "+47",  flag: "🇳🇴", name: "NO" },
-  { code: "+45",  flag: "🇩🇰", name: "DK" },
-  { code: "+41",  flag: "🇨🇭", name: "CH" },
-  { code: "+43",  flag: "🇦🇹", name: "AT" },
-  { code: "+32",  flag: "🇧🇪", name: "BE" },
-  { code: "+48",  flag: "🇵🇱", name: "PL" },
-  { code: "+90",  flag: "🇹🇷", name: "TR" },
-  { code: "+7",   flag: "🇷🇺", name: "RU" },
-  { code: "+998", flag: "🇺🇿", name: "UZ" },
-  { code: "+992", flag: "🇹🇯", name: "TJ" },
-  { code: "+7",   flag: "🇰🇿", name: "KZ" },
-  { code: "+993", flag: "🇹🇲", name: "TM" },
-  { code: "+994", flag: "🇦🇿", name: "AZ" },
-  { code: "+374", flag: "🇦🇲", name: "AM" },
-  { code: "+995", flag: "🇬🇪", name: "GE" },
-  { code: "+380", flag: "🇺🇦", name: "UA" },
-  { code: "+375", flag: "🇧🇾", name: "BY" },
-  { code: "+971", flag: "🇦🇪", name: "AE" },
-  { code: "+966", flag: "🇸🇦", name: "SA" },
-  { code: "+91",  flag: "🇮🇳", name: "IN" },
-  { code: "+86",  flag: "🇨🇳", name: "CN" },
-  { code: "+81",  flag: "🇯🇵", name: "JP" },
-  { code: "+82",  flag: "🇰🇷", name: "KR" },
-  { code: "+55",  flag: "🇧🇷", name: "BR" },
-  { code: "+27",  flag: "🇿🇦", name: "ZA" },
-];
 
 const SERVICE_OPTIONS = [
   "Project Site Visit",
@@ -54,10 +17,12 @@ const SERVICE_OPTIONS = [
   "Transfer",
 ];
 
+const fieldCls = "w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-sm font-semibold text-navy outline-none transition-all placeholder:text-slate-400 hover:border-slate-400 focus:border-gltOrange focus:ring-4 focus:ring-orange-100";
+const iconFieldCls = `${fieldCls} pl-9`;
+
 type ApplicationForm = {
   name: string;
   email: string;
-  countryCode: string;
   phone: string;
   organization: string;
   service: string;
@@ -67,6 +32,7 @@ type ApplicationForm = {
   passengers: string;
   itinerary?: string;
   note?: string;
+  attachment?: string;
 };
 
 function FormField({ label, required, error, children }: { label: string; required?: boolean; error?: string; children: React.ReactNode }) {
@@ -81,47 +47,21 @@ function FormField({ label, required, error, children }: { label: string; requir
   );
 }
 
-const inputCls = "bg-white/5 border border-white/10 text-white text-sm rounded-xl px-4 py-3.5 focus:border-gltOrange focus:bg-white/8 outline-none transition-all placeholder:text-gray-600";
-
 export default function Contact() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const serviceParam = searchParams.get("service");
   const carParam = searchParams.get("car");
 
-  const [countryCode, setCountryCode] = useState("+998");
-  const [ccOpen, setCcOpen] = useState(false);
-  const ccRef = useRef<HTMLDivElement>(null);
-
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
   const [returnDate, setReturnDate] = useState<Date | null>(null);
-
-  // Auto-detect country code from IP
-  useEffect(() => {
-    fetch("https://ipapi.co/json/")
-      .then(r => r.json())
-      .then(d => {
-        const found = COUNTRY_CODES.find(c => c.name === d.country);
-        if (found) setCountryCode(found.code + (found.name === "KZ" ? "" : ""));
-      })
-      .catch(() => {});
-  }, []);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ccRef.current && !ccRef.current.contains(e.target as Node)) setCcOpen(false);
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  const [attachmentName, setAttachmentName] = useState("");
 
   const schema = useMemo(() =>
     z.object({
       organization: z.string().min(2, "Organization is required"),
       name: z.string().min(2, "Contact person name is required"),
       email: z.string().email("Please enter a valid email address with @"),
-      countryCode: z.string().min(1),
       phone: z.string().min(5, "Phone number is required"),
       service: z.string().min(2, "Please select a service type"),
       departureDatetime: z.string().min(2, "Departure date & time is required"),
@@ -130,6 +70,7 @@ export default function Contact() {
       passengers: z.string().min(1, "Number of passengers is required"),
       itinerary: z.string().optional().default(""),
       note: z.string().max(1000).optional(),
+      attachment: z.string().max(1500000).optional(),
     }),
     []
   );
@@ -142,7 +83,7 @@ export default function Contact() {
     setValue,
   } = useForm<ApplicationForm>({
     resolver: zodResolver(schema),
-    defaultValues: { countryCode: "+998", service: serviceParam || "" }
+    defaultValues: { service: serviceParam || "" }
   });
 
   useEffect(() => {
@@ -178,12 +119,13 @@ export default function Contact() {
     const msgParts = [
       values.itinerary ? `Itinerary: ${values.itinerary}` : "",
       values.note ? `Note: ${values.note}` : "",
+      values.attachment ? `Attachment: ${values.attachment}` : "",
     ].filter(Boolean).join(" | ");
 
     const payload = {
       name: values.name,
       email: values.email,
-      phone: `${values.countryCode} ${values.phone}`,
+      phone: values.phone,
       car: values.service,
       dates: datesStr,
       route: routeStr,
@@ -202,6 +144,7 @@ export default function Contact() {
     reset();
     setDepartureDate(null);
     setReturnDate(null);
+    setAttachmentName("");
   }
 
 
@@ -261,12 +204,12 @@ export default function Contact() {
 
             {/* Organization */}
             <FormField label="Organization" required error={errors.organization?.message}>
-              <input {...register("organization")} className={inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} placeholder="e.g. UN, World Bank, XYZ Corp" />
+              <input {...register("organization")} className={fieldCls} placeholder="e.g. UN, World Bank, XYZ Corp" />
             </FormField>
 
             {/* Contact Person */}
             <FormField label="Contact Person" required error={errors.name?.message}>
-              <input {...register("name")} className={inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} placeholder="Full name" />
+              <input {...register("name")} className={fieldCls} placeholder="Full name" />
             </FormField>
 
             {/* Email */}
@@ -276,50 +219,20 @@ export default function Contact() {
                 <input
                   {...register("email")}
                   type="email"
-                  className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} pl-9`}
+                  className={iconFieldCls}
                   placeholder="email@example.com"
                 />
               </div>
-            </FormField>
-
-            {/* Phone with country code */}
+            </FormField>            {/* Phone */}
             <FormField label="Phone" required error={errors.phone?.message}>
-              <div className="flex gap-2">
-                {/* Country code selector */}
-                <div ref={ccRef} className="relative flex-shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => setCcOpen(o => !o)}
-                    className="h-full min-h-[48px] flex items-center gap-1.5 bg-gray-50 border border-line rounded-xl px-3 text-sm font-bold text-navy hover:border-gltOrange transition-colors"
-                  >
-                    <span>{COUNTRY_CODES.find(c => c.code === countryCode)?.flag ?? "🌍"}</span>
-                    <span className="text-xs text-gray-500">{countryCode}</span>
-                    <ChevronDown size={12} className={`text-gray-400 transition-transform ${ccOpen ? "rotate-180" : ""}`} />
-                  </button>
-                  {ccOpen && (
-                    <div className="absolute top-full left-0 mt-1 z-50 bg-white border border-line rounded-xl shadow-2xl w-48 max-h-56 overflow-y-auto">
-                      {COUNTRY_CODES.map((c, i) => (
-                        <button
-                          key={i}
-                          type="button"
-                          onClick={() => { setCountryCode(c.code); setValue("countryCode", c.code); setCcOpen(false); }}
-                          className="flex items-center gap-2 w-full px-4 py-2.5 text-sm hover:bg-gray-50 text-navy font-semibold"
-                        >
-                          <span>{c.flag}</span>
-                          <span className="text-gray-500 text-xs w-10">{c.code}</span>
-                          <span>{c.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+              <div className="relative">
+                <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input
                   {...register("phone")}
                   type="tel"
-                  className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} flex-1`}
-                  placeholder="90 123 45 67"
+                  className={iconFieldCls}
+                  placeholder="+998 90 123 45 67"
                 />
-                <input type="hidden" {...register("countryCode")} value={countryCode} />
               </div>
             </FormField>
 
@@ -328,7 +241,7 @@ export default function Contact() {
               <div className="relative">
                 <select
                   {...register("service")}
-                  className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} w-full appearance-none pr-10`}
+                  className={`${fieldCls} appearance-none pr-10`}
                 >
                   <option value="" disabled>Select service type</option>
                   {SERVICE_OPTIONS.map(o => (
@@ -343,7 +256,7 @@ export default function Contact() {
             <FormField label="Region / City" required error={errors.route?.message}>
               <div className="relative">
                 <MapPin size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input {...register("route")} className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} pl-9`} placeholder="e.g. Tashkent, Samarkand" />
+                <input {...register("route")} className={iconFieldCls} placeholder="e.g. Tashkent, Samarkand" />
               </div>
             </FormField>
 
@@ -359,7 +272,7 @@ export default function Contact() {
                   timeIntervals={30}
                   dateFormat="dd/MM/yyyy HH:mm"
                   placeholderText="Departure date & time"
-                  className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} pl-9 w-full`}
+                  className={iconFieldCls}
                   minDate={new Date()}
                 />
                 <input type="hidden" {...register("departureDatetime")} />
@@ -378,7 +291,7 @@ export default function Contact() {
                   timeIntervals={30}
                   dateFormat="dd/MM/yyyy HH:mm"
                   placeholderText="Return date & time"
-                  className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} pl-9 w-full`}
+                  className={iconFieldCls}
                   minDate={departureDate || new Date()}
                 />
                 <input type="hidden" {...register("returnDatetime")} />
@@ -393,7 +306,7 @@ export default function Contact() {
                   {...register("passengers")}
                   type="text"
                   inputMode="numeric"
-                  className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} pl-9`}
+                  className={iconFieldCls}
                   placeholder="e.g. 4"
                 />
               </div>
@@ -408,10 +321,42 @@ export default function Contact() {
               <textarea
                 {...register("note")}
                 rows={3}
-                className={`${inputCls.replace("bg-white/5 border-white/10 text-white", "bg-gray-50 border-line text-navy")} pl-9 resize-none w-full`}
+                className={`${iconFieldCls} min-h-28 resize-none`}
                 placeholder="Any additional information, special requirements..."
               />
             </div>
+          </FormField>
+
+          <FormField label="Additional File">
+            <label className="flex min-h-[58px] cursor-pointer items-center justify-between gap-4 rounded-xl border border-dashed border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-navy transition-all hover:border-gltOrange hover:bg-orange-50/40">
+              <span className="flex items-center gap-3 min-w-0">
+                <Upload size={17} className="text-gltOrange flex-shrink-0" />
+                <span className="truncate">{attachmentName || "Upload itinerary, brief, or supporting document"}</span>
+              </span>
+              <span className="text-xs uppercase tracking-wider text-slate-400 flex-shrink-0">Max 1MB</span>
+              <input
+                type="file"
+                className="hidden"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.txt"
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (!file) {
+                    setAttachmentName("");
+                    setValue("attachment", "");
+                    return;
+                  }
+                  if (file.size > 1024 * 1024) {
+                    toast.error("File must be smaller than 1MB");
+                    event.target.value = "";
+                    setAttachmentName("");
+                    setValue("attachment", "");
+                    return;
+                  }
+                  setAttachmentName(file.name);
+                  setValue("attachment", `${file.name} (${Math.round(file.size / 1024)}KB)`, { shouldValidate: true });
+                }}
+              />
+            </label>
           </FormField>
 
           <button
@@ -426,3 +371,6 @@ export default function Contact() {
     </section>
   );
 }
+
+
+

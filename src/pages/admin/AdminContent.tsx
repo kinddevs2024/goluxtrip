@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Save, Image as ImageIcon } from "lucide-react";
 
+const defaultHeroServices = [
+  { id: "suvs", title: "SUVs & 4WD Fleet", desc: "Built for any terrain", detail: "Our modern fleet of SUVs and 4WD vehicles is equipped for any terrain - from city roads to remote mountain tracks.", bullets: "Toyota Land Cruiser 200 & 300\nFord Expedition & Explorer\nLexus LX & GX series\nAll vehicles regularly serviced\nGPS tracking enabled" },
+  { id: "remote", title: "Remote Area Experts", desc: "We go further", detail: "We operate in the most remote and challenging regions of Uzbekistan, including field sites inaccessible to standard transportation.", bullets: "Karakalpakstan & Aral region\nFergana Valley & mountain areas\nDesert and off-road routes\nField camp logistics support\nLocal knowledge & experience" },
+  { id: "drivers", title: "Experienced Drivers", desc: "Professional & reliable", detail: "All our drivers are professionally trained, vetted, and experienced in working with international organizations and diplomatic clients.", bullets: "English-speaking drivers available\nSecurity & defensive driving trained\nBackground-checked & certified\nFamiliar with UN & NGO protocols\nAvailable 24/7 on request" },
+  { id: "ops", title: "24/7 Operations", desc: "Always supportive", detail: "GoLuxTrip operates around the clock. Whether it is an early morning airport transfer or an emergency field evacuation - we are always ready.", bullets: "24/7 dispatch center\nEmergency response available\nSame-day booking accepted\nReal-time driver communication\nOperations manager on call" },
+  { id: "coverage", title: "Nationwide Coverage", desc: "All regions of Uzbekistan", detail: "We cover all regions across Uzbekistan and neighboring countries, supporting international missions and corporate travel seamlessly.", bullets: "All 14 regions of Uzbekistan\nTashkent city & airport transfers\nCross-border trips\nMulti-city itinerary planning\nDedicated route coordinators" },
+];
+
 export default function AdminContent() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -9,6 +17,7 @@ export default function AdminContent() {
     text_en: "",
     image: ""
   });
+  const [heroServices, setHeroServices] = useState(defaultHeroServices);
   const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
@@ -24,6 +33,16 @@ export default function AdminContent() {
           });
           if (aboutData.image) setImagePreview(aboutData.image);
         }
+        const heroServicesData = data.find((c: any) => c.key === "hero_services");
+        if (heroServicesData?.text_en) {
+          const parsed = JSON.parse(heroServicesData.text_en);
+          if (Array.isArray(parsed)) {
+            setHeroServices(defaultHeroServices.map(item => {
+              const saved = parsed.find((service: any) => service.id === item.id);
+              return saved ? { ...item, ...saved, bullets: Array.isArray(saved.bullets) ? saved.bullets.join("\n") : saved.bullets || item.bullets } : item;
+            }));
+          }
+        }
       } catch {
         toast.error("Failed to load content");
       } finally {
@@ -37,12 +56,17 @@ export default function AdminContent() {
     e.preventDefault();
     setSaving(true);
     try {
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("adminToken")}`
+      };
+      const heroServicesPayload = heroServices.map(service => ({
+        ...service,
+        bullets: service.bullets.split("\n").map(item => item.trim()).filter(Boolean),
+      }));
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/content", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`
-        },
+        headers,
         body: JSON.stringify({
           key: "about_us",
           text_en: content.text_en,
@@ -52,6 +76,17 @@ export default function AdminContent() {
         })
       });
       if (!res.ok) throw new Error("Save failed");
+      const servicesRes = await fetch("https://goluxtrip-backend.vercel.app/api/content", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          key: "hero_services",
+          text_en: JSON.stringify(heroServicesPayload),
+          text_ru: JSON.stringify(heroServicesPayload),
+          text_uz: JSON.stringify(heroServicesPayload)
+        })
+      });
+      if (!servicesRes.ok) throw new Error("Save failed");
       toast.success("Content saved successfully ✓");
     } catch {
       toast.error("Failed to save content");
@@ -162,6 +197,70 @@ export default function AdminContent() {
             {saving ? "Saving..." : "Save Changes"}
           </button>
         </form>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-lg border border-line p-8 max-w-5xl mt-8">
+        <div className="flex items-center gap-3 mb-6 pb-5 border-b border-line">
+          <div className="w-9 h-9 rounded-xl bg-navy/5 flex items-center justify-center">
+            <Save size={16} className="text-navy" />
+          </div>
+          <div>
+            <h2 className="font-black text-navy text-lg">Hero Service Popups</h2>
+            <p className="text-xs text-gray-400">Editable text for the service buttons shown over the hero image</p>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          {heroServices.map((service, index) => (
+            <div key={service.id} className="rounded-xl border border-line bg-gray-50 p-5">
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Title</label>
+                  <input
+                    className="w-full border border-line rounded-xl p-3 bg-white focus:border-gltOrange outline-none text-sm font-semibold"
+                    value={service.title}
+                    onChange={e => setHeroServices(items => items.map((item, i) => i === index ? { ...item, title: e.target.value } : item))}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Short Text</label>
+                  <input
+                    className="w-full border border-line rounded-xl p-3 bg-white focus:border-gltOrange outline-none text-sm font-semibold"
+                    value={service.desc}
+                    onChange={e => setHeroServices(items => items.map((item, i) => i === index ? { ...item, desc: e.target.value } : item))}
+                  />
+                </div>
+              </div>
+              <div className="mt-4">
+                <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Popup Detail</label>
+                <textarea
+                  rows={3}
+                  className="w-full border border-line rounded-xl p-4 bg-white focus:border-gltOrange outline-none transition-all text-sm leading-relaxed resize-none"
+                  value={service.detail}
+                  onChange={e => setHeroServices(items => items.map((item, i) => i === index ? { ...item, detail: e.target.value } : item))}
+                />
+              </div>
+              <div className="mt-4">
+                <label className="block text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Bullets - one per line</label>
+                <textarea
+                  rows={5}
+                  className="w-full border border-line rounded-xl p-4 bg-white focus:border-gltOrange outline-none transition-all text-sm leading-relaxed resize-none"
+                  value={service.bullets}
+                  onChange={e => setHeroServices(items => items.map((item, i) => i === index ? { ...item, bullets: e.target.value } : item))}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          disabled={saving}
+          onClick={(e) => handleSave(e as unknown as React.FormEvent)}
+          className="mt-6 bg-gltOrange text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-[#c84211] transition-all shadow-lg shadow-gltOrange/20 disabled:opacity-50 hover:scale-[1.02]"
+        >
+          <Save size={18} />
+          {saving ? "Saving..." : "Save Changes"}
+        </button>
       </div>
     </div>
   );

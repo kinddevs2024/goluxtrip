@@ -10,7 +10,7 @@ const applicationSchema = z.object({
   car: z.string().min(2).max(80),
   dates: z.string().min(2).max(120),
   route: z.string().min(2).max(500),
-  message: z.string().max(1000).optional().default("")
+  message: z.string().max(1500000).optional().default("")
 });
 
 export default async function handler(req, res) {
