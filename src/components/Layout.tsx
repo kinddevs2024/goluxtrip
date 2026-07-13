@@ -61,10 +61,10 @@ export function Header() {
               <img
                 src="/glt-wide.png"
                 alt="GoLuxTrip"
-                className="h-9 w-auto max-w-[200px] object-contain object-left"
+                className="h-11 w-auto max-w-[200px] object-contain object-left"
               />
-              <span className="text-[8.5px] font-bold tracking-[0.15em] text-gray-400 uppercase pl-0.5">
-                Transportation &amp; Field Logistics Partner
+              <span className="text-[6.5px] font-bold tracking-[0.15em] text-gray-400 uppercase pl-0.5">
+                Transportation &amp;  Field Logistics Partner
               </span>
             </div>
           </Link>
