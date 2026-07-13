@@ -4,3 +4,6 @@ dist
 *.log
 tmp
 
+
+.vercel
+.env*
