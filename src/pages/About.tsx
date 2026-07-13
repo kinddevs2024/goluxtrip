@@ -97,7 +97,7 @@ export default function About() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="flex-1 flex flex-col items-center justify-center py-12 px-6 text-center hover:bg-white/5 transition-colors duration-300"
               >
-                <span className="text-3xl mb-3 leading-none">{item.icon || "⭐"}</span>
+                <span className="text-3xl mb-3 leading-none">{item.icon}</span>
                 <div className="text-4xl md:text-5xl font-black text-gltOrange leading-none mb-2 tabular-nums">
                   {item.value}
                 </div>
@@ -110,7 +110,7 @@ export default function About() {
         </div>
       </div>
 
-      <div className="py-16" />
+      <div/>
     </div>
   );
 }

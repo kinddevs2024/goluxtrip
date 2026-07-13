@@ -81,7 +81,7 @@ const resources = {
         kicker: "OUR FLEET",
         title: "Built for the Road.\nReady for the Mission.",
         text: "A wide range of SUVs, 4WDs,\nMinivans and Buses for any mission\nand group size.",
-        viewAll: "VIEW FULL FLEET",
+        viewAll: "View Fleet, Book",
         cars: [
           {
             id: "lc200",

@@ -6,8 +6,6 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 const SERVICE_OPTIONS = [
   "Project Site Visit",
@@ -19,6 +17,35 @@ const SERVICE_OPTIONS = [
 
 const fieldCls = "w-full rounded-xl border border-slate-300 bg-white px-4 py-3.5 text-sm font-semibold text-navy outline-none transition-all placeholder:text-slate-400 hover:border-slate-400 focus:border-gltOrange focus:ring-4 focus:ring-orange-100";
 const iconFieldCls = `${fieldCls} pl-9`;
+const timeOptions = ["06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"];
+
+function pad(value: number) {
+  return String(value).padStart(2, "0");
+}
+
+function toDateValue(date: Date | null) {
+  if (!date) return "";
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function toTimeValue(date: Date | null) {
+  if (!date) return "";
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function toDisplayValue(date: Date | null) {
+  if (!date) return "";
+  return `${pad(date.getDate())}/${pad(date.getMonth() + 1)}/${date.getFullYear()} ${toTimeValue(date)}`;
+}
+
+function toPayloadValue(date: Date) {
+  return `${toDateValue(date)} ${toTimeValue(date)}`;
+}
+
+function buildDate(dateValue: string, timeValue: string) {
+  if (!dateValue) return null;
+  return new Date(`${dateValue}T${timeValue || "09:00"}`);
+}
 
 type ApplicationForm = {
   name: string;
@@ -56,6 +83,8 @@ export default function Contact() {
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
   const [returnDate, setReturnDate] = useState<Date | null>(null);
   const [attachmentName, setAttachmentName] = useState("");
+  const [serviceOpen, setServiceOpen] = useState(false);
+  const [scheduleOpen, setScheduleOpen] = useState(false);
 
   const schema = useMemo(() =>
     z.object({
@@ -81,10 +110,13 @@ export default function Contact() {
     formState: { errors, isSubmitting },
     reset,
     setValue,
+    watch,
   } = useForm<ApplicationForm>({
     resolver: zodResolver(schema),
     defaultValues: { service: serviceParam || "" }
   });
+
+  const selectedService = watch("service");
 
   useEffect(() => {
     if (serviceParam) setValue("service", serviceParam, { shouldValidate: false });
@@ -93,17 +125,30 @@ export default function Contact() {
 
   useEffect(() => {
     if (departureDate) {
-      const s = departureDate.toISOString().slice(0, 16).replace("T", " ");
+      const s = toPayloadValue(departureDate);
       setValue("departureDatetime", s, { shouldValidate: true });
     }
   }, [departureDate, setValue]);
 
   useEffect(() => {
     if (returnDate) {
-      const s = returnDate.toISOString().slice(0, 16).replace("T", " ");
+      const s = toPayloadValue(returnDate);
       setValue("returnDatetime", s, { shouldValidate: true });
     }
   }, [returnDate, setValue]);
+
+  function updateSchedule(kind: "departure" | "return", part: "date" | "time", value: string) {
+    const current = kind === "departure" ? departureDate : returnDate;
+    const currentDate = toDateValue(current) || toDateValue(new Date());
+    const currentTime = toTimeValue(current) || (kind === "departure" ? "09:00" : "18:00");
+    const next = buildDate(part === "date" ? value : currentDate, part === "time" ? value : currentTime);
+    if (!next) return;
+    if (kind === "departure") {
+      setDepartureDate(next);
+    } else {
+      setReturnDate(next);
+    }
+  }
 
   async function onSubmit(values: ApplicationForm) {
     const datesStr = values.returnDatetime
@@ -223,7 +268,9 @@ export default function Contact() {
                   placeholder="email@example.com"
                 />
               </div>
-            </FormField>            {/* Phone */}
+            </FormField>
+
+            {/* Phone */}
             <FormField label="Phone" required error={errors.phone?.message}>
               <div className="relative">
                 <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -239,16 +286,32 @@ export default function Contact() {
             {/* Service Type */}
             <FormField label="Service Type" required error={errors.service?.message}>
               <div className="relative">
-                <select
-                  {...register("service")}
-                  className={`${fieldCls} appearance-none pr-10`}
+                <input type="hidden" {...register("service")} />
+                <button
+                  type="button"
+                  onClick={() => setServiceOpen(open => !open)}
+                  className={`${fieldCls} flex items-center justify-between text-left`}
                 >
-                  <option value="" disabled>Select service type</option>
-                  {SERVICE_OPTIONS.map(o => (
-                    <option key={o} value={o}>{o}</option>
-                  ))}
-                </select>
-                <ChevronDown size={16} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  <span className={selectedService ? "text-navy" : "text-slate-400"}>{selectedService || "Select service type"}</span>
+                  <ChevronDown size={16} className={`text-gray-400 transition-transform ${serviceOpen ? "rotate-180" : ""}`} />
+                </button>
+                {serviceOpen && (
+                  <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-line bg-white shadow-2xl">
+                    {SERVICE_OPTIONS.map(option => (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => {
+                          setValue("service", option, { shouldValidate: true });
+                          setServiceOpen(false);
+                        }}
+                        className={`block w-full px-4 py-3 text-left text-sm font-bold transition-colors hover:bg-orange-50 hover:text-gltOrange ${selectedService === option ? "bg-orange-50 text-gltOrange" : "text-navy"}`}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </FormField>
 
@@ -260,41 +323,69 @@ export default function Contact() {
               </div>
             </FormField>
 
-            {/* Departure Date & Time */}
-            <FormField label="Departure Date & Time" required error={errors.departureDatetime?.message}>
+            {/* Trip Schedule */}
+            <FormField label="Trip Schedule" required error={errors.departureDatetime?.message || errors.returnDatetime?.message}>
               <div className="relative">
-                <CalendarDays size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
-                <DatePicker
-                  selected={departureDate}
-                  onChange={(d: Date | null) => setDepartureDate(d)}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={30}
-                  dateFormat="dd/MM/yyyy HH:mm"
-                  placeholderText="Departure date & time"
-                  className={iconFieldCls}
-                  minDate={new Date()}
-                />
                 <input type="hidden" {...register("departureDatetime")} />
-              </div>
-            </FormField>
-
-            {/* Return Date & Time */}
-            <FormField label="Return Date & Time" error={errors.returnDatetime?.message}>
-              <div className="relative">
-                <CalendarDays size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
-                <DatePicker
-                  selected={returnDate}
-                  onChange={(d: Date | null) => setReturnDate(d)}
-                  showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={30}
-                  dateFormat="dd/MM/yyyy HH:mm"
-                  placeholderText="Return date & time"
-                  className={iconFieldCls}
-                  minDate={departureDate || new Date()}
-                />
                 <input type="hidden" {...register("returnDatetime")} />
+                <button
+                  type="button"
+                  onClick={() => setScheduleOpen(open => !open)}
+                  className={`${fieldCls} flex min-h-[54px] items-center gap-3 text-left`}
+                >
+                  <CalendarDays size={17} className="text-gray-400 flex-shrink-0" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm text-navy">
+                      {departureDate ? toDisplayValue(departureDate) : "Departure date & time"}
+                    </span>
+                    <span className="block truncate text-xs text-slate-400">
+                      {returnDate ? `Return: ${toDisplayValue(returnDate)}` : "Return date & time"}
+                    </span>
+                  </span>
+                  <ChevronDown size={16} className={`text-gray-400 transition-transform ${scheduleOpen ? "rotate-180" : ""}`} />
+                </button>
+                {scheduleOpen && (
+                  <div className="absolute z-50 mt-2 w-[min(560px,calc(100vw-3rem))] rounded-2xl border border-line bg-white p-4 shadow-2xl">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      {([
+                        { key: "departure" as const, title: "Departure", value: departureDate, fallback: "09:00" },
+                        { key: "return" as const, title: "Return", value: returnDate, fallback: "18:00" },
+                      ]).map(item => (
+                        <div key={item.key} className="rounded-xl border border-slate-200 bg-gray-50 p-3">
+                          <div className="mb-2 text-xs font-black uppercase tracking-widest text-navy/70">{item.title}</div>
+                          <input
+                            type="date"
+                            value={toDateValue(item.value)}
+                            min={item.key === "return" ? toDateValue(departureDate) || toDateValue(new Date()) : toDateValue(new Date())}
+                            onChange={event => updateSchedule(item.key, "date", event.target.value)}
+                            className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-bold text-navy outline-none focus:border-gltOrange"
+                          />
+                          <div className="mt-3 grid grid-cols-4 gap-2">
+                            {timeOptions.map(time => (
+                              <button
+                                key={time}
+                                type="button"
+                                onClick={() => updateSchedule(item.key, "time", time)}
+                                className={`rounded-lg border px-2 py-1.5 text-xs font-bold transition-colors ${toTimeValue(item.value) === time || (!item.value && item.fallback === time) ? "border-gltOrange bg-gltOrange text-white" : "border-slate-200 bg-white text-slate-600 hover:border-gltOrange hover:text-gltOrange"}`}
+                              >
+                                {time}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-4 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => setScheduleOpen(false)}
+                        className="rounded-lg bg-navy px-5 py-2.5 text-xs font-black uppercase tracking-widest text-white transition-colors hover:bg-gltOrange"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </FormField>
 
