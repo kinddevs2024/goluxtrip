@@ -1,6 +1,14 @@
 import dbConnect from "../lib/mongoose.js";
 import Car from "../lib/models/Car.js";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb"
+    }
+  }
+};
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Credentials", true);
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -13,7 +21,7 @@ export default async function handler(req, res) {
     await dbConnect();
 
     if (req.method === "GET") {
-      const cars = await Car.find({}).sort({ createdAt: -1 });
+      const cars = await Car.find({}).sort({ _id: -1 }).lean();
       return res.status(200).json(cars);
     }
 
