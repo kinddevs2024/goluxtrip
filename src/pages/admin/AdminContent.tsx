@@ -24,6 +24,7 @@ export default function AdminContent() {
     const fetchContent = async () => {
       try {
         const res = await fetch("https://goluxtrip-backend.vercel.app/api/content");
+        if (!res.ok) throw new Error("Failed to load content");
         const data = await res.json();
         const aboutData = data.find((c: any) => c.key === "about_us");
         if (aboutData) {

@@ -21,6 +21,7 @@ export default function AdminProjects() {
   const fetchProjects = async () => {
     try {
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/projects");
+      if (!res.ok) throw new Error("Failed to load projects");
       const data = await res.json();
       setProjects(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -37,7 +38,7 @@ export default function AdminProjects() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch("https://goluxtrip-backend.vercel.app/api/projects", {
+      const res = await fetch("https://goluxtrip-backend.vercel.app/api/projects", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,6 +46,7 @@ export default function AdminProjects() {
         },
         body: JSON.stringify(formData)
       });
+      if (!res.ok) throw new Error("Save failed");
       toast.success("Project added");
       setIsAdding(false);
       setFormData({});
@@ -57,10 +59,11 @@ export default function AdminProjects() {
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this project?")) return;
     try {
-      await fetch(`https://goluxtrip-backend.vercel.app/api/projects?id=${id}`, {
+      const res = await fetch(`https://goluxtrip-backend.vercel.app/api/projects?id=${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` }
       });
+      if (!res.ok) throw new Error("Delete failed");
       toast.success("Project deleted");
       fetchProjects();
     } catch (e) {

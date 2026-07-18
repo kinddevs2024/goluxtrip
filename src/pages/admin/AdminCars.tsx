@@ -24,6 +24,7 @@ export default function AdminCars() {
   const fetchCars = async () => {
     try {
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/cars");
+      if (!res.ok) throw new Error("Failed to load cars");
       const data = await res.json();
       setCars(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -40,7 +41,7 @@ export default function AdminCars() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch("https://goluxtrip-backend.vercel.app/api/cars", {
+      const res = await fetch("https://goluxtrip-backend.vercel.app/api/cars", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,6 +49,7 @@ export default function AdminCars() {
         },
         body: JSON.stringify(formData)
       });
+      if (!res.ok) throw new Error("Save failed");
       toast.success("Car added");
       setIsAdding(false);
       setFormData({});
@@ -60,10 +62,11 @@ export default function AdminCars() {
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this car?")) return;
     try {
-      await fetch(`https://goluxtrip-backend.vercel.app/api/cars?id=${id}`, {
+      const res = await fetch(`https://goluxtrip-backend.vercel.app/api/cars?id=${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` }
       });
+      if (!res.ok) throw new Error("Delete failed");
       toast.success("Car deleted");
       fetchCars();
     } catch (e) {

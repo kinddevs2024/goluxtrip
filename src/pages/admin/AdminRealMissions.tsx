@@ -22,6 +22,7 @@ export default function AdminRealMissions() {
   const fetchMissions = async () => {
     try {
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/real-missions");
+      if (!res.ok) throw new Error("Failed to load real missions");
       const data = await res.json();
       setMissions(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -38,7 +39,7 @@ export default function AdminRealMissions() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch("https://goluxtrip-backend.vercel.app/api/real-missions", {
+      const res = await fetch("https://goluxtrip-backend.vercel.app/api/real-missions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,6 +47,7 @@ export default function AdminRealMissions() {
         },
         body: JSON.stringify(formData)
       });
+      if (!res.ok) throw new Error("Save failed");
       toast.success("Mission added");
       setIsAdding(false);
       setFormData({});
@@ -58,10 +60,11 @@ export default function AdminRealMissions() {
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this mission?")) return;
     try {
-      await fetch(`https://goluxtrip-backend.vercel.app/api/real-missions?id=${id}`, {
+      const res = await fetch(`https://goluxtrip-backend.vercel.app/api/real-missions?id=${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` }
       });
+      if (!res.ok) throw new Error("Delete failed");
       toast.success("Mission deleted");
       fetchMissions();
     } catch (e) {

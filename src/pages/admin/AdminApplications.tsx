@@ -28,6 +28,7 @@ export default function AdminApplications() {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`
         }
       });
+      if (!res.ok) throw new Error("Failed to load applications");
       const data = await res.json();
       setApps(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -48,10 +49,11 @@ export default function AdminApplications() {
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this request?")) return;
     try {
-      await fetch(`https://goluxtrip-backend.vercel.app/api/applications?id=${id}`, {
+      const res = await fetch(`https://goluxtrip-backend.vercel.app/api/applications?id=${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` }
       });
+      if (!res.ok) throw new Error("Delete failed");
       toast.success("Deleted");
       fetchApps();
     } catch {

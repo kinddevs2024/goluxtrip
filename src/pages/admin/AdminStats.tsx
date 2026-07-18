@@ -24,6 +24,7 @@ export default function AdminStats() {
   const fetchStats = async () => {
     try {
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/stats");
+      if (!res.ok) throw new Error("Failed to load stats");
       const data = await res.json();
       const fetchedStats = Array.isArray(data) ? data : [];
       
@@ -49,7 +50,7 @@ export default function AdminStats() {
     try {
       for (const stat of stats) {
         if (stat._id) {
-          await fetch(`https://goluxtrip-backend.vercel.app/api/stats?id=${stat._id}`, {
+          const res = await fetch(`https://goluxtrip-backend.vercel.app/api/stats?id=${stat._id}`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
@@ -57,8 +58,9 @@ export default function AdminStats() {
             },
             body: JSON.stringify(stat)
           });
+          if (!res.ok) throw new Error("Save failed");
         } else {
-          await fetch("https://goluxtrip-backend.vercel.app/api/stats", {
+          const res = await fetch("https://goluxtrip-backend.vercel.app/api/stats", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -66,6 +68,7 @@ export default function AdminStats() {
             },
             body: JSON.stringify(stat)
           });
+          if (!res.ok) throw new Error("Save failed");
         }
       }
       toast.success("Stats updated successfully");

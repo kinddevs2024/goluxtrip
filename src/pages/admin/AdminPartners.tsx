@@ -16,6 +16,7 @@ export default function AdminPartners() {
   const fetchPartners = async () => {
     try {
       const res = await fetch("https://goluxtrip-backend.vercel.app/api/partners");
+      if (!res.ok) throw new Error("Failed to load partners");
       const data = await res.json();
       setPartners(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -82,12 +83,13 @@ export default function AdminPartners() {
   const handleDelete = async (id: string) => {
     if (!confirm("Delete this partner logo?")) return;
     try {
-      await fetch(`https://goluxtrip-backend.vercel.app/api/partners?id=${id}`, {
+      const res = await fetch(`https://goluxtrip-backend.vercel.app/api/partners?id=${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`
         }
       });
+      if (!res.ok) throw new Error("Delete failed");
       toast.success("Partner deleted");
       fetchPartners();
     } catch (err) {
