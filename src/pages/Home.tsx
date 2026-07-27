@@ -55,6 +55,15 @@ const defaultFeatureDetails = [
   { id: "coverage", icon: Globe, detail: "We cover all regions across Uzbekistan and neighboring countries, supporting international missions and corporate travel seamlessly.", bullets: ["All 14 regions of Uzbekistan", "Tashkent city & airport transfers", "Cross-border trips (Tajikistan, Kazakhstan)", "Multi-city itinerary planning", "Dedicated route coordinators"] },
 ];
 
+const serviceDetailRoutes: Record<string, string> = {
+  "field-missions": "/field-missions",
+  delegations: "/delegations",
+  transfers: "/transfers",
+  regional: "/regional",
+  "day-trips": "/day-trips",
+  industry: "/industry-solutions",
+};
+
 export default function Home() {
   const { t, i18n } = useTranslation();
   const { scrollY } = useScroll();
@@ -364,14 +373,7 @@ export default function Home() {
               >
                 <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2500} className="h-full">
                   <Link
-                    to={`/contact?service=${encodeURIComponent(
-                      sol.id === 'field-missions' ? 'Field Mission' :
-                      sol.id === 'delegations' ? 'Delegation' :
-                      sol.id === 'transfers' ? 'Transfer' :
-                      sol.id === 'regional' ? 'Regional Travel' :
-                      sol.id === 'day-trips' ? 'Day Trip' :
-                      sol.id === 'industry' ? 'Industry Solution' : sol.title
-                    )}`}
+                    to={serviceDetailRoutes[sol.id] ?? "/"}
                     className="group flex flex-col h-full bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-line"
                   >
                     <div className="h-64 relative overflow-hidden">

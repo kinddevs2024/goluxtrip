@@ -1,32 +1,12 @@
 import { motion } from "framer-motion";
-import { Menu, X, Clock, Mail, ChevronDown, Linkedin, Send } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { Menu, X, Clock, Mail, Linkedin, Send } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 export function Header() {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const servicesLinks = [
-    [t("nav.fieldMissions"), "/field-missions"],
-    [t("nav.delegations"), "/delegations"],
-    [t("nav.transfers"), "/transfers"],
-    [t("nav.projects"), "/projects"],
-    [t("nav.industry"), "/industry-solutions"],
-  ];
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (dropRef.current && !dropRef.current.contains(e.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
 
   return (
     <>
@@ -72,30 +52,6 @@ export function Header() {
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-6 text-xs uppercase tracking-widest font-bold text-navy xl:flex relative">
             <Link to="/" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.home")}</Link>
-            
-            <div className="relative" ref={dropRef}>
-              <button
-                className="flex items-center gap-1 transition hover:text-gltOrange uppercase outline-none relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full"
-                onClick={() => setDropdownOpen(o => !o)}
-              >
-                Services <ChevronDown size={14} className={`transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {dropdownOpen && (
-                <div className="absolute top-full left-0 mt-3 w-68 bg-white border border-gray-100 shadow-2xl rounded-2xl overflow-hidden py-2 z-50">
-                  {servicesLinks.map(([label, href]) => (
-                    <Link
-                      key={href}
-                      to={href}
-                      className="block px-5 py-3.5 hover:bg-orange-50 hover:text-gltOrange transition-colors text-xs font-bold uppercase tracking-widest border-b border-gray-50 last:border-0"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      {label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
 
             <Link to="/fleet" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.fleet")}</Link>
             <Link to="/about" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.about")}</Link>
@@ -132,17 +88,6 @@ export function Header() {
           >
             <div className="flex flex-col gap-5 pb-32">
               <Link to="/" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.home")}</Link>
-              
-              <div className="border-b border-gray-100 pb-3">
-                <div className="text-base font-bold text-navy uppercase tracking-wide mb-3">Services</div>
-                <div className="flex flex-col gap-3 pl-4 border-l-2 border-gltOrange/30">
-                  {servicesLinks.map(([label, href]) => (
-                    <Link key={href} to={href} onClick={() => setMenuOpen(false)} className="text-sm font-semibold text-gray-600 hover:text-gltOrange transition uppercase">
-                      {label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
 
               <Link to="/fleet" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.fleet")}</Link>
               <Link to="/about" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.about")}</Link>
