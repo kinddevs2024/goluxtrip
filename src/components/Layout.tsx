@@ -54,8 +54,9 @@ export function Header() {
             <Link to="/" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.home")}</Link>
 
             <Link to="/fleet" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.fleet")}</Link>
-            <Link to="/about" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.about")}</Link>
             <Link to="/real-missions" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">Real Missions</Link>
+            <Link to="/projects" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">Tours</Link>
+            <Link to="/about" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">About GLT</Link>
           </nav>
 
           <div className="hidden items-center gap-5 xl:flex">
@@ -90,8 +91,9 @@ export function Header() {
               <Link to="/" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.home")}</Link>
 
               <Link to="/fleet" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.fleet")}</Link>
-              <Link to="/about" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.about")}</Link>
               <Link to="/real-missions" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">Real Missions</Link>
+              <Link to="/projects" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">Tours</Link>
+              <Link to="/about" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">About GLT</Link>
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
