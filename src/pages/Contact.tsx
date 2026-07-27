@@ -1,13 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, CalendarDays, ChevronDown, Mail, MapPin, Phone, Users, FileText, Briefcase, Upload } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { z } from "zod";
 
 const SERVICE_OPTIONS = [
+  "Field Mission Transportation",
+  "VIP Delegations & Events",
+  "Airport & Railway Transfers",
+  "Regional & Intercity Transportation",
+  "Day Trips & Mountain Resorts",
+  "Travel Industry Solutions",
   "Project Site Visit",
   "Delegation",
   "Airport Drop Off",
@@ -64,7 +70,7 @@ type ApplicationForm = {
 
 function FormField({ label, required, error, children }: { label: string; required?: boolean; error?: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="min-w-0 flex flex-col gap-1.5">
       <label className="text-navy/70 font-bold text-xs tracking-wider uppercase">
         {label}{required && <span className="text-gltOrange ml-1">*</span>}
       </label>
@@ -74,11 +80,18 @@ function FormField({ label, required, error, children }: { label: string; requir
   );
 }
 
-export default function Contact() {
+type TransportationRequestProps = {
+  defaultService?: string;
+  embedded?: boolean;
+};
+
+export function TransportationRequest({ defaultService = "", embedded = false }: TransportationRequestProps) {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const serviceParam = searchParams.get("service");
   const carParam = searchParams.get("car");
+  const effectiveService = serviceParam || defaultService;
+  const RequestHeading: "h1" | "h2" = embedded ? "h2" : "h1";
 
   const [departureDate, setDepartureDate] = useState<Date | null>(null);
   const [returnDate, setReturnDate] = useState<Date | null>(null);
@@ -110,18 +123,18 @@ export default function Contact() {
     formState: { errors, isSubmitting },
     reset,
     setValue,
-    watch,
+    control,
   } = useForm<ApplicationForm>({
     resolver: zodResolver(schema),
-    defaultValues: { service: serviceParam || "" }
+    defaultValues: { service: effectiveService }
   });
 
-  const selectedService = watch("service");
+  const selectedService = useWatch({ control, name: "service" });
 
   useEffect(() => {
-    if (serviceParam) setValue("service", serviceParam, { shouldValidate: false });
+    if (effectiveService) setValue("service", effectiveService, { shouldValidate: false });
     if (carParam) setValue("note", `Interested in vehicle: ${carParam}`);
-  }, [serviceParam, carParam, setValue]);
+  }, [effectiveService, carParam, setValue]);
 
   useEffect(() => {
     if (departureDate) {
@@ -186,7 +199,20 @@ export default function Contact() {
     if (!response.ok) throw new Error("Could not send the request.");
 
     toast.success(t("application.success"));
-    reset();
+    reset({
+      organization: "",
+      name: "",
+      email: "",
+      phone: "",
+      service: effectiveService,
+      departureDatetime: "",
+      returnDatetime: "",
+      route: "",
+      passengers: "",
+      itinerary: "",
+      note: "",
+      attachment: "",
+    });
     setDepartureDate(null);
     setReturnDate(null);
     setAttachmentName("");
@@ -194,35 +220,38 @@ export default function Contact() {
 
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-28 lg:px-8">
+    <section
+      id={embedded ? "request" : undefined}
+      className={`mx-auto max-w-7xl scroll-mt-32 px-5 lg:px-8 ${embedded ? "py-20 lg:py-24" : "py-28"}`}
+    >
       {/* Pre-selected service banner */}
-      {serviceParam && (
+      {effectiveService && (
         <div className="mb-10 flex items-center gap-4 bg-navy text-white px-6 py-4 rounded-2xl shadow-lg border border-gltOrange/20">
           <div className="w-10 h-10 rounded-full bg-gltOrange/20 flex items-center justify-center flex-shrink-0">
             <Briefcase size={18} className="text-gltOrange" />
           </div>
           <div>
             <p className="text-xs text-gltOrange font-bold uppercase tracking-widest mb-0.5">Service Pre-Selected</p>
-            <p className="font-bold text-sm">{serviceParam} — Fill in your details below and submit your request.</p>
+            <p className="font-bold text-sm">{effectiveService} - fill in your details below and submit your request.</p>
           </div>
         </div>
       )}
 
-      <div className="grid gap-10 rounded-2xl border border-line bg-white p-6 shadow-xl sm:p-8 lg:grid-cols-[0.75fr_1.25fr]">
+      <div className="grid min-w-0 gap-10 rounded-2xl border border-line bg-white p-6 shadow-xl sm:p-8 lg:grid-cols-[0.75fr_1.25fr]">
 
         {/* Left info panel */}
-        <div className="flex flex-col gap-8">
+        <div className="min-w-0 flex flex-col gap-8">
           <div>
             <div className="inline-flex items-center gap-3 mb-5">
               <span className="block w-8 h-[2px] bg-gltOrange" />
               <span className="text-gltOrange font-black text-xs tracking-[0.25em] uppercase">Transportation Request</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-black text-navy leading-tight mb-5">
+            <RequestHeading className="text-4xl md:text-5xl font-black text-navy leading-tight mb-5">
               Need a Ride<br />
               <span className="text-gltOrange">Across Uzbekistan?</span>
-            </h1>
+            </RequestHeading>
             <p className="text-gray-500 leading-relaxed text-sm max-w-sm">
-              Fill in the form and our operations team will respond with the best transport solution — typically within 2 hours.
+              Fill in the form and our operations team will respond with the best transport solution - typically within 2 hours.
             </p>
           </div>
           <div className="space-y-4 text-sm">
@@ -243,9 +272,9 @@ export default function Contact() {
         {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit, () => toast.error(t("application.invalid")))}
-          className="rounded-2xl border border-line bg-gray-50 p-5 shadow-sm sm:p-6 flex flex-col gap-5"
+          className="min-w-0 rounded-2xl border border-line bg-gray-50 p-5 shadow-sm sm:p-6 flex flex-col gap-5"
         >
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid min-w-0 gap-5 sm:grid-cols-2">
 
             {/* Organization */}
             <FormField label="Organization" required error={errors.organization?.message}>
@@ -290,17 +319,21 @@ export default function Contact() {
                 <button
                   type="button"
                   onClick={() => setServiceOpen(open => !open)}
+                  aria-expanded={serviceOpen}
+                  aria-haspopup="listbox"
                   className={`${fieldCls} flex items-center justify-between text-left`}
                 >
-                  <span className={selectedService ? "text-navy" : "text-slate-400"}>{selectedService || "Select service type"}</span>
+                  <span className={`min-w-0 truncate ${selectedService ? "text-navy" : "text-slate-400"}`}>{selectedService || "Select service type"}</span>
                   <ChevronDown size={16} className={`text-gray-400 transition-transform ${serviceOpen ? "rotate-180" : ""}`} />
                 </button>
                 {serviceOpen && (
-                  <div className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-line bg-white shadow-2xl">
+                  <div role="listbox" className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl border border-line bg-white shadow-2xl">
                     {SERVICE_OPTIONS.map(option => (
                       <button
                         key={option}
                         type="button"
+                        role="option"
+                        aria-selected={selectedService === option}
                         onClick={() => {
                           setValue("service", option, { shouldValidate: true });
                           setServiceOpen(false);
@@ -331,6 +364,8 @@ export default function Contact() {
                 <button
                   type="button"
                   onClick={() => setScheduleOpen(open => !open)}
+                  aria-expanded={scheduleOpen}
+                  aria-haspopup="dialog"
                   className={`${fieldCls} flex min-h-[54px] items-center gap-3 text-left`}
                 >
                   <CalendarDays size={17} className="text-gray-400 flex-shrink-0" />
@@ -345,7 +380,7 @@ export default function Contact() {
                   <ChevronDown size={16} className={`text-gray-400 transition-transform ${scheduleOpen ? "rotate-180" : ""}`} />
                 </button>
                 {scheduleOpen && (
-                  <div className="absolute z-50 mt-2 w-[min(560px,calc(100vw-3rem))] rounded-2xl border border-line bg-white p-4 shadow-2xl">
+                  <div role="dialog" aria-label="Trip schedule" className="absolute left-1/2 z-50 mt-2 w-[min(560px,calc(100vw-3rem))] -translate-x-1/2 rounded-2xl border border-line bg-white p-4 shadow-2xl sm:left-0 sm:translate-x-0">
                     <div className="grid gap-4 md:grid-cols-2">
                       {([
                         { key: "departure" as const, title: "Departure", value: departureDate, fallback: "09:00" },
@@ -419,7 +454,7 @@ export default function Contact() {
           </FormField>
 
           <FormField label="Additional File">
-            <label className="flex min-h-[58px] cursor-pointer items-center justify-between gap-4 rounded-xl border border-dashed border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-navy transition-all hover:border-gltOrange hover:bg-orange-50/40">
+            <label className="flex min-h-[58px] min-w-0 cursor-pointer items-center justify-between gap-4 rounded-xl border border-dashed border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-navy transition-all hover:border-gltOrange hover:bg-orange-50/40">
               <span className="flex items-center gap-3 min-w-0">
                 <Upload size={17} className="text-gltOrange flex-shrink-0" />
                 <span className="truncate">{attachmentName || "Upload itinerary, brief, or supporting document"}</span>
@@ -463,5 +498,6 @@ export default function Contact() {
   );
 }
 
-
-
+export default function Contact() {
+  return <TransportationRequest />;
+}
