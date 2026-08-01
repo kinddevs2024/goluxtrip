@@ -220,15 +220,15 @@ export default function Home() {
   const solutions = t("whatWeDo.solutions", { returnObjects: true }) as {id: string, title: string, desc: string, img: string}[];
   const partners = t("partners.list", { returnObjects: true }) as string[];
   const heroFeatures = defaultFeatureDetails.map((base) => {
-    const admin = featureContent.find((item) => item.id === base.id) || {};
+    const admin = featureContent.find((item) => item.id === base.id);
     const titleKey = base.id === "suvs" ? "suvs" : base.id === "remote" ? "remote" : base.id === "drivers" ? "drivers" : base.id === "ops" ? "ops" : "coverage";
     const descKey = `${titleKey}Desc`;
     return {
       icon: base.icon,
-      title: admin.title || t(`featuresBanner.${titleKey}`),
-      desc: admin.desc || t(`featuresBanner.${descKey}`),
-      detail: admin.detail || base.detail,
-      bullets: Array.isArray(admin.bullets) && admin.bullets.length > 0 ? admin.bullets : base.bullets,
+      title: admin?.title || t(`featuresBanner.${titleKey}`),
+      desc: admin?.desc || t(`featuresBanner.${descKey}`),
+      detail: admin?.detail || base.detail,
+      bullets: Array.isArray(admin?.bullets) && admin.bullets.length > 0 ? admin.bullets : base.bullets,
     };
   });
 
