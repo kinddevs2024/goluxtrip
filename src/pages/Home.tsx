@@ -4,13 +4,15 @@ import {
   ArrowRight, ShieldCheck, Map, Truck, Globe, Clock, 
   Users, Briefcase, ChevronDown, CheckCircle, X
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import toast from "react-hot-toast";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { Variants } from "framer-motion";
+import type { Swiper as SwiperType } from "swiper";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
 import Marquee from "react-fast-marquee";
@@ -21,6 +23,7 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { fleetSnapshot } from "../data/fleetSnapshot";
 
 type ApplicationForm = {
   name: string;
@@ -64,10 +67,39 @@ const serviceDetailRoutes: Record<string, string> = {
   industry: "/industry-solutions",
 };
 
+type Stat = { value: string; label: string };
+type Mission = { _id: string; title: string; date: string; description: string; image: string };
+type Partner = { _id: string; image: string };
+type HeroServiceContent = {
+  id: string;
+  title?: string;
+  desc?: string;
+  detail?: string;
+  bullets?: string[];
+};
+type SelectedFeature = {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+  detail: string;
+  bullets: string[];
+};
+
+const serviceCardImages: Record<string, string> = {
+  "field-missions": "/services/field-missions-hero.webp",
+  delegations: "/services/delegations-events-hero.webp",
+  transfers: "/services/airport-railway-transfers-hero.webp",
+  regional: "/services/regional-intercity-hero.webp",
+  "day-trips": "/services/day-trips-hero.webp",
+  industry: "/services/travel-industry-hero.webp",
+};
+
 export default function Home() {
   const { t, i18n } = useTranslation();
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 1000], [0, 300]);
+  const fleetSectionRef = useRef<HTMLElement>(null);
+  const fleetSwiperRef = useRef<SwiperType | null>(null);
   
   const [refStats, inViewStats] = useInView({ triggerOnce: false, threshold: 0.5 });
   const [refProjects, inViewProjects] = useInView({ triggerOnce: true, threshold: 0.2 });
@@ -91,23 +123,17 @@ export default function Home() {
     resolver: zodResolver(schema)
   });
 
-  const [stats, setStats] = useState<any[]>([]);
-  const [cars, setCars] = useState<any[]>([]);
-  const [missions, setMissions] = useState<any[]>([]);
-  const [partnersData, setPartnersData] = useState<any[]>([]);
-  const [featureContent, setFeatureContent] = useState<any[]>([]);
-  const [selectedFeature, setSelectedFeature] = useState<null | { icon: any; title: string; desc: string; detail: string; bullets: string[] }>(null);
+  const [stats, setStats] = useState<Stat[]>([]);
+  const [missions, setMissions] = useState<Mission[]>([]);
+  const [partnersData, setPartnersData] = useState<Partner[]>([]);
+  const [featureContent, setFeatureContent] = useState<HeroServiceContent[]>([]);
+  const [selectedFeature, setSelectedFeature] = useState<SelectedFeature | null>(null);
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/stats")
       .then(res => res.json())
       .then(data => setStats(Array.isArray(data) ? data : []))
       .catch(err => console.error(err));
       
-    fetch("https://goluxtrip-backend.vercel.app/api/cars")
-      .then(res => res.json())
-      .then(data => setCars(Array.isArray(data) ? data : []))
-      .catch(err => console.error(err));
-
     fetch("https://goluxtrip-backend.vercel.app/api/real-missions")
       .then(res => res.json())
       .then(data => setMissions(Array.isArray(data) ? data : []))
@@ -121,12 +147,58 @@ export default function Home() {
     fetch("https://goluxtrip-backend.vercel.app/api/content")
       .then(res => res.json())
       .then(data => {
-        const raw = Array.isArray(data) ? data.find((item: any) => item.key === "hero_services")?.text_en : "";
+        const contentItems: { key?: string; text_en?: string }[] = Array.isArray(data) ? data : [];
+        const raw = contentItems.find(item => item.key === "hero_services")?.text_en ?? "";
         if (!raw) return;
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) setFeatureContent(parsed);
+        const parsed: unknown = JSON.parse(raw);
+        if (Array.isArray(parsed)) setFeatureContent(parsed as HeroServiceContent[]);
       })
       .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let lastAdvance = 0;
+    let resumeTimer: number | undefined;
+
+    const restartAutoplay = () => {
+      const swiper = fleetSwiperRef.current;
+      if (swiper && !swiper.destroyed && !swiper.autoplay.running) {
+        swiper.autoplay.start();
+      }
+    };
+
+    const handleScroll = () => {
+      const swiper = fleetSwiperRef.current;
+      const section = fleetSectionRef.current;
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY;
+      lastScrollY = currentScrollY;
+
+      if (!swiper || swiper.destroyed || !section || Math.abs(delta) < 24) return;
+
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+      const now = Date.now();
+      if (now - lastAdvance < 550) return;
+      lastAdvance = now;
+
+      if (delta > 0) swiper.slideNext();
+      else swiper.slidePrev();
+
+      window.clearTimeout(resumeTimer);
+      resumeTimer = window.setTimeout(restartAutoplay, 700);
+    };
+
+    const autoplayGuard = window.setInterval(restartAutoplay, 2000);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.clearInterval(autoplayGuard);
+      window.clearTimeout(resumeTimer);
+    };
   }, []);
 
   async function onSubmit(values: ApplicationForm) {
@@ -140,13 +212,12 @@ export default function Home() {
       if (!response.ok) throw new Error("Could not send the request.");
       toast.success(t("application.success"));
       reset();
-    } catch (err) {
+    } catch {
       toast.error("Failed to send request. Please try again.");
     }
   }
 
   const solutions = t("whatWeDo.solutions", { returnObjects: true }) as {id: string, title: string, desc: string, img: string}[];
-  const tCars = t("fleet.cars", { returnObjects: true }) as {id: string, name: string, seats: string, bags: string, drive: string, ac?: string, fuel?: string, year?: string, category?: string, image: string}[];
   const partners = t("partners.list", { returnObjects: true }) as string[];
   const heroFeatures = defaultFeatureDetails.map((base) => {
     const admin = featureContent.find((item) => item.id === base.id) || {};
@@ -272,7 +343,7 @@ export default function Home() {
               { icon: Users, title: t("featuresBanner.drivers"), desc: t("featuresBanner.driversDesc") },
               { icon: Clock, title: t("featuresBanner.ops"), desc: t("featuresBanner.opsDesc") },
               { icon: Globe, title: t("featuresBanner.coverage"), desc: t("featuresBanner.coverageDesc") },
-            ] as { icon: any; title: string; desc: string }[]).map((f, i) => (
+            ] as { icon: LucideIcon; title: string; desc: string }[]).map((f, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
                   <f.icon size={18} className="text-gltOrange" />
@@ -381,7 +452,7 @@ export default function Home() {
                       <div className="absolute top-5 left-5 z-20 bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-lg">
                         <Briefcase size={24} className="text-gltOrange" />
                       </div>
-                      <img src={sol.img} alt={sol.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out" />
+                      <img src={serviceCardImages[sol.id] ?? sol.img} alt={sol.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out" />
                     </div>
                     <div className="p-8 flex-1 flex flex-col bg-white z-20 relative">
                       <h3 className="font-bold text-navy text-xl uppercase tracking-wide mb-4 group-hover:text-gltOrange transition-colors">{sol.title}</h3>
@@ -399,7 +470,7 @@ export default function Home() {
       </section>
 
       {/* 4. OUR FLEET (3D SWIPER CAROUSEL) */}
-      <section className="py-24 bg-navy relative overflow-hidden">
+      <section ref={fleetSectionRef} className="py-24 bg-navy relative overflow-hidden">
          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-navy to-navy" />
          
          <div className="mx-auto max-w-[1400px] px-5 lg:px-8 flex flex-col xl:flex-row gap-16 relative z-10 items-center">
@@ -431,6 +502,7 @@ export default function Home() {
                  grabCursor={true}
                  centeredSlides={true}
                  slidesPerView={"auto"}
+                 speed={850}
                  coverflowEffect={{
                    rotate: 0,
                    stretch: 0,
@@ -438,26 +510,37 @@ export default function Home() {
                    modifier: 2.5,
                    slideShadows: false,
                  }}
-                 autoplay={{ delay: 3000, disableOnInteraction: false }}
+                 autoplay={{
+                   delay: 1700,
+                   disableOnInteraction: false,
+                   pauseOnMouseEnter: false,
+                   waitForTransition: true,
+                 }}
                  loop={true}
+                 loopAdditionalSlides={3}
+                 onSwiper={(swiper) => {
+                   fleetSwiperRef.current = swiper;
+                   window.setTimeout(() => swiper.autoplay.start(), 0);
+                 }}
+                 onTouchEnd={(swiper) => swiper.autoplay.start()}
                  modules={[EffectCoverflow, Autoplay, Pagination]}
                  className="w-full py-10"
                >
-                 {(cars.length > 0 ? cars : tCars).map((car, i) => (
-                    <SwiperSlide key={i} className="w-[300px] sm:w-[340px]">
+                 {fleetSnapshot.map((car) => (
+                    <SwiperSlide key={car._id} className="w-[300px] sm:w-[340px]">
                       <div className="rounded-2xl overflow-hidden shadow-2xl group bg-[#0a1f35] border border-white/10 flex flex-col">
                         {/* Image */}
                         <div className="relative h-52 bg-gradient-to-br from-navy via-[#0d2540] to-[#061525] flex items-center justify-center p-5 overflow-hidden">
                           {/* Category badge */}
-                          {(car as any).category && (
+                          {car.category && (
                             <span className="absolute top-3 left-3 bg-gltOrange/20 text-gltOrange text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-gltOrange/30">
-                              {(car as any).category}
+                              {car.category}
                             </span>
                           )}
                           {/* Year badge */}
-                          {(car as any).year && (
+                          {car.year && (
                             <span className="absolute top-3 right-3 bg-white/5 text-gray-300 text-[9px] font-bold tracking-wide px-2.5 py-1 rounded-full border border-white/10">
-                              {(car as any).year}
+                              {car.year}
                             </span>
                           )}
                           <img
@@ -496,21 +579,21 @@ export default function Home() {
 
                           {/* Secondary specs — fuel, ac */}
                           <div className="flex gap-2">
-                            {(car as any).fuel && (
+                            {car.fuel && (
                               <div className="flex-1 flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 border border-white/5">
                                 <Truck size={12} className="text-gltOrange flex-shrink-0" />
                                 <div>
                                   <div className="text-[9px] text-gray-500 uppercase tracking-wide font-bold">Fuel</div>
-                                  <div className="text-white text-xs font-bold">{(car as any).fuel}</div>
+                                  <div className="text-white text-xs font-bold">{car.fuel}</div>
                                 </div>
                               </div>
                             )}
-                            {(car as any).ac && (
+                            {car.ac && (
                               <div className="flex-1 flex items-center gap-2 bg-white/5 rounded-lg px-3 py-2 border border-white/5">
                                 <Globe size={12} className="text-gltOrange flex-shrink-0" />
                                 <div>
                                   <div className="text-[9px] text-gray-500 uppercase tracking-wide font-bold">A/C</div>
-                                  <div className="text-white text-xs font-bold">{(car as any).ac}</div>
+                                  <div className="text-white text-xs font-bold">{car.ac}</div>
                                 </div>
                               </div>
                             )}

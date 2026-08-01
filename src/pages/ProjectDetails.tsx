@@ -2,28 +2,39 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 
+type Project = {
+  _id: string;
+  title: string;
+  description: string;
+  longDescription?: string;
+  image: string;
+  photos?: string[];
+  createdAt: string;
+};
+
 export default function ProjectDetails() {
   const { id } = useParams();
-  const [project, setProject] = useState<any>(null);
+  const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("https://goluxtrip-backend.vercel.app/api/projects")
       .then(res => res.json())
       .then(data => {
-        const found = (Array.isArray(data) ? data : []).find(p => p._id === id);
+        const projects: Project[] = Array.isArray(data) ? data : [];
+        const found = projects.find(item => item._id === id) ?? null;
         setProject(found);
         setLoading(false);
       });
   }, [id]);
 
   if (loading) return <div className="pt-32 pb-20 text-center font-bold text-navy">Loading...</div>;
-  if (!project) return <div className="pt-32 pb-20 text-center font-bold text-red-500">Project not found</div>;
+  if (!project) return <div className="pt-32 pb-20 text-center font-bold text-red-500">Tour not found</div>;
 
   return (
     <div className="pt-32 pb-20 px-5 max-w-5xl mx-auto min-h-screen">
       <Link to="/projects" className="inline-flex items-center gap-2 text-gltOrange font-bold mb-8 hover:underline">
-        <ArrowLeft size={16} /> Back to Projects
+        <ArrowLeft size={16} /> Back to Tours
       </Link>
       
       <h1 className="text-4xl md:text-5xl font-black text-navy mb-4 uppercase leading-tight tracking-tight">{project.title}</h1>

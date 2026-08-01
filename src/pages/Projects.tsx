@@ -25,26 +25,23 @@ export default function Projects() {
   }, []);
 
   return (
-    <div className="pt-24 min-h-screen bg-[#f7f8f6]">
-      <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+    <div className="min-h-screen bg-[#f7f8f6]">
+      <div className="mx-auto max-w-7xl px-5 py-10 md:py-12 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-10"
         >
           <span className="text-gltOrange font-bold tracking-widest uppercase text-sm mb-4 block">Our Work</span>
           <h1 className="text-4xl md:text-5xl font-black text-navy uppercase leading-tight">
-            Projects
+            Tours in Uzbekistan
           </h1>
-          <p className="mt-6 text-gray-500 text-lg">
-            Long-term operations and corporate logistics we've successfully managed.
-          </p>
         </motion.div>
 
         {loading ? (
           <div className="flex justify-center p-20"><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gltOrange"></div></div>
         ) : projects.length === 0 ? (
-          <div className="text-center text-gray-400 p-10">No projects published yet.</div>
+          <div className="text-center text-gray-400 p-10">No tours published yet.</div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (

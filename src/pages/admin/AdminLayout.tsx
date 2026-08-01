@@ -5,17 +5,14 @@ import { Car, FileText, Inbox, LogOut, LayoutDashboard, BarChart, Briefcase, Men
 export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = Boolean(localStorage.getItem("adminToken"));
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
+    if (!isAuthenticated) {
       navigate("/admin/login");
-    } else {
-      setIsAuthenticated(true);
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   if (!isAuthenticated) return null;
 
@@ -28,7 +25,7 @@ export default function AdminLayout() {
     { name: "Applications", path: "/admin/applications", icon: Inbox },
     { name: "Cars", path: "/admin/cars", icon: Car },
     { name: "Real Missions", path: "/admin/real-missions", icon: Briefcase },
-    { name: "Projects", path: "/admin/projects", icon: Briefcase },
+    { name: "Tours", path: "/admin/projects", icon: Briefcase },
     { name: "Partners", path: "/admin/partners", icon: Briefcase },
     { name: "Stats", path: "/admin/stats", icon: BarChart },
     { name: "Content", path: "/admin/content", icon: FileText },

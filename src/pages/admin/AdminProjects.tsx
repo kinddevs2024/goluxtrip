@@ -24,15 +24,31 @@ export default function AdminProjects() {
       if (!res.ok) throw new Error("Failed to load projects");
       const data = await res.json();
       setProjects(Array.isArray(data) ? data : []);
-    } catch (err) {
-      toast.error("Failed to load projects");
+    } catch {
+      toast.error("Failed to load tours");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProjects();
+    let active = true;
+    fetch("https://goluxtrip-backend.vercel.app/api/projects")
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to load tours");
+        return res.json();
+      })
+      .then(data => {
+        if (active) setProjects(Array.isArray(data) ? data : []);
+      })
+      .catch(() => toast.error("Failed to load tours"))
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   const handleSave = async (e: React.FormEvent) => {
@@ -47,26 +63,26 @@ export default function AdminProjects() {
         body: JSON.stringify(formData)
       });
       if (!res.ok) throw new Error("Save failed");
-      toast.success("Project added");
+      toast.success("Tour added");
       setIsAdding(false);
       setFormData({});
       fetchProjects();
-    } catch (err) {
-      toast.error("Failed to save project");
+    } catch {
+      toast.error("Failed to save tour");
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this project?")) return;
+    if (!confirm("Delete this tour?")) return;
     try {
       const res = await fetch(`https://goluxtrip-backend.vercel.app/api/projects?id=${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` }
       });
       if (!res.ok) throw new Error("Delete failed");
-      toast.success("Project deleted");
+      toast.success("Tour deleted");
       fetchProjects();
-    } catch (e) {
+    } catch {
       toast.error("Failed to delete");
     }
   };
@@ -76,12 +92,12 @@ export default function AdminProjects() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-black text-navy uppercase tracking-widest">Projects</h1>
+        <h1 className="text-3xl font-black text-navy uppercase tracking-widest">Tours</h1>
         <button
           onClick={() => setIsAdding(!isAdding)}
           className="bg-gltOrange text-white px-6 py-3 rounded-lg font-bold uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-gltOrange/20 hover:scale-105 transition-all"
         >
-          <Plus size={18} /> Add Project
+          <Plus size={18} /> Add Tour
         </button>
       </div>
 
@@ -92,7 +108,7 @@ export default function AdminProjects() {
           <textarea placeholder="Long Description (For Details Page)" className="border rounded p-3 md:col-span-2 h-32" onChange={e => setFormData({...formData, longDescription: e.target.value})}></textarea>
           
           <div className="md:col-span-2">
-            <label className="block text-sm font-semibold text-gray-500 mb-2">Upload Project Photo</label>
+            <label className="block text-sm font-semibold text-gray-500 mb-2">Upload Tour Photo</label>
             <input 
               type="file" 
               accept="image/*"
@@ -111,7 +127,7 @@ export default function AdminProjects() {
             />
           </div>
 
-          <button type="submit" className="bg-navy text-white py-3 rounded-lg font-bold md:col-span-2 hover:bg-[#051b2e] transition-colors">Save Project</button>
+          <button type="submit" className="bg-navy text-white py-3 rounded-lg font-bold md:col-span-2 hover:bg-[#051b2e] transition-colors">Save Tour</button>
         </form>
       )}
 

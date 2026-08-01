@@ -1,34 +1,9 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Briefcase, Car as CarIcon, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
-
-type Car = {
-  _id: string;
-  name: string;
-  seats: string;
-  bags: string;
-  drive: string;
-  image: string;
-  category?: string;
-  year?: string;
-  ac?: string;
-  fuel?: string;
-};
+import { fleetSnapshot } from "../data/fleetSnapshot";
 
 export default function Fleet() {
-  const [cars, setCars] = useState<Car[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("https://goluxtrip-backend.vercel.app/api/cars")
-      .then(res => res.json())
-      .then(data => setCars(Array.isArray(data) ? data : []))
-      .catch(() => toast.error("Failed to load fleet data"))
-      .finally(() => setLoading(false));
-  }, []);
-
   return (
     <div className="pt-24 min-h-screen bg-gray-50">
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
@@ -50,13 +25,8 @@ export default function Fleet() {
           </p>
         </motion.div>
 
-        {loading ? (
-          <div className="flex justify-center p-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gltOrange" />
-          </div>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {cars.map((car, index) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {fleetSnapshot.map((car, index) => (
               <motion.div
                 key={car._id}
                 initial={{ opacity: 0, y: 30 }}
@@ -128,8 +98,7 @@ export default function Fleet() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
