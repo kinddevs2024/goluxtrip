@@ -17,11 +17,11 @@ export default function MissionDetails() {
       });
   }, [id]);
 
-  if (loading) return <div className="pt-32 pb-20 text-center font-bold text-navy">Loading...</div>;
-  if (!mission) return <div className="pt-32 pb-20 text-center font-bold text-red-500">Mission not found</div>;
+  if (loading) return <div className="pt-10 pb-20 text-center font-bold text-navy">Loading...</div>;
+  if (!mission) return <div className="pt-10 pb-20 text-center font-bold text-red-500">Mission not found</div>;
 
   return (
-    <div className="pt-32 pb-20 px-5 max-w-5xl mx-auto min-h-screen">
+    <div className="pt-10 pb-20 px-5 max-w-5xl mx-auto min-h-screen">
       <Link to="/real-missions" className="inline-flex items-center gap-2 text-gltOrange font-bold mb-8 hover:underline">
         <ArrowLeft size={16} /> Back to Missions
       </Link>

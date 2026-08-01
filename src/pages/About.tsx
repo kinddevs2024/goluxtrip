@@ -27,7 +27,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="pt-24 min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
       <div className="relative h-[60vh] bg-navy flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img src={image || "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=2000"} alt="About Us" className="w-full h-full object-cover opacity-25 mix-blend-luminosity" />

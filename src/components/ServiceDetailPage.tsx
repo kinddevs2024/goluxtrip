@@ -111,7 +111,7 @@ export default function ServiceDetailPage({
           style={{ objectPosition: heroPosition }}
         />
         <div className="absolute inset-0 bg-[#02213d]/55" />
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-16 pt-28 text-white lg:px-8 lg:pb-20">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-16 pt-10 text-white lg:px-8 lg:pb-20">
           <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <p className="mb-5 text-xs font-black uppercase tracking-[0.25em] text-gltOrange">{kicker}</p>
             <h1 className="max-w-5xl text-4xl font-black leading-[1.05] md:text-6xl lg:text-7xl">{title}</h1>

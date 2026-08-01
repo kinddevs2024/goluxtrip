@@ -1,6 +1,6 @@
 export function PrivacyPolicy() {
   return (
-    <section className="mx-auto max-w-4xl px-5 py-28 lg:px-8">
+    <section className="mx-auto max-w-4xl px-5 py-10 lg:px-8">
       <p className="text-sm font-black uppercase tracking-[0.22em] text-gltOrange">GoLuxTrip</p>
       <h1 className="mt-4 text-4xl font-black text-navy">Privacy Policy</h1>
       <div className="mt-8 space-y-5 text-base leading-8 text-asphalt">
@@ -27,7 +27,7 @@ export function PrivacyPolicy() {
 
 export function TermsAndConditions() {
   return (
-    <section className="mx-auto max-w-4xl px-5 py-28 lg:px-8">
+    <section className="mx-auto max-w-4xl px-5 py-10 lg:px-8">
       <p className="text-sm font-black uppercase tracking-[0.22em] text-gltOrange">GoLuxTrip</p>
       <h1 className="mt-4 text-4xl font-black text-navy">Terms & Conditions</h1>
       <div className="mt-8 space-y-5 text-base leading-8 text-asphalt">

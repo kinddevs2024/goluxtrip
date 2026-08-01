@@ -222,7 +222,7 @@ export function TransportationRequest({ defaultService = "", embedded = false }:
   return (
     <section
       id={embedded ? "request" : undefined}
-      className={`mx-auto max-w-7xl scroll-mt-32 px-5 lg:px-8 ${embedded ? "py-20 lg:py-24" : "py-28"}`}
+      className={`mx-auto max-w-7xl scroll-mt-32 px-5 lg:px-8 ${embedded ? "py-20 lg:py-24" : "py-10"}`}
     >
       {/* Pre-selected service banner */}
       {effectiveService && (

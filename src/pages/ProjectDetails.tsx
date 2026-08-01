@@ -28,11 +28,11 @@ export default function ProjectDetails() {
       });
   }, [id]);
 
-  if (loading) return <div className="pt-32 pb-20 text-center font-bold text-navy">Loading...</div>;
-  if (!project) return <div className="pt-32 pb-20 text-center font-bold text-red-500">Tour not found</div>;
+  if (loading) return <div className="pt-10 pb-20 text-center font-bold text-navy">Loading...</div>;
+  if (!project) return <div className="pt-10 pb-20 text-center font-bold text-red-500">Tour not found</div>;
 
   return (
-    <div className="pt-32 pb-20 px-5 max-w-5xl mx-auto min-h-screen">
+    <div className="pt-10 pb-20 px-5 max-w-5xl mx-auto min-h-screen">
       <Link to="/projects" className="inline-flex items-center gap-2 text-gltOrange font-bold mb-8 hover:underline">
         <ArrowLeft size={16} /> Back to Tours
       </Link>

@@ -5,8 +5,8 @@ import { fleetSnapshot } from "../data/fleetSnapshot";
 
 export default function Fleet() {
   return (
-    <div className="pt-24 min-h-screen bg-gray-50">
-      <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
