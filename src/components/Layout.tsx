@@ -35,7 +35,7 @@ export function Header() {
         <div className="mx-auto flex h-24 max-w-[1400px] items-center justify-between px-5 lg:px-8">
           <Link to="/" className="flex items-center gap-3" onClick={() => setMenuOpen(false)}>
             {/* Mobile / medium screens — icon mark only */}
-            <img src="/glt-mark.png" alt="GoLuxTrip" className="h-11 w-auto xl:hidden" />
+            <img src="/glt-wide.png" alt="GoLuxTrip" className="h-10 w-auto xl:hidden" />
             {/* Desktop — wide logo + tagline */}
             <div className="hidden xl:flex flex-col gap-0.5">
               <img
