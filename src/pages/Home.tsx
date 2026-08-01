@@ -661,8 +661,8 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-black text-navy">{t("projects.title")}</h2>
           </motion.div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-             {missions.slice(0, 4).map((mission, i) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+             {missions.slice(0, 6).map((mission, i) => (
                 <motion.div 
                    key={i}
                    initial={{ opacity: 0, scale: 0.95 }}
@@ -686,6 +686,15 @@ export default function Home() {
                    </div>
                 </motion.div>
              ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link
+              to="/real-missions"
+              className="inline-flex items-center gap-2 rounded-md bg-gltOrange px-6 py-3.5 text-sm font-black uppercase tracking-wider text-white transition-colors hover:bg-orange-600"
+            >
+              Explore more <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
       </section>
