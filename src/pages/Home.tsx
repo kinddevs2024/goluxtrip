@@ -235,7 +235,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden bg-white">
       {/* 1. HERO SECTION (Parallax) — features bar pinned to bottom */}
-      <section className="relative h-screen min-h-[640px] w-full bg-navy overflow-hidden flex flex-col">
+      <section className="relative min-h-[520px] h-auto lg:h-screen lg:min-h-[640px] w-full bg-navy overflow-hidden flex flex-col">
         <motion.div 
           style={{ y: y1 }}
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-[1.06]" 
@@ -251,7 +251,7 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-navy/55 to-transparent" />
         
         {/* Hero text — centered vertically, pushes up a bit to leave room for banner */}
-        <div className="relative flex-1 mx-auto max-w-[1400px] w-full flex flex-col justify-center px-5 lg:px-8 pb-28">
+        <div className="relative flex-1 mx-auto max-w-[1400px] w-full flex flex-col justify-center px-5 lg:px-8 pb-16 sm:pb-20 lg:pb-28">
           <motion.div 
             initial="hidden" 
             animate="visible" 
@@ -305,7 +305,7 @@ export default function Home() {
         </div>
 
         {/* ── FEATURES BANNER pinned to bottom of hero (desktop) ── */}
-        <div className="absolute inset-x-0 bottom-0 z-20 w-full border-t border-white/10 bg-navy/45 backdrop-blur-[2px] hidden lg:block">
+        <div className="absolute inset-x-0 bottom-0 z-20 w-full border-t border-white/10 bg-navy/45 backdrop-blur-[2px] hidden xl:block">
           <div className="mx-auto max-w-[1400px] px-8 py-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -335,27 +335,28 @@ export default function Home() {
         </div>
 
         {/* Mobile features — shown below hero, scrollable */}
-        <div className="relative z-10 w-full border-t border-white/10 bg-navy lg:hidden">
-          <div className="px-5 py-4 grid grid-cols-2 gap-4 text-white text-sm">
-            {([
-              { icon: Truck, title: t("featuresBanner.suvs"), desc: t("featuresBanner.suvsDesc") },
-              { icon: Map, title: t("featuresBanner.remote"), desc: t("featuresBanner.remoteDesc") },
-              { icon: Users, title: t("featuresBanner.drivers"), desc: t("featuresBanner.driversDesc") },
-              { icon: Clock, title: t("featuresBanner.ops"), desc: t("featuresBanner.opsDesc") },
-              { icon: Globe, title: t("featuresBanner.coverage"), desc: t("featuresBanner.coverageDesc") },
-            ] as { icon: LucideIcon; title: string; desc: string }[]).map((f, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
-                  <f.icon size={18} className="text-gltOrange" />
+        <div className="relative z-10 w-full border-t border-white/10 bg-navy xl:hidden">
+          <div className="px-4 py-3 grid grid-cols-2 gap-2 text-white text-sm">
+            {heroFeatures.map((feature, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setSelectedFeature(feature)}
+                className="flex items-center gap-2.5 text-left rounded-xl px-1.5 py-2 transition-colors hover:bg-white/5"
+              >
+                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center flex-shrink-0">
+                  <feature.icon size={16} className="text-gltOrange" />
                 </div>
                 <div>
-                  <div className="font-bold uppercase tracking-wide text-[10px]">{f.title}</div>
-                  <div className="text-gray-400 text-[10px] mt-0.5">{f.desc}</div>
+                  <div className="font-bold uppercase tracking-wide text-[9px] leading-tight">{feature.title}</div>
+                  <div className="text-gray-400 text-[8px] mt-0.5 leading-tight">{feature.desc}</div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
+
+        <div className="block xl:hidden h-2 w-full bg-navy" aria-hidden="true" />
       </section>
 
       {/* ── FEATURE DETAIL MODAL ── */}
@@ -546,7 +547,7 @@ export default function Home() {
                           <img
                             src={car.image}
                             alt={car.name}
-                            className="max-h-full max-w-full object-contain mix-blend-luminosity drop-shadow-2xl group-hover:scale-110 transition-transform duration-700 ease-in-out opacity-90 group-hover:opacity-100"
+                            className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-in-out"
                           />
                         </div>
 
