@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Users, Briefcase, Car as CarIcon, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fleetSnapshot } from "../data/fleetSnapshot";
-import { IrisText, TextGenerateEffect } from "../components/AnimatedText";
 
 export default function Fleet() {
   return (
@@ -19,10 +18,10 @@ export default function Fleet() {
             <span className="block w-8 h-[2px] bg-gltOrange" />
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-navy uppercase leading-tight mb-5">
-            <IrisText text={"Built for the Road.\nReady for the Mission."} />
+            Built for the Road.<br />Ready for the Mission.
           </h1>
           <p className="text-gray-500 text-lg leading-relaxed">
-            <TextGenerateEffect text="A wide range of SUVs, 4WDs, Minivans and Buses for any mission and group size across Uzbekistan." />
+            A wide range of SUVs, 4WDs, Minivans and Buses for any mission and group size across Uzbekistan.
           </p>
         </motion.div>
 

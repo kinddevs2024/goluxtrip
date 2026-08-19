@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 import toast from "react-hot-toast";
-import { IrisText, TextGenerateEffect } from "../components/AnimatedText";
 
 type RealMission = {
   _id: string;
@@ -35,10 +34,10 @@ export default function RealMissions() {
         >
           <span className="text-gltOrange font-bold tracking-widest uppercase text-sm mb-4 block">Portfolio</span>
           <h1 className="text-4xl md:text-5xl font-black text-navy uppercase leading-tight">
-            <IrisText text="Real Missions" />
+            Real Missions
           </h1>
           <p className="mt-6 text-gray-500 text-lg">
-            <TextGenerateEffect text="A glimpse into the successful operations and deployments we've executed across Uzbekistan." />
+            A glimpse into the successful operations and deployments we've executed across Uzbekistan.
           </p>
         </motion.div>
 

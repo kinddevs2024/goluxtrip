@@ -3,7 +3,6 @@ import { Menu, X, Clock, Mail, Linkedin, Send } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink } from "react-router-dom";
-import { StatusPulseText } from "./AnimatedText";
 
 function MotionNavLink({ to, children, end = false }: { to: string; children: string; end?: boolean }) {
   return (
@@ -35,7 +34,7 @@ export function Header() {
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 lg:px-8">
           <div className="flex gap-6 hidden sm:flex">
              <div className="flex items-center gap-2">
-               <Clock size={14} /> <StatusPulseText>24/7 Operations</StatusPulseText>
+               <Clock size={14} /> 24/7 Operations
              </div>
              <div className="flex items-center gap-2">
                <Mail size={14} /> info@goluxtrip.com
