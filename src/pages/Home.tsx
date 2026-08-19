@@ -70,7 +70,6 @@ const serviceDetailRoutes: Record<string, string> = {
 type Stat = { value: string; label: string };
 type Mission = { _id: string; title: string; date: string; description: string; image: string };
 type Partner = { _id: string; image: string };
-type FleetCar = typeof fleetSnapshot[number];
 type HeroServiceContent = {
   id: string;
   title?: string;
@@ -127,7 +126,6 @@ export default function Home() {
   const [stats, setStats] = useState<Stat[]>([]);
   const [missions, setMissions] = useState<Mission[]>([]);
   const [partnersData, setPartnersData] = useState<Partner[]>([]);
-  const [fleetCars, setFleetCars] = useState<FleetCar[]>(fleetSnapshot);
   const [featureContent, setFeatureContent] = useState<HeroServiceContent[]>([]);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature | null>(null);
   useEffect(() => {
@@ -144,13 +142,6 @@ export default function Home() {
     fetch("https://goluxtrip-backend.vercel.app/api/partners")
       .then(res => res.json())
       .then(data => setPartnersData(Array.isArray(data) ? data : []))
-      .catch(err => console.error(err));
-
-    fetch("https://goluxtrip-backend.vercel.app/api/cars")
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) setFleetCars(data as FleetCar[]);
-      })
       .catch(err => console.error(err));
 
     fetch("https://goluxtrip-backend.vercel.app/api/content")
@@ -536,11 +527,11 @@ export default function Home() {
                  modules={[EffectCoverflow, Autoplay, Pagination]}
                  className="w-full py-10"
                >
-                 {fleetCars.map((car) => (
+                 {fleetSnapshot.map((car) => (
                     <SwiperSlide key={car._id} className="w-[300px] sm:w-[340px]">
                       <div className="rounded-2xl overflow-hidden shadow-2xl group bg-[#0a1f35] border border-white/10 flex flex-col">
                         {/* Image */}
-                        <div className="relative h-52 flex items-center justify-center overflow-hidden">
+                        <div className="relative h-52 bg-gradient-to-br from-navy via-[#0d2540] to-[#061525] flex items-center justify-center p-5 overflow-hidden">
                           {/* Category badge */}
                           {car.category && (
                             <span className="absolute top-3 left-3 bg-gltOrange/20 text-gltOrange text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-gltOrange/30">
@@ -556,7 +547,7 @@ export default function Home() {
                           <img
                             src={car.image}
                             alt={car.name}
-                            className="h-full w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                            className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-in-out"
                           />
                         </div>
 
