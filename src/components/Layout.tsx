@@ -2,7 +2,27 @@ import { motion } from "framer-motion";
 import { Menu, X, Clock, Mail, Linkedin, Send } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { StatusPulseText } from "./AnimatedText";
+
+function MotionNavLink({ to, children, end = false }: { to: string; children: string; end?: boolean }) {
+  return (
+    <NavLink to={to} end={end} className="relative rounded-full px-3 py-2 transition-colors hover:text-gltOrange">
+      {({ isActive }) => (
+        <>
+          {isActive && (
+            <motion.span
+              layoutId="desktop-navigation-highlight"
+              className="absolute inset-0 rounded-full bg-gltOrange/10 ring-1 ring-gltOrange/15"
+              transition={{ type: "spring", stiffness: 420, damping: 34 }}
+            />
+          )}
+          <span className={`relative z-10 ${isActive ? "text-gltOrange" : ""}`}>{children}</span>
+        </>
+      )}
+    </NavLink>
+  );
+}
 
 export function Header() {
   const { t } = useTranslation();
@@ -15,7 +35,7 @@ export function Header() {
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-5 lg:px-8">
           <div className="flex gap-6 hidden sm:flex">
              <div className="flex items-center gap-2">
-               <Clock size={14} /> 24/7 Operations
+               <Clock size={14} /> <StatusPulseText>24/7 Operations</StatusPulseText>
              </div>
              <div className="flex items-center gap-2">
                <Mail size={14} /> info@goluxtrip.com
@@ -50,13 +70,12 @@ export function Header() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden items-center gap-6 text-xs uppercase tracking-widest font-bold text-navy xl:flex relative">
-            <Link to="/" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.home")}</Link>
-
-            <Link to="/fleet" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.fleet")}</Link>
-            <Link to="/real-missions" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">Real Missions</Link>
-            <Link to="/projects" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">Tours</Link>
-            <Link to="/about" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">About GLT</Link>
+          <nav className="hidden items-center gap-1 text-xs uppercase tracking-widest font-bold text-navy xl:flex relative">
+            <MotionNavLink to="/" end>{t("nav.home")}</MotionNavLink>
+            <MotionNavLink to="/fleet">{t("nav.fleet")}</MotionNavLink>
+            <MotionNavLink to="/real-missions">Real Missions</MotionNavLink>
+            <MotionNavLink to="/projects">Tours</MotionNavLink>
+            <MotionNavLink to="/about">About GLT</MotionNavLink>
           </nav>
 
           <div className="hidden items-center gap-5 xl:flex">

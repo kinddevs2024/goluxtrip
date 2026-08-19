@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import { IrisText, TextGenerateEffect } from "../components/AnimatedText";
 
 export default function About() {
   // English only — no i18n needed here
@@ -44,12 +45,11 @@ export default function About() {
               <span className="block w-10 h-[2px] bg-gltOrange" />
             </div>
             <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tight leading-[1.05] mb-8">
-              Where the Road Ends,<br />
-              <span className="text-gltOrange">We Continue.</span>
+              <IrisText text="Where the Road Ends," /><br />
+              <span className="text-gltOrange"><IrisText text="We Continue." /></span>
             </h1>
             <p className="text-gray-300 text-base md:text-lg leading-relaxed max-w-2xl mx-auto font-medium">
-              Reliable Transportation &amp; Field Logistics for International Organizations,
-              Development Projects, Official Delegations and Corporate Clients across Uzbekistan.
+              <TextGenerateEffect text="Reliable Transportation & Field Logistics for International Organizations, Development Projects, Official Delegations and Corporate Clients across Uzbekistan." />
             </p>
           </motion.div>
         </div>

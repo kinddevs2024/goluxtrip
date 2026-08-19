@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 import toast from "react-hot-toast";
+import { IrisText } from "../components/AnimatedText";
 
 type Project = {
   _id: string;
@@ -34,7 +35,7 @@ export default function Projects() {
         >
           <span className="text-gltOrange font-bold tracking-widest uppercase text-sm mb-4 block">Our Work</span>
           <h1 className="text-4xl md:text-5xl font-black text-navy uppercase leading-tight">
-            Tours in Uzbekistan
+            <IrisText text="Tours in Uzbekistan" />
           </h1>
         </motion.div>
 

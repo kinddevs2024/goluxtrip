@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowDown, ArrowRight, Check, MapPinned } from "lucide-react";
 import { TransportationRequest } from "../pages/Contact";
+import { IrisText, TextGenerateEffect } from "./AnimatedText";
 
 export type ServiceContentGroup = {
   title: string;
@@ -54,7 +55,9 @@ function SectionCopy({ section }: { section: ServiceContentSection }) {
         <span className="h-0.5 w-9 bg-gltOrange" />
         <span className="text-xs font-black uppercase tracking-[0.2em] text-gltOrange">GoLuxTrip Service</span>
       </div>
-      <h2 className="max-w-4xl text-3xl font-black leading-tight text-navy md:text-4xl">{section.title}</h2>
+      <h2 className="max-w-4xl text-3xl font-black leading-tight text-navy md:text-4xl">
+        <IrisText text={section.title} />
+      </h2>
       {section.lead && <p className="mt-5 max-w-4xl text-lg font-bold leading-8 text-ink">{section.lead}</p>}
       {section.paragraphs?.map((paragraph) => (
         <p key={paragraph} className="mt-5 max-w-4xl text-base leading-8 text-gray-600 md:text-lg">
@@ -114,8 +117,12 @@ export default function ServiceDetailPage({
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-16 pt-10 text-white lg:px-8 lg:pb-20">
           <motion.div initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <p className="mb-5 text-xs font-black uppercase tracking-[0.25em] text-gltOrange">{kicker}</p>
-            <h1 className="max-w-5xl text-4xl font-black leading-[1.05] md:text-6xl lg:text-7xl">{title}</h1>
-            <p className="mt-6 max-w-3xl text-lg font-semibold leading-8 text-white/85 md:text-xl">{subtitle}</p>
+            <h1 className="max-w-5xl text-4xl font-black leading-[1.05] md:text-6xl lg:text-7xl">
+              <IrisText text={title} />
+            </h1>
+            <p className="mt-6 max-w-3xl text-lg font-semibold leading-8 text-white/85 md:text-xl">
+              <TextGenerateEffect text={subtitle} />
+            </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
                 href="#request"
@@ -199,7 +206,9 @@ export default function ServiceDetailPage({
         <section className="bg-navy text-white">
           <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-20">
             <p className="text-xs font-black uppercase tracking-[0.22em] text-gltOrange">Why GoLuxTrip</p>
-            <h2 className="mt-4 max-w-4xl text-3xl font-black leading-tight md:text-5xl">{closing.title}</h2>
+            <h2 className="mt-4 max-w-4xl text-3xl font-black leading-tight md:text-5xl">
+              <IrisText text={closing.title} />
+            </h2>
             <p className="mt-6 max-w-4xl text-base leading-8 text-white/75 md:text-lg">{closing.text}</p>
           </div>
         </section>

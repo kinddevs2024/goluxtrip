@@ -13,7 +13,6 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { Variants } from "framer-motion";
 import type { Swiper as SwiperType } from "swiper";
-import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
 import Marquee from "react-fast-marquee";
 import Tilt from "react-parallax-tilt";
@@ -24,6 +23,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { fleetSnapshot } from "../data/fleetSnapshot";
+import { ColourfulText, CountingNumber, CurvedLoop, IrisText, TextGenerateEffect } from "../components/AnimatedText";
 
 type ApplicationForm = {
   name: string;
@@ -70,6 +70,7 @@ const serviceDetailRoutes: Record<string, string> = {
 type Stat = { value: string; label: string };
 type Mission = { _id: string; title: string; date: string; description: string; image: string };
 type Partner = { _id: string; image: string };
+type FleetCar = typeof fleetSnapshot[number];
 type HeroServiceContent = {
   id: string;
   title?: string;
@@ -101,7 +102,7 @@ export default function Home() {
   const fleetSectionRef = useRef<HTMLElement>(null);
   const fleetSwiperRef = useRef<SwiperType | null>(null);
   
-  const [refStats, inViewStats] = useInView({ triggerOnce: false, threshold: 0.5 });
+  const [refStats, inViewStats] = useInView({ triggerOnce: true, threshold: 0.5 });
   const [refProjects, inViewProjects] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   const schema = useMemo(
@@ -126,6 +127,7 @@ export default function Home() {
   const [stats, setStats] = useState<Stat[]>([]);
   const [missions, setMissions] = useState<Mission[]>([]);
   const [partnersData, setPartnersData] = useState<Partner[]>([]);
+  const [fleetCars, setFleetCars] = useState<FleetCar[]>(fleetSnapshot);
   const [featureContent, setFeatureContent] = useState<HeroServiceContent[]>([]);
   const [selectedFeature, setSelectedFeature] = useState<SelectedFeature | null>(null);
   useEffect(() => {
@@ -142,6 +144,13 @@ export default function Home() {
     fetch("https://goluxtrip-backend.vercel.app/api/partners")
       .then(res => res.json())
       .then(data => setPartnersData(Array.isArray(data) ? data : []))
+      .catch(err => console.error(err));
+
+    fetch("https://goluxtrip-backend.vercel.app/api/cars")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) setFleetCars(data as FleetCar[]);
+      })
       .catch(err => console.error(err));
 
     fetch("https://goluxtrip-backend.vercel.app/api/content")
@@ -219,6 +228,7 @@ export default function Home() {
 
   const solutions = t("whatWeDo.solutions", { returnObjects: true }) as {id: string, title: string, desc: string, img: string}[];
   const partners = t("partners.list", { returnObjects: true }) as string[];
+  const heroTitleLines = t("hero.title").split("\n");
   const heroFeatures = defaultFeatureDetails.map((base) => {
     const admin = featureContent.find((item) => item.id === base.id);
     const titleKey = base.id === "suvs" ? "suvs" : base.id === "remote" ? "remote" : base.id === "drivers" ? "drivers" : base.id === "ops" ? "ops" : "coverage";
@@ -268,14 +278,16 @@ export default function Home() {
               variants={fadeUp} 
               className={`font-black text-white leading-[1.02] tracking-tight ${i18n.language === "ru" ? "text-4xl sm:text-5xl md:text-6xl lg:text-7xl" : "text-5xl sm:text-6xl md:text-7xl lg:text-[5rem]"}`}
             >
-              <span className="block">{t("hero.title").split("\n")[0]}</span>
-              {t("hero.title").split("\n").slice(1).map((line: string, i: number) => (
-                <span key={i} className="block">
-                  {line.split(" ").map((word: string, wi: number) => (
-                    wi === line.split(" ").length - 1
-                      ? <span key={wi} className="text-gltOrange">{word}</span>
-                      : <span key={wi}>{word} </span>
-                  ))}
+              {heroTitleLines.map((line: string, lineIndex: number) => (
+                <span key={lineIndex} className="block">
+                  {line.split(" ").map((word: string, wordIndex: number, words: string[]) => {
+                    const isAccent = lineIndex === heroTitleLines.length - 1 && wordIndex === words.length - 1;
+                    return isAccent ? (
+                      <ColourfulText key={wordIndex} text={word} className="text-gltOrange" />
+                    ) : (
+                      <span key={wordIndex}>{word}{wordIndex < words.length - 1 ? " " : ""}</span>
+                    );
+                  })}
                 </span>
               ))}
             </motion.h1>
@@ -287,9 +299,7 @@ export default function Home() {
             </motion.div>
 
             <motion.p variants={fadeUp} className="text-gray-300 font-medium leading-relaxed max-w-xl" style={{fontSize: '0.95rem', letterSpacing: '0.01em'}}>
-              {t("hero.text").split("\n").map((line: string, i: number) => (
-                <span key={i} className="block">{line}</span>
-              ))}
+              <TextGenerateEffect text={t("hero.text")} className="whitespace-pre-line" />
             </motion.p>
 
             <motion.div variants={fadeUp} className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -431,7 +441,9 @@ export default function Home() {
               {t("whatWeDo.kicker")}
               <span className="w-8 h-px bg-gltOrange"></span>
             </h4>
-            <h2 className="text-4xl md:text-5xl font-black text-navy">{t("whatWeDo.title")}</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-navy">
+              <IrisText text={t("whatWeDo.title")} />
+            </h2>
           </motion.div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -473,6 +485,10 @@ export default function Home() {
       {/* 4. OUR FLEET (3D SWIPER CAROUSEL) */}
       <section ref={fleetSectionRef} className="py-24 bg-navy relative overflow-hidden">
          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-navy to-navy" />
+         <CurvedLoop
+           text="Uzbekistan • Field Logistics • 24/7 Operations •"
+           className="pointer-events-none absolute -top-6 left-0 h-36 w-full text-white/10"
+         />
          
          <div className="mx-auto max-w-[1400px] px-5 lg:px-8 flex flex-col xl:flex-row gap-16 relative z-10 items-center">
             
@@ -484,7 +500,9 @@ export default function Home() {
                className="xl:w-[400px] shrink-0 text-white flex flex-col justify-center text-center xl:text-left"
             >
                <h4 className="text-gltOrange font-bold text-sm tracking-[0.2em] uppercase mb-4">{t("fleet.kicker")}</h4>
-               <h2 className="text-4xl md:text-5xl font-black mb-6 whitespace-pre-line leading-tight">{t("fleet.title")}</h2>
+               <h2 className="text-4xl md:text-5xl font-black mb-6 whitespace-pre-line leading-tight">
+                 <IrisText text={t("fleet.title")} />
+               </h2>
                <p className="text-gray-400 mb-10 whitespace-pre-line text-base leading-relaxed max-w-lg mx-auto xl:mx-0">{t("fleet.text")}</p>
                <Link to="/fleet" className="bg-gltOrange text-white px-8 py-4 rounded font-bold text-sm tracking-widest uppercase inline-flex items-center justify-center gap-2 hover:bg-[#c84211] transition-all hover:scale-105 shadow-lg shadow-gltOrange/20 w-fit mx-auto xl:mx-0">
                   {t("fleet.viewAll")} <ArrowRight size={18} />
@@ -527,11 +545,11 @@ export default function Home() {
                  modules={[EffectCoverflow, Autoplay, Pagination]}
                  className="w-full py-10"
                >
-                 {fleetSnapshot.map((car) => (
+                 {fleetCars.map((car) => (
                     <SwiperSlide key={car._id} className="w-[300px] sm:w-[340px]">
                       <div className="rounded-2xl overflow-hidden shadow-2xl group bg-[#0a1f35] border border-white/10 flex flex-col">
                         {/* Image */}
-                        <div className="relative h-52 bg-gradient-to-br from-navy via-[#0d2540] to-[#061525] flex items-center justify-center p-5 overflow-hidden">
+                        <div className="relative h-52 flex items-center justify-center overflow-hidden">
                           {/* Category badge */}
                           {car.category && (
                             <span className="absolute top-3 left-3 bg-gltOrange/20 text-gltOrange text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-gltOrange/30">
@@ -547,7 +565,7 @@ export default function Home() {
                           <img
                             src={car.image}
                             alt={car.name}
-                            className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                            className="h-full w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-in-out"
                           />
                         </div>
 
@@ -632,7 +650,7 @@ export default function Home() {
                return (
                  <div key={i} className="text-center">
                     <div className="text-4xl md:text-5xl font-black text-gltOrange mb-2">
-                      {inViewStats ? <CountUp key={String(inViewStats)} end={num} duration={2.5} suffix={suffix} /> : "0"}
+                      <CountingNumber active={inViewStats} end={num} duration={2.5} suffix={suffix} />
                     </div>
                     <div className="text-sm font-bold uppercase tracking-widest text-asphalt">{stat.label}</div>
                  </div>
@@ -645,7 +663,7 @@ export default function Home() {
              ].map((stat, i) => (
                 <div key={i} className="text-center opacity-50">
                    <div className="text-4xl md:text-5xl font-black text-gltOrange mb-2">
-                     {inViewStats ? <CountUp key={String(inViewStats)} end={stat.num} duration={2.5} suffix={stat.suffix} /> : "0"}
+                     <CountingNumber active={inViewStats} end={stat.num} duration={2.5} suffix={stat.suffix} />
                    </div>
                    <div className="text-sm font-bold uppercase tracking-widest text-asphalt">{stat.label}</div>
                 </div>
@@ -659,7 +677,9 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h4 className="text-gltOrange font-bold text-sm tracking-[0.2em] uppercase mb-3">{t("projects.kicker")}</h4>
-            <h2 className="text-4xl md:text-5xl font-black text-navy">{t("projects.title")}</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-navy">
+              <IrisText text={t("projects.title")} />
+            </h2>
           </motion.div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
