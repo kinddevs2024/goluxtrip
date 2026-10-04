@@ -233,6 +233,7 @@ export function Footer() {
           <div className="space-y-3 text-sm text-gray-400">
             <Link to="/privacy" className="block hover:text-gltOrange transition-colors">{t("footer.privacy")}</Link>
             <Link to="/terms" className="block hover:text-gltOrange transition-colors">{t("footer.terms")}</Link>
+            <Link to="/cancellation-refund" className="block hover:text-gltOrange transition-colors">Cancellation &amp; Refund Policy</Link>
             <p className="pt-2 text-xs leading-relaxed text-gray-500">{t("footer.copyright")}</p>
           </div>
           <div className="hidden">
@@ -260,9 +261,10 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-[1400px] px-5 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <p>GoLuxTrip</p>
-          <div className="flex gap-5">
+          <div className="flex flex-wrap justify-center gap-5">
             <Link to="/privacy" className="hover:text-gltOrange transition-colors">{t("footer.privacy")}</Link>
             <Link to="/terms" className="hover:text-gltOrange transition-colors">{t("footer.terms")}</Link>
+            <Link to="/cancellation-refund" className="hover:text-gltOrange transition-colors">Cancellation &amp; Refund Policy</Link>
           </div>
         </div>
       </div>

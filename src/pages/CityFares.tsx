@@ -43,7 +43,6 @@ export default function CityFares() {
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-gray-500">Compare daily city service, hotel and airport transfers, and hourly overtime. All prices are in USD.</p>
         <div className="mt-8 flex flex-wrap gap-4">
           <Link to="/contact" className="rounded bg-gltOrange px-6 py-3 text-sm font-bold uppercase tracking-wide text-white hover:bg-[#c84211]">Request Transportation</Link>
-          <a href="/documents/GLT.pdf" download className="rounded border border-line px-6 py-3 text-sm font-bold uppercase tracking-wide text-navy hover:text-gltOrange">Download fleet & fares PDF</a>
         </div>
         <div className="mt-12 space-y-10">
           {groups.map(({ title, fares }) => (
