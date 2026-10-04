@@ -51,7 +51,7 @@ export function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-6 text-xs uppercase tracking-widest font-bold text-navy xl:flex relative">
-            <a href="/documents/GLT.pdf" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">City Fares</a>
+            <Link to="/city-fares" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">City Fares</Link>
             <Link to="/" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.home")}</Link>
 
             <Link to="/fleet" className="relative transition hover:text-gltOrange after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-gltOrange after:transition-all hover:after:w-full">{t("nav.fleet")}</Link>
@@ -89,7 +89,7 @@ export function Header() {
             className="absolute inset-x-0 top-full h-[calc(100vh-5rem)] border-t border-line bg-white px-5 py-6 xl:hidden overflow-y-auto"
           >
             <div className="flex flex-col gap-5 pb-32">
-              <a href="/documents/GLT.pdf" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">City Fares</a>
+              <Link to="/city-fares" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">City Fares</Link>
               <Link to="/" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.home")}</Link>
 
               <Link to="/fleet" onClick={() => setMenuOpen(false)} className="text-base font-bold text-navy hover:text-gltOrange transition uppercase tracking-wide border-b border-gray-100 pb-3">{t("nav.fleet")}</Link>
