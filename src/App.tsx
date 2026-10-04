@@ -13,6 +13,7 @@ import AdminApplications from "./pages/admin/AdminApplications";
 import AdminContent from "./pages/admin/AdminContent";
 
 import Fleet from "./pages/Fleet";
+import CityFares from "./pages/CityFares";
 import FieldMissions from "./pages/FieldMissions";
 import Delegations from "./pages/Delegations";
 import Transfers from "./pages/Transfers";
@@ -62,6 +63,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/fleet" element={<Fleet />} />
+                <Route path="/city-fares" element={<CityFares />} />
                 <Route path="/field-missions" element={<FieldMissions />} />
                 <Route path="/delegations" element={<Delegations />} />
                 <Route path="/transfers" element={<Transfers />} />
